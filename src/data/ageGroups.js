@@ -1,0 +1,68 @@
+export const AGE_GROUPS = [
+  {
+    id: '3-4',
+    label: '3 - 4 سنين',
+    emoji: '🐣',
+    color: '#FF6B6B',
+    description: 'عدّ من 1 لـ 10 + أول كلمات',
+    mathTopics: ['counting', 'addition'],
+    vocabTopics: ['colors', 'animals', 'family'],
+    maxNum: 10,
+  },
+  {
+    id: '5-6',
+    label: '5 - 6 سنين',
+    emoji: '🐰',
+    color: '#4ECDC4',
+    description: 'جمع وطرح بسيط + كلمات جديدة',
+    mathTopics: ['counting', 'addition', 'subtraction'],
+    vocabTopics: ['animals', 'food', 'body', 'school'],
+    maxNum: 20,
+  },
+  {
+    id: '7-8',
+    label: '7 - 8 سنين',
+    emoji: '🦊',
+    color: '#A78BFA',
+    description: 'ضرب وقسمة + جمل إنجليزية',
+    mathTopics: ['addition', 'subtraction', 'multiplication', 'division'],
+    vocabTopics: ['food', 'school', 'nature', 'verbs'],
+    maxNum: 100,
+  },
+  {
+    id: '9-10',
+    label: '9 - 10 سنين',
+    emoji: '🦁',
+    color: '#FF922B',
+    description: 'كسور + قراءة وكتابة',
+    mathTopics: ['multiplication', 'division', 'fractions', 'wordProblems'],
+    vocabTopics: ['nature', 'verbs', 'sentences'],
+    maxNum: 200,
+  },
+];
+
+export const MATH_TOPIC_META = {
+  counting:       { label: 'العدّ',        emoji: '🔢', color: '#FF6B6B' },
+  addition:       { label: 'الجمع',        emoji: '➕', color: '#4ECDC4' },
+  subtraction:    { label: 'الطرح',        emoji: '➖', color: '#A78BFA' },
+  multiplication: { label: 'الضرب',        emoji: '✖️', color: '#FF922B' },
+  division:       { label: 'القسمة',       emoji: '➗', color: '#4DABF7' },
+  fractions:      { label: 'الكسور',       emoji: '🍕', color: '#F783AC' },
+  wordProblems:   { label: 'مسائل كلامية', emoji: '📖', color: '#51CF66' },
+};
+
+export const VOCAB_TOPIC_META = {
+  colors:    { label: 'الألوان',  emoji: '🎨', color: '#F783AC' },
+  animals:   { label: 'الحيوانات', emoji: '🐾', color: '#FF922B' },
+  family:    { label: 'العائلة',  emoji: '👨‍👩‍👧', color: '#FF6B6B' },
+  food:      { label: 'الأكل',    emoji: '🍎', color: '#51CF66' },
+  body:      { label: 'الجسم',    emoji: '🖐️', color: '#4ECDC4' },
+  school:    { label: 'المدرسة',  emoji: '📚', color: '#A78BFA' },
+  nature:    { label: 'الطبيعة',  emoji: '🌳', color: '#4DABF7' },
+  verbs:     { label: 'أفعال',    emoji: '🏃', color: '#FF922B' },
+  sentences: { label: 'جمل',      emoji: '💬', color: '#51CF66' },
+};
+
+export function getAgeGroup(id) {
+  return AGE_GROUPS.find((g) => g.id === id) || AGE_GROUPS[0];
+}

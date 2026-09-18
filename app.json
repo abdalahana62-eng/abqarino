@@ -1,0 +1,9 @@
+{
+  "expo": {
+    "name": "عبقرينو الصغير",
+    "slug": "abqarino",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "main": "App.js"
+  }
+}
