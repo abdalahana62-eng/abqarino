@@ -1,50 +1,46 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { colors, font, weight, space } from '../theme';
+import { Text, StyleSheet } from 'react-native';
+import { colors, font, fam, space } from '../theme';
 import { getAgeGroup, VOCAB_TOPIC_META } from '../data/ageGroups';
 import BigButton from '../components/BigButton';
+import BackButton from '../components/BackButton';
+import ScreenShell from '../components/ScreenShell';
 
 export default function VocabMenuScreen({ route, navigation }) {
   const profile = route.params?.profile;
   const group = getAgeGroup(profile?.ageGroupId);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.c}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
-          <Text style={styles.backTxt}>← رجوع</Text>
-        </TouchableOpacity>
+    <ScreenShell>
+      <BackButton to="Home" routeParams={{ profile }} navigation={navigation} />
+      <Text style={styles.h}>اختار الموضوع 📚</Text>
+      <Text style={styles.sub}>المناسب لسن {group.label}</Text>
 
-        <Text style={styles.h}>اختار الموضوع 📚</Text>
-        <Text style={styles.sub}>المناسب لسن {group.label}</Text>
-
-        {group.vocabTopics.map((t) => {
-          const meta = VOCAB_TOPIC_META[t];
-          return (
-            <BigButton
-              key={t}
-              emoji={meta.emoji}
-              title={meta.label}
-              color={meta.color}
-              onPress={() => navigation.navigate('VocabPlay', { profile, topic: t })}
-            />
-          );
-        })}
-      </ScrollView>
-    </SafeAreaView>
+      {group.vocabTopics.map((t) => {
+        const meta = VOCAB_TOPIC_META[t];
+        const darkInk = t === 'colors';
+        return (
+          <BigButton
+            key={t}
+            emoji={meta.emoji}
+            title={meta.label}
+            color={meta.color}
+            ink={darkInk ? colors.text : colors.textLight}
+            onPress={() => navigation.navigate('VocabPlay', { profile, topic: t })}
+          />
+        );
+      })}
+    </ScreenShell>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { padding: space.lg, flexGrow: 1 },
-  back: { alignSelf: 'flex-end', padding: space.sm },
-  backTxt: { fontSize: font.sm, fontWeight: weight.bold, color: colors.text },
   h: {
-    fontSize: font.lg, fontWeight: weight.black, color: colors.text,
+    fontSize: font.lg, fontFamily: fam.round, color: colors.text,
     textAlign: 'right', marginTop: space.md,
   },
   sub: {
-    fontSize: font.xs, color: colors.muted, textAlign: 'right',
+    fontSize: font.xs, fontFamily: fam.roundMedium, color: colors.muted, textAlign: 'right',
     marginBottom: space.lg, marginTop: 4,
   },
 });

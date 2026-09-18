@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView,
-} from 'react-native';
-import { colors, font, weight, space, radius } from '../theme';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { colors, font, fam, space, radius, clay } from '../theme';
 import { VOCAB_TOPIC_META, getAgeGroup } from '../data/ageGroups';
 import { VOCAB, getRandomItem, shuffle } from '../data/vocab';
 import { storage } from '../utils/storage';
 import { speakAr, speakEn, hapticSuccess, hapticError, stopSpeech, tap } from '../utils/speech';
+import BigButton from '../components/BigButton';
+import BackButton from '../components/BackButton';
+import ScreenShell from '../components/ScreenShell';
 
 const ROUND = 8;
 
@@ -27,7 +28,6 @@ export default function VocabPlayScreen({ route, navigation }) {
   const next = useCallback(() => {
     if (!pool.length) return;
     const target = getRandomItem(pool);
-    // 3 options غير صحيحة
     const wrongs = shuffle(pool.filter((p) => p.en !== target.en)).slice(0, 3);
     const options = shuffle([target, ...wrongs]).map((o) => ({
       key: o.en,
@@ -42,23 +42,27 @@ export default function VocabPlayScreen({ route, navigation }) {
     return () => stopSpeech();
   }, [next, pool.length, lang]);
 
+  const replay = () => {
+    setIndex(0); setCorrectCount(0); setStars(0); setDone(false); next();
+  };
+
   const onPick = async (opt) => {
     if (picked !== null) return;
     setPicked(opt.key);
     const isCorrect = opt.key === q.target.en;
     if (isCorrect) {
       hapticSuccess();
-      speakAr('برافو!');
+      speakAr('برافو! إجابة صحيحة');
       setTimeout(() => {
         if (lang === 'ar') speakAr(q.target.ar);
         else speakEn(q.target.en);
-      }, 500);
+      }, 600);
       setCorrectCount((c) => c + 1);
       setStars((s) => s + 1);
       await storage.addStars(`vocab-${topic}`, 1);
     } else {
       hapticError();
-      speakAr('حاول تاني المرة الجاية');
+      speakAr('حاول مرة أخرى');
       await storage.addStars(`vocab-${topic}`, 0);
     }
     setTimeout(() => {
@@ -69,155 +73,158 @@ export default function VocabPlayScreen({ route, navigation }) {
         setIndex((i) => i + 1);
         next();
       }
-    }, 1600);
+    }, 1700);
   };
 
   const learnWord = () => {
     if (!q) return;
+    tap();
     speakAr(q.target.ar);
-    setTimeout(() => speakEn(q.target.en), 900);
+    setTimeout(() => speakEn(q.target.en), 1000);
+  };
+
+  const switchLang = (l) => {
+    tap();
+    setLang(l);
+    setIndex(0); setCorrectCount(0); setStars(0);
   };
 
   if (done) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
+      <ScreenShell>
         <View style={styles.result}>
           <Text style={{ fontSize: 100 }}>🎉</Text>
           <Text style={styles.resultH}>شغل عظيم!</Text>
           <Text style={styles.resultSub}>جبت {correctCount} إجابة صح من {ROUND}</Text>
           <Text style={styles.resultStars}>⭐ {stars} نجمة</Text>
-          <TouchableOpacity
-            style={[styles.bigBtn, { backgroundColor: meta.color }]}
-            onPress={() => {
-              setIndex(0); setCorrectCount(0); setStars(0); setDone(false); next();
-            }}
-          >
-            <Text style={styles.bigBtnTxt}>العب تاني 🔁</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.bigBtn, { backgroundColor: colors.green }]}
-            onPress={() => navigation.goBack()}
-          >
-            <Text style={styles.bigBtnTxt}>رجوع للقائمة ✅</Text>
-          </TouchableOpacity>
+          <BigButton emoji="🔁" title="العب تاني" color={meta.color} onPress={replay} />
+          <BigButton
+            emoji="✅"
+            title="رجوع للقائمة"
+            color={colors.green}
+            onPress={() => navigation.navigate('VocabMenu', { profile })}
+          />
         </View>
-      </SafeAreaView>
+      </ScreenShell>
     );
   }
 
   if (!q) return null;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.c}>
-        <View style={styles.topBar}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
-            <Text style={styles.backTxt}>← رجوع</Text>
-          </TouchableOpacity>
-          <Text style={styles.progress}>{index + 1} / {ROUND}</Text>
-          <Text style={styles.starCount}>⭐ {stars}</Text>
-        </View>
+    <ScreenShell>
+      <View style={styles.topBar}>
+        <BackButton to="VocabMenu" navigation={navigation} routeParams={{ profile }} />
+        <Text style={styles.progress}>{index + 1} / {ROUND}</Text>
+        <Text style={styles.starCount}>⭐ {stars}</Text>
+      </View>
 
-        <View style={styles.langRow}>
-          <TouchableOpacity
-            onPress={() => { tap(); setLang('ar'); setIndex(0); setCorrectCount(0); setStars(0); }}
-            style={[styles.langBtn, lang === 'ar' && { backgroundColor: colors.primary }]}
-          >
-            <Text style={[styles.langTxt, lang === 'ar' && { color: colors.textLight }]}>عربي 🇪🇬</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => { tap(); setLang('en'); setIndex(0); setCorrectCount(0); setStars(0); }}
-            style={[styles.langBtn, lang === 'en' && { backgroundColor: colors.secondary }]}
-          >
-            <Text style={[styles.langTxt, lang === 'en' && { color: colors.textLight }]}>English 🇬🇧</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.langRow}>
+        <Pressable
+          onPress={() => switchLang('ar')}
+          android_ripple={{ color: colors.cardBorder }}
+          style={[styles.langBtn, lang === 'ar' && { backgroundColor: colors.primary, borderColor: colors.primary }]}
+        >
+          <Text style={[styles.langTxt, lang === 'ar' && { color: colors.textLight }]}>عربي 🇪🇬</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => switchLang('en')}
+          android_ripple={{ color: colors.cardBorder }}
+          style={[styles.langBtn, lang === 'en' && { backgroundColor: colors.secondary, borderColor: colors.secondary }]}
+        >
+          <Text style={[styles.langTxt, lang === 'en' && { color: colors.text }]}>English 🇬🇧</Text>
+        </Pressable>
+      </View>
 
-        <View style={[styles.badge, { backgroundColor: meta.color }]}>
-          <Text style={styles.badgeTxt}>{meta.emoji} {meta.label}</Text>
-        </View>
+      <View style={[styles.badge, { backgroundColor: meta.color }]}>
+        <Text style={styles.badgeTxt}>{meta.emoji} {meta.label}</Text>
+      </View>
 
-        <View style={styles.card}>
-          <Text style={styles.emoji}>{q.target.emoji}</Text>
-          <TouchableOpacity onPress={learnWord} style={styles.learnBtn}>
-            <Text style={styles.learnTxt}>🔊 اسمع الكلمة</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.card}>
+        <Text style={styles.emoji}>{q.target.emoji}</Text>
+        <Pressable
+          onPress={learnWord}
+          android_ripple={{ color: colors.clayEdge }}
+          style={({ pressed }) => [styles.learnBtn, pressed && { opacity: 0.8 }]}
+        >
+          <Text style={styles.learnTxt}>🔊 اسمع الكلمة</Text>
+        </Pressable>
+      </View>
 
-        <Text style={styles.prompt}>
-          {lang === 'ar' ? 'اختار الكلمة الصح بالعربي' : 'Choose the right word in English'}
-        </Text>
+      <Text style={styles.prompt}>
+        {lang === 'ar' ? 'اختار الكلمة الصح بالعربي' : 'Choose the right word in English'}
+      </Text>
 
-        <View style={styles.choices}>
-          {q.options.map((opt) => {
-            const isCorrect = opt.key === q.target.en;
-            const isPicked = opt.key === picked;
-            let bg = colors.cardBg;
-            if (picked !== null && isCorrect) bg = colors.success;
-            else if (isPicked && !isCorrect) bg = colors.error;
-            return (
-              <TouchableOpacity
-                key={opt.key}
-                onPress={() => { tap(); onPick(opt); }}
-                activeOpacity={0.85}
-                style={[styles.choice, { backgroundColor: bg }]}
-              >
-                <Text
-                  style={[
-                    styles.choiceTxt,
-                    (picked !== null && (isCorrect || isPicked)) && { color: colors.textLight },
-                  ]}
-                >
-                  {opt.text}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <View style={styles.choices}>
+        {q.options.map((opt) => {
+          const isCorrect = opt.key === q.target.en;
+          const isPicked = opt.key === picked;
+          let bg = colors.cardBg;
+          let ink = colors.text;
+          if (picked !== null && isCorrect) { bg = colors.success; ink = colors.textLight; }
+          else if (isPicked && !isCorrect) { bg = colors.error; ink = colors.textLight; }
+          return (
+            <Pressable
+              key={opt.key}
+              onPress={() => { tap(); onPick(opt); }}
+              android_ripple={{ color: colors.clayEdge }}
+              style={({ pressed }) => [
+                styles.choice,
+                { backgroundColor: bg },
+                pressed && picked === null && { transform: [{ scale: 0.95 }] },
+              ]}
+            >
+              <Text style={[styles.choiceTxt, { color: ink }]}>{opt.text}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
+    </ScreenShell>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { padding: space.lg, flexGrow: 1 },
   topBar: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center' },
-  back: { padding: space.sm },
-  backTxt: { fontSize: font.sm, fontWeight: weight.bold, color: colors.text },
-  progress: { fontSize: font.sm, fontWeight: weight.black, color: colors.muted },
-  starCount: { fontSize: font.sm, fontWeight: weight.black, color: colors.orange },
+  progress: { fontSize: font.sm, fontFamily: fam.round, color: colors.muted },
+  starCount: { fontSize: font.sm, fontFamily: fam.round, color: colors.orange },
 
   langRow: {
     flexDirection: 'row-reverse', gap: space.sm, justifyContent: 'center',
     marginVertical: space.md,
   },
   langBtn: {
-    paddingHorizontal: space.lg, paddingVertical: 8,
-    borderRadius: radius.round, borderWidth: 2, borderColor: colors.cardBorder,
+    paddingHorizontal: space.lg, paddingVertical: 10, minHeight: 48, justifyContent: 'center',
+    borderRadius: radius.round, borderWidth: clay.border, borderColor: colors.cardBorder,
+    borderBottomWidth: clay.edge, borderBottomColor: colors.clayEdge,
     backgroundColor: colors.cardBg,
   },
-  langTxt: { fontWeight: weight.black, color: colors.text, fontSize: font.xs },
+  langTxt: { fontFamily: fam.round, color: colors.text, fontSize: font.xs },
 
   badge: {
     alignSelf: 'center', paddingHorizontal: space.md, paddingVertical: 6,
     borderRadius: radius.round, marginBottom: space.md,
+    borderBottomWidth: 3, borderBottomColor: colors.clayEdge,
   },
-  badgeTxt: { color: colors.textLight, fontWeight: weight.black, fontSize: font.xs },
+  badgeTxt: { color: colors.textLight, fontFamily: fam.round, fontSize: font.xs },
 
   card: {
-    backgroundColor: colors.cardBg, borderRadius: radius.xl, padding: space.xl,
-    alignItems: 'center',
-    shadowOpacity: 0.08, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 3,
+    backgroundColor: colors.cardBg, borderWidth: clay.border, borderColor: colors.cardBorder,
+    borderBottomWidth: clay.edge, borderBottomColor: colors.clayEdge,
+    borderRadius: radius.xl, padding: space.xl, alignItems: 'center',
+    shadowColor: '#0F172A', shadowOpacity: 0.1, shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 }, elevation: 4,
   },
   emoji: { fontSize: 140 },
   learnBtn: {
     marginTop: space.md, backgroundColor: colors.accent,
-    paddingHorizontal: space.md, paddingVertical: 8, borderRadius: radius.round,
+    paddingHorizontal: space.md, paddingVertical: 10, borderRadius: radius.round,
+    borderBottomWidth: 4, borderBottomColor: colors.clayEdge,
+    minHeight: 48, justifyContent: 'center',
   },
-  learnTxt: { fontWeight: weight.black, color: colors.text, fontSize: font.xs },
+  learnTxt: { fontFamily: fam.round, color: colors.textLight, fontSize: font.xs },
 
   prompt: {
-    fontSize: font.md, fontWeight: weight.bold, color: colors.text,
+    fontSize: font.md, fontFamily: fam.round, color: colors.text,
     textAlign: 'center', marginVertical: space.md,
   },
 
@@ -225,19 +232,17 @@ const styles = StyleSheet.create({
   choice: {
     width: '48%', paddingVertical: space.lg, marginBottom: space.md,
     borderRadius: radius.lg, alignItems: 'center', justifyContent: 'center',
-    borderWidth: 3, borderColor: colors.cardBorder,
+    borderWidth: clay.border, borderColor: colors.cardBorder,
+    borderBottomWidth: clay.edge, borderBottomColor: colors.clayEdge,
+    minHeight: 88,
   },
-  choiceTxt: { fontSize: font.md, fontWeight: weight.black, color: colors.text },
+  choiceTxt: { fontSize: font.md, fontFamily: fam.round },
 
-  result: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: space.lg },
-  resultH: { fontSize: font.xl, fontWeight: weight.black, color: colors.text, marginTop: space.md },
-  resultSub: { fontSize: font.md, color: colors.text, marginTop: space.sm },
+  result: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  resultH: { fontSize: font.xl, fontFamily: fam.round, color: colors.text, marginTop: space.md },
+  resultSub: { fontSize: font.md, fontFamily: fam.roundMedium, color: colors.text, marginTop: space.sm },
   resultStars: {
-    fontSize: font.lg, fontWeight: weight.black, color: colors.orange, marginTop: space.md,
+    fontSize: font.lg, fontFamily: fam.round, color: colors.orange, marginTop: space.md,
+    marginBottom: space.md,
   },
-  bigBtn: {
-    marginTop: space.lg, paddingVertical: space.md, paddingHorizontal: space.xl,
-    borderRadius: radius.round, minWidth: 220, alignItems: 'center',
-  },
-  bigBtnTxt: { color: colors.textLight, fontSize: font.md, fontWeight: weight.black },
 });

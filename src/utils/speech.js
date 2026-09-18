@@ -3,12 +3,12 @@ import * as Haptics from 'expo-haptics';
 
 export function speakAr(text) {
   Speech.stop();
-  Speech.speak(text, { language: 'ar-EG', rate: 0.9, pitch: 1.05 });
+  Speech.speak(text, { language: 'ar-SA', rate: 0.95, pitch: 1.0 });
 }
 
 export function speakEn(text) {
   Speech.stop();
-  Speech.speak(text, { language: 'en-US', rate: 0.85, pitch: 1.05 });
+  Speech.speak(text, { language: 'en-US', rate: 0.9, pitch: 1.0 });
 }
 
 export function stopSpeech() {

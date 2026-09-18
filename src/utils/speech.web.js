@@ -1,22 +1,57 @@
-// Web-safe version of speech.js (used automatically on web instead of expo-speech/expo-haptics)
-function pickVoice(langPrefix) {
+// Web-safe speech + haptics (used automatically on web).
+// Clear Arabic voice: preload voices (they load async), prefer a natural
+// Arabic voice (ar-SA → ar-EG → any ar), neutral pitch, steady rate.
+let cachedVoices = [];
+
+function loadVoices() {
   try {
-    const voices = window.speechSynthesis?.getVoices?.() || [];
-    return voices.find((v) => v.lang?.startsWith(langPrefix)) || null;
+    cachedVoices = window.speechSynthesis?.getVoices?.() || [];
   } catch {
-    return null;
+    cachedVoices = [];
   }
 }
 
-function speak(text, lang) {
+if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+  loadVoices();
+  try {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  } catch {
+    // ignore
+  }
+}
+
+function pickVoiceAr() {
+  const vs = cachedVoices.length ? cachedVoices : loadVoices() || [];
+  const list = cachedVoices.length ? cachedVoices : vs;
+  return (
+    list.find((v) => v.lang === 'ar-SA') ||
+    list.find((v) => v.lang && v.lang.startsWith('ar-SA')) ||
+    list.find((v) => v.lang === 'ar-EG') ||
+    list.find((v) => v.lang && v.lang.startsWith('ar')) ||
+    list.find((v) => /arab/i.test(v.name || '')) ||
+    null
+  );
+}
+
+function pickVoiceEn() {
+  const list = cachedVoices;
+  return (
+    list.find((v) => v.lang === 'en-US') ||
+    list.find((v) => v.lang && v.lang.startsWith('en-US')) ||
+    list.find((v) => v.lang && v.lang.startsWith('en')) ||
+    null
+  );
+}
+
+function speak(text, lang, voice, rate) {
   try {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = lang;
-    const voice = pickVoice(lang.split('-')[0]);
     if (voice) u.voice = voice;
-    u.rate = 0.9;
+    u.rate = rate;
+    u.pitch = 1.0;
     window.speechSynthesis.speak(u);
   } catch {
     // no-op on unsupported browsers
@@ -24,11 +59,11 @@ function speak(text, lang) {
 }
 
 export function speakAr(text) {
-  speak(text, 'ar-EG');
+  speak(text, 'ar-SA', pickVoiceAr(), 0.95);
 }
 
 export function speakEn(text) {
-  speak(text, 'en-US');
+  speak(text, 'en-US', pickVoiceEn(), 0.9);
 }
 
 export function stopSpeech() {
