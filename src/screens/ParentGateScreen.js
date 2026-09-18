@@ -1,29 +1,35 @@
 import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, TextInput,
-  ScrollView, Alert, SafeAreaView,
+  ScrollView, SafeAreaView,
 } from 'react-native';
 import { colors, font, weight, space, radius } from '../theme';
 import { AGE_GROUPS } from '../data/ageGroups';
 import { storage } from '../utils/storage';
-import { tap } from '../utils/speech';
+import { tap, speakAr } from '../utils/speech';
 
 export default function ParentGateScreen({ navigation }) {
   const [name, setName] = useState('');
   const [selected, setSelected] = useState(null);
+  const [error, setError] = useState('');
 
   const start = async () => {
     if (!selected) {
-      Alert.alert('اختار سن الطفل', 'لازم تختار الفئة العمرية الأول 🙂');
+      setError('لازم تختار الفئة العمرية الأول 🙂');
+      speakAr('لازم تختار الفئة العمرية الأول');
       return;
     }
-    const profile = {
-      name: name.trim() || 'صديقي',
-      ageGroupId: selected,
-      createdAt: Date.now(),
-    };
-    await storage.saveProfile(profile);
-    navigation.replace('Home', { profile });
+    try {
+      const profile = {
+        name: name.trim() || 'صديقي',
+        ageGroupId: selected,
+        createdAt: Date.now(),
+      };
+      await storage.saveProfile(profile);
+      navigation.replace('Home', { profile });
+    } catch (e) {
+      setError('حصلت مشكلة، حاول تاني 🙏');
+    }
   };
 
   return (
@@ -55,7 +61,7 @@ export default function ParentGateScreen({ navigation }) {
             <TouchableOpacity
               key={g.id}
               activeOpacity={0.85}
-              onPress={() => { tap(); setSelected(g.id); }}
+              onPress={() => { tap(); setSelected(g.id); setError(''); }}
               style={[
                 styles.ageCard,
                 { borderColor: g.color },
@@ -79,6 +85,12 @@ export default function ParentGateScreen({ navigation }) {
         <TouchableOpacity style={styles.start} onPress={start} activeOpacity={0.85}>
           <Text style={styles.startTxt}>ابدأ اللعب 🚀</Text>
         </TouchableOpacity>
+
+        {!!error && (
+          <View style={styles.errBox}>
+            <Text style={styles.errTxt}>⚠️ {error}</Text>
+          </View>
+        )}
 
         <Text style={styles.foot}>💡 تقدر تغيّر السن من إعدادات الأهل في الرئيسية</Text>
       </ScrollView>
@@ -122,5 +134,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 6 }, elevation: 6,
   },
   startTxt: { fontSize: font.md, fontWeight: weight.black, color: colors.textLight },
+  errBox: {
+    backgroundColor: '#FFE3E3', borderWidth: 2, borderColor: colors.error,
+    borderRadius: radius.md, padding: space.md, marginTop: space.md,
+  },
+  errTxt: {
+    fontSize: font.sm, fontWeight: weight.bold, color: colors.error, textAlign: 'center',
+  },
   foot: { textAlign: 'center', color: colors.muted, fontSize: font.xs, marginTop: space.lg },
 });

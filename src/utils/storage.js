@@ -7,24 +7,54 @@ const KEYS = {
 
 const DEFAULT_PROGRESS = { stars: 0, byTopic: {}, sessions: 0 };
 
+// In-memory fallback so the app keeps working even if device storage
+// (e.g. browser localStorage) is unavailable or throws.
+const memory = { profile: null, progress: null };
+
+async function safeGet(key) {
+  try {
+    return await AsyncStorage.getItem(key);
+  } catch {
+    return memory[key] ?? null;
+  }
+}
+
+async function safeSet(key, value) {
+  memory[key] = value;
+  try {
+    await AsyncStorage.setItem(key, value);
+  } catch {
+    // ignore: memory fallback already updated
+  }
+}
+
+async function safeRemove(key) {
+  memory[key] = null;
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch {
+    // ignore
+  }
+}
+
 export const storage = {
   async saveProfile(profile) {
-    await AsyncStorage.setItem(KEYS.PROFILE, JSON.stringify(profile));
+    await safeSet(KEYS.PROFILE, JSON.stringify(profile));
   },
   async getProfile() {
-    const raw = await AsyncStorage.getItem(KEYS.PROFILE);
+    const raw = await safeGet(KEYS.PROFILE);
     return raw ? JSON.parse(raw) : null;
   },
   async clearProfile() {
-    await AsyncStorage.removeItem(KEYS.PROFILE);
+    await safeRemove(KEYS.PROFILE);
   },
 
   async getProgress() {
-    const raw = await AsyncStorage.getItem(KEYS.PROGRESS);
+    const raw = await safeGet(KEYS.PROGRESS);
     return raw ? { ...DEFAULT_PROGRESS, ...JSON.parse(raw) } : { ...DEFAULT_PROGRESS };
   },
   async saveProgress(progress) {
-    await AsyncStorage.setItem(KEYS.PROGRESS, JSON.stringify(progress));
+    await safeSet(KEYS.PROGRESS, JSON.stringify(progress));
   },
   async addStars(topicKey, amount) {
     const p = await this.getProgress();

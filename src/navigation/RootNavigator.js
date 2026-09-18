@@ -25,6 +25,7 @@ export default function RootNavigator() {
       >
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="ParentGate" component={ParentGateScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="MathMenu" component={MathMenuScreen} />
         <Stack.Screen name="MathPlay" component={MathPlayScreen} />
         <Stack.Screen name="VocabMenu" component={VocabMenuScreen} />
