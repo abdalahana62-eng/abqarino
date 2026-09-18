@@ -22,5 +22,8 @@
     "react-native-screens": "~4.16.0",
     "react-native-web": "^0.21.2"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  }
 }
