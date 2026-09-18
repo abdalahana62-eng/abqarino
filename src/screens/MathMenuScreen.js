@@ -10,7 +10,7 @@ export default function MathMenuScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
-      <ScrollView contentContainerStyle={styles.c}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.c}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
           <Text style={styles.backTxt}>← رجوع</Text>
         </TouchableOpacity>

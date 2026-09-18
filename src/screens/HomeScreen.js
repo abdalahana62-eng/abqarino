@@ -32,7 +32,7 @@ export default function HomeScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
-      <ScrollView contentContainerStyle={styles.c}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.c}>
         <View style={[styles.hero, { backgroundColor: group.color }]}>
           <Text style={styles.heroEmoji}>{group.emoji}</Text>
           <Text style={styles.heroName}>أهلًا {profile?.name}! 👋</Text>
