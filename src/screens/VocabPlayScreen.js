@@ -94,7 +94,7 @@ export default function VocabPlayScreen({ route, navigation }) {
     return (
       <ScreenShell>
         <View style={styles.result}>
-          <Mascot emoji="🎉" size={92} colors={[colors.bgAlt, '#FFFFFF']} />
+          <Mascot emoji="🎉" size={92} colors={[colors.bgAlt, '#FFFFFF']} style={{ borderColor: colors.accent }} />
           <Text style={styles.resultH}>شغل عظيم!</Text>
           <Text style={styles.resultSub}>جبت {correctCount} إجابة صح من {ROUND}</Text>
           <Text style={styles.resultStars}>⭐ {stars} نجمة</Text>
@@ -152,7 +152,7 @@ export default function VocabPlayScreen({ route, navigation }) {
       </View>
 
         <View style={styles.card}>
-          <Mascot emoji={q.target.emoji} size={110} colors={['#FFFFFF', colors.bgAlt]} />
+          <Mascot emoji={q.target.emoji} size={110} colors={['#FFFFFF', colors.bgAlt]} style={{ borderColor: meta.color }} />
         <Pressable
           onPress={learnWord}
           android_ripple={{ color: colors.clayEdge }}

@@ -37,7 +37,7 @@ export default function ParentGateScreen({ navigation }) {
   return (
     <ScreenShell>
       <View style={styles.head}>
-        <Mascot emoji="👨‍👩‍👧" size={60} colors={['#FFFFFF', colors.bgAlt]} />
+        <Mascot emoji="👨‍👩‍👧" size={60} colors={['#FFFFFF', colors.bgAlt]} style={{ borderColor: colors.primary }} />
         <Text style={styles.title}>أهلًا بيكم في عبقرينو</Text>
         <Text style={styles.sub}>
           الأهل بس اللي يملأوا البيانات دي، وبعدها التطبيق للطفل 💛
@@ -65,9 +65,8 @@ export default function ParentGateScreen({ navigation }) {
             android_ripple={{ color: g.soft }}
             style={({ pressed }) => [
               styles.ageCard,
-              { borderColor: g.color },
-              active && { backgroundColor: g.color, borderColor: g.color },
-              pressed && !active && { backgroundColor: g.soft },
+              { backgroundColor: active ? g.color : g.soft, borderColor: g.color },
+              pressed && { opacity: 0.88, transform: [{ scale: 0.98 }] },
             ]}
           >
             <Text style={styles.ageEmoji}>{g.emoji}</Text>

@@ -43,7 +43,7 @@ export default function HomeScreen({ route, navigation }) {
         end={{ x: 1, y: 1 }}
         style={styles.hero}
       >
-        <Mascot emoji={group.emoji} size={84} colors={[group.soft, '#FFFFFF']} />
+        <Mascot emoji={group.emoji} size={84} colors={[group.soft, '#FFFFFF']} style={{ borderColor: group.color }} />
         <Text style={styles.heroName}>أهلًا {profile?.name}! 👋</Text>
         <Text style={styles.heroAge}>{group.label}</Text>
         <View style={styles.starsPill}>

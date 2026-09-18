@@ -65,7 +65,7 @@ export default function MathPlayScreen({ route, navigation }) {
     return (
       <ScreenShell>
         <View style={styles.result}>
-          <Mascot emoji="🏆" size={92} colors={[colors.bgAlt, '#FFFFFF']} />
+          <Mascot emoji="🏆" size={92} colors={[colors.bgAlt, '#FFFFFF']} style={{ borderColor: colors.orange }} />
           <Text style={styles.resultH}>شغل عظيم!</Text>
           <Text style={styles.resultSub}>
             جبت {correctCount} إجابة صح من {ROUND}
