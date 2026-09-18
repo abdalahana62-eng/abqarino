@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import SplashScreen from '../screens/SplashScreen';
 import ParentGateScreen from '../screens/ParentGateScreen';
@@ -10,7 +10,7 @@ import MathPlayScreen from '../screens/MathPlayScreen';
 import VocabMenuScreen from '../screens/VocabMenuScreen';
 import VocabPlayScreen from '../screens/VocabPlayScreen';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export default function RootNavigator() {
   return (
