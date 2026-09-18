@@ -6,6 +6,7 @@ import { VOCAB, getRandomItem, shuffle } from '../data/vocab';
 import { storage } from '../utils/storage';
 import { speakAr, speakEn, hapticSuccess, hapticError, stopSpeech, tap } from '../utils/speech';
 import BigButton from '../components/BigButton';
+import Mascot from '../components/Mascot';
 import BackButton from '../components/BackButton';
 import ScreenShell from '../components/ScreenShell';
 
@@ -93,7 +94,7 @@ export default function VocabPlayScreen({ route, navigation }) {
     return (
       <ScreenShell>
         <View style={styles.result}>
-          <Text style={{ fontSize: 100 }}>🎉</Text>
+          <Mascot emoji="🎉" size={92} colors={[colors.bgAlt, '#FFFFFF']} />
           <Text style={styles.resultH}>شغل عظيم!</Text>
           <Text style={styles.resultSub}>جبت {correctCount} إجابة صح من {ROUND}</Text>
           <Text style={styles.resultStars}>⭐ {stars} نجمة</Text>
@@ -116,7 +117,17 @@ export default function VocabPlayScreen({ route, navigation }) {
       <View style={styles.topBar}>
         <BackButton to="VocabMenu" navigation={navigation} routeParams={{ profile }} />
         <Text style={styles.progress}>{index + 1} / {ROUND}</Text>
-        <Text style={styles.starCount}>⭐ {stars}</Text>
+        <View style={styles.sideRow}>
+          <Pressable
+            onPress={() => { tap(); navigation.navigate('Home', { profile }); }}
+            hitSlop={12}
+            android_ripple={{ color: colors.cardBorder }}
+            style={({ pressed }) => [styles.homeBtn, pressed && { opacity: 0.8 }]}
+          >
+            <Text style={styles.homeTxt}>🏠</Text>
+          </Pressable>
+          <Text style={styles.starCount}>⭐ {stars}</Text>
+        </View>
       </View>
 
       <View style={styles.langRow}>
@@ -140,8 +151,8 @@ export default function VocabPlayScreen({ route, navigation }) {
         <Text style={styles.badgeTxt}>{meta.emoji} {meta.label}</Text>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.emoji}>{q.target.emoji}</Text>
+        <View style={styles.card}>
+          <Mascot emoji={q.target.emoji} size={110} colors={['#FFFFFF', colors.bgAlt]} />
         <Pressable
           onPress={learnWord}
           android_ripple={{ color: colors.clayEdge }}
@@ -185,6 +196,14 @@ export default function VocabPlayScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   topBar: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center' },
+  sideRow: { flexDirection: 'row-reverse', alignItems: 'center', gap: space.sm },
+  homeBtn: {
+    width: 48, height: 48, borderRadius: 24,
+    backgroundColor: colors.cardBg, borderWidth: clay.border, borderColor: colors.cardBorder,
+    borderBottomWidth: 4, borderBottomColor: colors.clayEdge,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  homeTxt: { fontSize: 24 },
   progress: { fontSize: font.sm, fontFamily: fam.round, color: colors.muted },
   starCount: { fontSize: font.sm, fontFamily: fam.round, color: colors.orange },
 

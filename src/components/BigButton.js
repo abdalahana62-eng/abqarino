@@ -37,6 +37,8 @@ export default function BigButton({
 const styles = StyleSheet.create({
   btn: {
     borderRadius: radius.lg,
+    borderTopWidth: 3,
+    borderTopColor: 'rgba(255,255,255,0.35)',
     borderBottomWidth: clay.edge,
     borderBottomColor: colors.clayEdge,
     padding: space.md,

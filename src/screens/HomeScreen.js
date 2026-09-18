@@ -6,6 +6,7 @@ import { getAgeGroup } from '../data/ageGroups';
 import { storage } from '../utils/storage';
 import { tap } from '../utils/speech';
 import BigButton from '../components/BigButton';
+import Mascot from '../components/Mascot';
 import ScreenShell from '../components/ScreenShell';
 
 export default function HomeScreen({ route, navigation }) {
@@ -42,7 +43,7 @@ export default function HomeScreen({ route, navigation }) {
         end={{ x: 1, y: 1 }}
         style={styles.hero}
       >
-        <Text style={styles.heroEmoji}>{group.emoji}</Text>
+        <Mascot emoji={group.emoji} size={84} colors={[group.soft, '#FFFFFF']} />
         <Text style={styles.heroName}>أهلًا {profile?.name}! 👋</Text>
         <Text style={styles.heroAge}>{group.label}</Text>
         <View style={styles.starsPill}>

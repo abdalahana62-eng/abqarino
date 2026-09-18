@@ -7,6 +7,7 @@ import { AGE_GROUPS } from '../data/ageGroups';
 import { storage } from '../utils/storage';
 import { tap, speakAr } from '../utils/speech';
 import BigButton from '../components/BigButton';
+import Mascot from '../components/Mascot';
 import ScreenShell from '../components/ScreenShell';
 
 export default function ParentGateScreen({ navigation }) {
@@ -36,7 +37,7 @@ export default function ParentGateScreen({ navigation }) {
   return (
     <ScreenShell>
       <View style={styles.head}>
-        <Text style={styles.emoji}>👨‍👩‍👧</Text>
+        <Mascot emoji="👨‍👩‍👧" size={60} colors={['#FFFFFF', colors.bgAlt]} />
         <Text style={styles.title}>أهلًا بيكم في عبقرينو</Text>
         <Text style={styles.sub}>
           الأهل بس اللي يملأوا البيانات دي، وبعدها التطبيق للطفل 💛
