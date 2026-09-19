@@ -1,0 +1,117 @@
+{
+  "a5_11_20": [
+    {
+      "id": "a5_11_20_main",
+      "age": 5,
+      "unit": "a5_11_20",
+      "steps": [
+        { "t": "say", "ar": "الأرقام الكبيرة سهلة! دي عشرة." },
+        { "t": "blocks", "tens": 1, "ones": 0, "caption": "قضيب واحد يعني عشرة." },
+        { "t": "say", "ar": "والأربعتاشر؟ عشرة وأربعة!" },
+        { "t": "blocks", "tens": 1, "ones": 4, "caption": "عشرة وأربعة يعني أربعتاشر." },
+        { "t": "say", "ar": "أي رقم كبير: عشرة وكام." },
+        { "t": "ask", "prompt": "الـ ١٢ يعني عشرة وكام؟", "options": [{ "label": "2", "emoji": "👆" }, { "label": "5", "emoji": "👀" }], "answer": "2", "hint": "عشرة وكام؟" }
+      ]
+    }
+  ],
+  "a5_before_after": [
+    {
+      "id": "a5_before_after_main",
+      "age": 5,
+      "unit": "a5_before_after",
+      "steps": [
+        { "t": "say", "ar": "كل رقم ليه جيران: اللي قبله واللي بعده." },
+        { "t": "numberLine", "from": 4, "to": 9, "jumps": [6, 7, 8], "emoji": "🦊", "caption": "نقف على السبعة." },
+        { "t": "say", "ar": "قبل السبعة ستة، وبعد السبعة تمانية." },
+        { "t": "ask", "prompt": "إيه اللي قبل ٧؟", "options": [{ "label": "6", "emoji": "👆" }, { "label": "8", "emoji": "👀" }], "answer": "6", "hint": "مين واقف قبله؟" }
+      ]
+    }
+  ],
+  "a5_add_5": [
+    {
+      "id": "a5_add_5_main",
+      "age": 5,
+      "unit": "a5_add_5",
+      "steps": [
+        { "t": "say", "ar": "معنا تفاحتان." },
+        { "t": "showObjects", "emoji": "🍎", "n": 2 },
+        { "t": "count", "emoji": "🍎", "n": 2 },
+        { "t": "say", "ar": "وجاءت تفاحة أخرى." },
+        { "t": "showObjects", "emoji": "🍎", "n": 1, "group": "b" },
+        { "t": "move", "aEmoji": "🍎", "a": 2, "bEmoji": "🍎", "b": 1, "caption": "نحطهم مع بعض." },
+        { "t": "say", "ar": "الآن نعد الجميع معًا." },
+        { "t": "count", "emoji": "🍎", "n": 3 },
+        { "t": "say", "ar": "اثنان زائد واحد يساوي ثلاثة." },
+        { "t": "equation", "parts": [{ "t": "num", "v": 2 }, { "t": "op", "v": "+" }, { "t": "num", "v": 1 }, { "t": "eq" }, { "t": "num", "v": 3 }] },
+        { "t": "say", "ar": "زائد يعني نجمع. ويساوي يعني: الناتج." },
+        { "t": "ask", "prompt": "٢ + ١ = ؟", "options": [{ "label": "3", "emoji": "👆" }, { "label": "2", "emoji": "👀" }], "answer": "3", "hint": "عدّ التفاح" }
+      ]
+    }
+  ],
+  "a5_add_10": [
+    {
+      "id": "a5_add_10_main",
+      "age": 5,
+      "unit": "a5_add_10",
+      "steps": [
+        { "t": "say", "ar": "معنا أربع كرات." },
+        { "t": "showObjects", "emoji": "⚽", "n": 4 },
+        { "t": "say", "ar": "وجاءت ثلاث كرات." },
+        { "t": "showObjects", "emoji": "⚽", "n": 3, "group": "b" },
+        { "t": "move", "aEmoji": "⚽", "a": 4, "bEmoji": "⚽", "b": 3, "caption": "نجمعهم كلهم." },
+        { "t": "count", "emoji": "⚽", "n": 7 },
+        { "t": "equation", "parts": [{ "t": "num", "v": 4 }, { "t": "op", "v": "+" }, { "t": "num", "v": 3 }, { "t": "eq" }, { "t": "num", "v": 7 }] },
+        { "t": "ask", "prompt": "٤ + ٣ = ؟", "options": [{ "label": "6", "emoji": "👀" }, { "label": "7", "emoji": "👆" }], "answer": "7", "hint": "عدّ الكور" }
+      ]
+    }
+  ],
+  "a5_sub_5": [
+    {
+      "id": "a5_sub_5_main",
+      "age": 5,
+      "unit": "a5_sub_5",
+      "steps": [
+        { "t": "say", "ar": "تلات عصافير واقفين على الغصن." },
+        { "t": "showObjects", "emoji": "🐦", "n": 3 },
+        { "t": "count", "emoji": "🐦", "n": 3 },
+        { "t": "say", "ar": "عصفور واحد طار!" },
+        { "t": "takeAway", "emoji": "🐦", "n": 3, "take": 1, "caption": "طار واحد ومشي." },
+        { "t": "say", "ar": "نعد اللي فاضل." },
+        { "t": "count", "emoji": "🐦", "n": 2 },
+        { "t": "equation", "parts": [{ "t": "num", "v": 3 }, { "t": "op", "v": "-" }, { "t": "num", "v": 1 }, { "t": "eq" }, { "t": "num", "v": 2 }] },
+        { "t": "say", "ar": "ناقص يعني نأخذ أو يذهب." },
+        { "t": "ask", "prompt": "٣ − ١ = ؟", "options": [{ "label": "2", "emoji": "👆" }, { "label": "3", "emoji": "👀" }], "answer": "2", "hint": "عدّ اللي فاضل" }
+      ]
+    }
+  ],
+  "a5_sub_10": [
+    {
+      "id": "a5_sub_10_main",
+      "age": 5,
+      "unit": "a5_sub_10",
+      "steps": [
+        { "t": "say", "ar": "معنا سبع سمكات." },
+        { "t": "showObjects", "emoji": "🐟", "n": 7 },
+        { "t": "say", "ar": "أخدنا منهم تلاتة." },
+        { "t": "takeAway", "emoji": "🐟", "n": 7, "take": 3, "caption": "ناخد تلاتة." },
+        { "t": "count", "emoji": "🐟", "n": 4 },
+        { "t": "equation", "parts": [{ "t": "num", "v": 7 }, { "t": "op", "v": "-" }, { "t": "num", "v": 3 }, { "t": "eq" }, { "t": "num", "v": 4 }] },
+        { "t": "ask", "prompt": "٧ − ٣ = ؟", "options": [{ "label": "3", "emoji": "👀" }, { "label": "4", "emoji": "👆" }], "answer": "4", "hint": "عدّ الباقي" }
+      ]
+    }
+  ],
+  "a5_symbols": [
+    {
+      "id": "a5_symbols_main",
+      "age": 5,
+      "unit": "a5_symbols",
+      "steps": [
+        { "t": "say", "ar": "القصة اللي لعبناها ممكن نكتبها بالأرقام بس!" },
+        { "t": "equation", "parts": [{ "t": "num", "v": 5 }, { "t": "op", "v": "+" }, { "t": "num", "v": 2 }, { "t": "eq" }, { "t": "num", "v": 7 }] },
+        { "t": "say", "ar": "الرمز هو نفس القصة. خمسة زائد اتنين يساوي سبعة." },
+        { "t": "equation", "parts": [{ "t": "num", "v": 6 }, { "t": "op", "v": "-" }, { "t": "num", "v": 1 }, { "t": "eq" }, { "t": "num", "v": 5 }] },
+        { "t": "ask", "prompt": "٦ − ١ = ؟", "options": [{ "label": "5", "emoji": "👆" }, { "label": "6", "emoji": "👀" }], "answer": "5", "hint": "ناقص واحد" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "a6_add_20": [
+    {
+      "id": "a6_add_20_main",
+      "age": 6,
+      "unit": "a6_add_20",
+      "steps": [
+        { "t": "say", "ar": "تمانية زائد خمسة. الخمسة كبيرة، نكمّل بيها العشرة!" },
+        { "t": "blocks", "tens": 0, "ones": 8, "caption": "دي التمانية." },
+        { "t": "say", "ar": "ناخد اتنين من الخمسة نكمّل بيهم عشرة." },
+        { "t": "blocks", "tens": 1, "ones": 0, "caption": "بقت عشرة كاملة!" },
+        { "t": "say", "ar": "فاضل من الخمسة تلاتة. عشرة وتلاتة يعني تلتاشر." },
+        { "t": "blocks", "tens": 1, "ones": 3, "caption": "١٠ + ٣ = ١٣" },
+        { "t": "equation", "parts": [{ "t": "num", "v": 8 }, { "t": "op", "v": "+" }, { "t": "num", "v": 5 }, { "t": "eq" }, { "t": "num", "v": 13 }] },
+        { "t": "ask", "prompt": "٨ + ٥ = ؟", "options": [{ "label": "12", "emoji": "👀" }, { "label": "13", "emoji": "👆" }, { "label": "14", "emoji": "👀" }], "answer": "13", "hint": "كمّل للعشرة الأول" }
+      ]
+    }
+  ],
+  "a6_sub_20": [
+    {
+      "id": "a6_sub_20_main",
+      "age": 6,
+      "unit": "a6_sub_20",
+      "steps": [
+        { "t": "say", "ar": "خمستاشر ناقص ستة. ننزل للعشرة الأول." },
+        { "t": "blocks", "tens": 1, "ones": 5, "caption": "خمستاشر: عشرة وخمسة." },
+        { "t": "say", "ar": "نشيل الخمسة الأول، فاضل عشرة. ولسه عايزين نشيل واحد كمان." },
+        { "t": "blocks", "tens": 1, "ones": 0, "caption": "نزلنا للعشرة." },
+        { "t": "say", "ar": "عشرة ناقص واحد يعني تسعة!" },
+        { "t": "equation", "parts": [{ "t": "num", "v": 15 }, { "t": "op", "v": "-" }, { "t": "num", "v": 6 }, { "t": "eq" }, { "t": "num", "v": 9 }] },
+        { "t": "ask", "prompt": "١٥ − ٦ = ؟", "options": [{ "label": "8", "emoji": "👀" }, { "label": "9", "emoji": "👆" }, { "label": "10", "emoji": "👀" }], "answer": "9", "hint": "انزل للعشرة" }
+      ]
+    }
+  ],
+  "a6_ten_pairs": [
+    {
+      "id": "a6_ten_pairs_main",
+      "age": 6,
+      "unit": "a6_ten_pairs",
+      "steps": [
+        { "t": "say", "ar": "إطار العشرة بياخد عشر قطع بالظبط." },
+        { "t": "showObjects", "emoji": "🔴", "n": 6 },
+        { "t": "say", "ar": "ست حمر. الإطار ناقصه كام عشان يكمل عشرة؟" },
+        { "t": "showObjects", "emoji": "🔵", "n": 4 },
+        { "t": "say", "ar": "أربع زرق. ستة وأربعة يعني عشرة!" },
+        { "t": "equation", "parts": [{ "t": "num", "v": 6 }, { "t": "op", "v": "+" }, { "t": "num", "v": 4 }, { "t": "eq" }, { "t": "num", "v": 10 }] },
+        { "t": "ask", "prompt": "٦ + كام = ١٠؟", "options": [{ "label": "3", "emoji": "👀" }, { "label": "4", "emoji": "👆" }, { "label": "5", "emoji": "👀" }], "answer": "4", "hint": "كمّل العشرة" }
+      ]
+    }
+  ],
+  "a6_numberline": [
+    {
+      "id": "a6_numberline_main",
+      "age": 6,
+      "unit": "a6_numberline",
+      "steps": [
+        { "t": "say", "ar": "الثعلب واقف على الرقم أربعة." },
+        { "t": "numberLine", "from": 0, "to": 10, "jumps": [4], "emoji": "🦊", "caption": "هنا واقف." },
+        { "t": "say", "ar": "عايزين نجمع تلاتة: يقفز تلات قفزات لقدام!" },
+        { "t": "numberLine", "from": 0, "to": 10, "jumps": [4, 5, 6, 7], "emoji": "🦊", "caption": "خمسة، ستة، سبعة!" },
+        { "t": "say", "ar": "وصل للسبعة! والطرح يقفز لورا." },
+        { "t": "equation", "parts": [{ "t": "num", "v": 4 }, { "t": "op", "v": "+" }, { "t": "num", "v": 3 }, { "t": "eq" }, { "t": "num", "v": 7 }] },
+        { "t": "ask", "prompt": "٤ + ٣ = ؟", "options": [{ "label": "6", "emoji": "👀" }, { "label": "7", "emoji": "👆" }, { "label": "8", "emoji": "👀" }], "answer": "7", "hint": "اقفز لقدام" }
+      ]
+    }
+  ],
+  "a6_skip": [
+    {
+      "id": "a6_skip_main",
+      "age": 6,
+      "unit": "a6_skip",
+      "steps": [
+        { "t": "say", "ar": "نعد بالقفز: اتنينات!" },
+        { "t": "numberLine", "from": 0, "to": 10, "jumps": [2, 4, 6, 8, 10], "emoji": "🐰", "caption": "اتنين، أربعة، ستة، تمانية، عشرة!" },
+        { "t": "say", "ar": "وعلى صوابعك. وبالخمسات والعشرات كمان!" },
+        { "t": "ask", "prompt": "بعد ٦ بالاتنينات ييجي إيه؟", "options": [{ "label": "7", "emoji": "👀" }, { "label": "8", "emoji": "👆" }, { "label": "9", "emoji": "👀" }], "answer": "8", "hint": "اقفز اتنين" }
+      ]
+    }
+  ],
+  "a6_compare": [
+    {
+      "id": "a6_compare_main",
+      "age": 6,
+      "unit": "a6_compare",
+      "steps": [
+        { "t": "say", "ar": "خمستاشر ولا تسعة؟ مين الأكبر؟" },
+        { "t": "blocks", "tens": 1, "ones": 5, "caption": "خمستاشر: عشرة وخمسة." },
+        { "t": "blocks", "tens": 0, "ones": 9, "caption": "وتسعة: تسع قطع بس." },
+        { "t": "say", "ar": "اللي عنده عشرة كاملة هو الأكبر: خمستاشر!" },
+        { "t": "ask", "prompt": "مين الأكبر: ١٥ ولا ٩؟", "options": [{ "label": "15", "emoji": "👆" }, { "label": "9", "emoji": "👀" }, { "label": "متساويين", "emoji": "👀" }], "answer": "15", "hint": "مين عنده عشرة؟" }
+      ]
+    }
+  ]
+}
