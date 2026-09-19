@@ -9,7 +9,7 @@ export default function ScreenShell({ children, bg = colors.cardBg, header }) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: topBg }}>
       {header}
-      <View style={{ flex: 1, backgroundColor: bg }}>
+      <View style={[{ flex: 1, backgroundColor: bg }, !!header && bodyCard]}>
         <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={{ padding: space.lg, flexGrow: 1 }}
@@ -20,3 +20,10 @@ export default function ScreenShell({ children, bg = colors.cardBg, header }) {
     </SafeAreaView>
   );
 }
+
+const bodyCard = {
+  borderTopLeftRadius: 44,
+  borderTopRightRadius: 44,
+  marginTop: -28,
+  overflow: 'hidden',
+};

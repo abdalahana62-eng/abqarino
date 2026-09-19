@@ -6,7 +6,8 @@ import { VOCAB, getRandomItem, shuffle } from '../data/vocab';
 import { storage } from '../utils/storage';
 import { speakAr, speakEn, hapticSuccess, hapticError, stopSpeech, tap } from '../utils/speech';
 import BigButton from '../components/BigButton';
-import Mascot from '../components/Mascot';
+import { Image } from 'expo-image';
+import { IMAGES } from '../utils/images';
 import BackButton from '../components/BackButton';
 import ScreenShell from '../components/ScreenShell';
 
@@ -94,7 +95,7 @@ export default function VocabPlayScreen({ route, navigation }) {
     return (
       <ScreenShell>
         <View style={styles.result}>
-          <Mascot emoji="🎉" size={92} colors={[colors.bgAlt, '#FFFFFF']} style={{ borderColor: colors.accent }} />
+          <Image source={IMAGES.win} style={{ width: 200, height: 200, borderRadius: 32 }} contentFit="cover" />
           <Text style={styles.resultH}>شغل عظيم!</Text>
           <Text style={styles.resultSub}>جبت {correctCount} إجابة صح من {ROUND}</Text>
           <Text style={styles.resultStars}>⭐ {stars} نجمة</Text>

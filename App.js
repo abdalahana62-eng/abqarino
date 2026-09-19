@@ -4,8 +4,8 @@ import {
   useFonts,
   BalooBhaijaan2_500Medium,
   BalooBhaijaan2_700Bold,
-  BalooBhaijaan2_800ExtraBold,
 } from '@expo-google-fonts/baloo-bhaijaan-2';
+import { Cairo_900Black } from '@expo-google-fonts/cairo';
 import RootNavigator from './src/navigation/RootNavigator';
 import './src/utils/webFix';
 
@@ -15,7 +15,7 @@ export default function App() {
   useFonts({
     BalooBhaijaan2_500Medium,
     BalooBhaijaan2_700Bold,
-    BalooBhaijaan2_800ExtraBold,
+    Cairo_900Black,
   });
 
   return (

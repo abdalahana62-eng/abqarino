@@ -8,6 +8,7 @@ import BigButton from '../components/BigButton';
 import TopicCard from '../components/TopicCard';
 import AppHeader from '../components/AppHeader';
 import ScreenShell from '../components/ScreenShell';
+import { IMAGES } from '../utils/images';
 
 export default function ParentGateScreen({ navigation }) {
   const [name, setName] = useState('');
@@ -39,7 +40,7 @@ export default function ParentGateScreen({ navigation }) {
         <AppHeader
           title="أهلًا بيكم في عبقرينو"
           subtitle="الأهل بس اللي يملأوا البيانات دي 💛"
-          mascot="👨‍👩‍👧"
+          mascotImage={IMAGES.mascotOwl}
         />
       }
     >

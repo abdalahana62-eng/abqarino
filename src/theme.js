@@ -1,28 +1,32 @@
-// Claymorphism tokens for Abqarino (kids education app).
-// Chunky shapes, thick 3px borders, soft outer shadow + darker bottom edge,
-// big radii. Palette: learning blue + play amber + fun pink on soft blue bg.
+// Smart Learning tokens - pastel lavender like the reference.
+// Chunky shapes, big radii. Palette: soft lavender bg + pastel purple / yellow / pink cards.
 export const colors = {
-  bg: '#EFF6FF',
-  bgAlt: '#FFF8E7',
-  primary: '#2563EB',
-  primaryDark: '#1D4ED8',
-  secondary: '#F59E0B',
+  bg: '#F4EFFF',
+  bgAlt: '#FFF6D9',
+  primary: '#7B61FF',
+  primaryDark: '#5A45D6',
+  secondary: '#FFC531',
   secondaryDark: '#B45309',
   accent: '#EC4899',
   accentDark: '#BE185D',
-  purple: '#A78BFA',
+  purple: '#8B7CFF',
+  purpleSoft: '#DCCBFF',
+  purpleDeep: '#5A45D6',
+  yellowSoft: '#FFE9A8',
+  pinkSoft: '#FFD3E3',
+  blueSoft: '#CDE7FF',
   green: '#22C55E',
   greenDark: '#15803D',
   orange: '#FF922B',
   blue: '#4DABF7',
   pink: '#F783AC',
-  text: '#0F172A',
+  text: '#221C46',
   textLight: '#FFFFFF',
-  muted: '#475569',
+  muted: '#7A7390',
   success: '#22C55E',
   error: '#DC2626',
   cardBg: '#FFFFFF',
-  cardBorder: '#E4ECFC',
+  cardBorder: '#E7DEFF',
   clayEdge: 'rgba(15, 23, 42, 0.14)',
   clayInner: 'rgba(255, 255, 255, 0.7)',
 };
@@ -32,7 +36,7 @@ export const font = {
 };
 
 export const fam = {
-  round: 'BalooBhaijaan2_800ExtraBold',
+  round: 'Cairo_900Black',
   roundBold: 'BalooBhaijaan2_700Bold',
   roundMedium: 'BalooBhaijaan2_500Medium',
 };

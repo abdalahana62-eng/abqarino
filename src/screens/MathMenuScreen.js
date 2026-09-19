@@ -1,10 +1,14 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
+import { Image } from 'expo-image';
 import { colors, font, fam, space } from '../theme';
 import { getAgeGroup, MATH_TOPIC_META } from '../data/ageGroups';
 import AppHeader from '../components/AppHeader';
-import TopicCard from '../components/TopicCard';
 import ScreenShell from '../components/ScreenShell';
+import WaveCard from '../components/WaveCard';
+import { IMAGES } from '../utils/images';
+
+const CARD_COLORS = [colors.purpleSoft, colors.yellowSoft, colors.pinkSoft, colors.blueSoft, colors.bgAlt];
 
 export default function MathMenuScreen({ route, navigation }) {
   const profile = route.params?.profile;
@@ -16,7 +20,7 @@ export default function MathMenuScreen({ route, navigation }) {
         <AppHeader
           title="الحساب 🔢"
           subtitle={`المناسب لسن ${group.label}`}
-          mascot="🦊"
+          mascotImage={IMAGES.mascotOwl}
           showBack
           backTo="Home"
           backParams={{ profile }}
@@ -24,19 +28,35 @@ export default function MathMenuScreen({ route, navigation }) {
         />
       }
     >
-      <Text style={styles.h}>اختار الموضوع</Text>
+      <WaveCard bg={colors.yellowSoft} style={{ minHeight: 0 }}>
+        <View style={{ flexDirection: 'row-reverse', alignItems: 'center', gap: 12 }}>
+          <Image source={IMAGES.math} style={{ width: 90, height: 90, borderRadius: 20 }} contentFit="cover" />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.h}>اختار الموضوع</Text>
+            <Text style={styles.sub}>عدّ، اجمع، اطرح والعب 🎮</Text>
+          </View>
+        </View>
+      </WaveCard>
 
-      {group.mathTopics.map((t) => {
+      {group.mathTopics.map((t, i) => {
         const meta = MATH_TOPIC_META[t];
         return (
-          <TopicCard
+          <WaveCard
             key={t}
-            emoji={meta.emoji}
-            label={group.label}
-            title={meta.label}
-            color={meta.color}
+            bg={CARD_COLORS[i % CARD_COLORS.length]}
             onPress={() => navigation.navigate('MathPlay', { profile, topic: t })}
-          />
+            style={{ minHeight: 0 }}
+          >
+            <View style={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.label}>{group.label}</Text>
+                <Text style={styles.title}>{meta.emoji} {meta.label}</Text>
+              </View>
+              <View style={styles.arrow}>
+                <Text style={styles.arrowTxt}>←</Text>
+              </View>
+            </View>
+          </WaveCard>
         );
       })}
     </ScreenShell>
@@ -44,8 +64,13 @@ export default function MathMenuScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  h: {
-    fontSize: font.md, fontFamily: fam.round, color: colors.text,
-    textAlign: 'right', marginTop: space.sm, marginBottom: space.md,
+  h: { fontSize: font.md, fontFamily: fam.round, color: colors.text, textAlign: 'right' },
+  sub: { fontSize: font.xs, fontFamily: fam.roundMedium, color: colors.muted, textAlign: 'right', marginTop: 2 },
+  label: { fontSize: font.xs, fontFamily: fam.roundMedium, color: colors.muted, textAlign: 'right' },
+  title: { fontSize: font.md, fontFamily: fam.round, color: colors.text, textAlign: 'right', marginTop: 2 },
+  arrow: {
+    width: 46, height: 46, borderRadius: 23, backgroundColor: '#221C46',
+    alignItems: 'center', justifyContent: 'center',
   },
+  arrowTxt: { fontSize: 22, fontWeight: '900', color: '#fff' },
 });
