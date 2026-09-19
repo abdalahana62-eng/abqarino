@@ -1,0 +1,116 @@
+{
+  "a7_place": [
+    {
+      "id": "a7_place_main",
+      "age": 7,
+      "unit": "a7_place",
+      "steps": [
+        { "t": "say", "ar": "الرقم تلاتة وعشرين: خانتين!" },
+        { "t": "blocks", "tens": 2, "ones": 3, "caption": "قضيبان يعني عشرين، وتلات قطع." },
+        { "t": "say", "ar": "الخانة اليمين للآحاد، والشمال للعشرات." },
+        { "t": "say", "ar": "الاتنين في العشرات يعني عشرين مش اتنين!" },
+        { "t": "ask", "prompt": "الـ ٢ في ٢٣ معناها إيه؟", "options": [{ "label": "2", "emoji": "👀" }, { "label": "20", "emoji": "👆" }, { "label": "200", "emoji": "👀" }], "answer": "20", "hint": "هي في خانة إيه؟" }
+      ]
+    }
+  ],
+  "a7_add_nocarry": [
+    {
+      "id": "a7_add_nocarry_main",
+      "age": 7,
+      "unit": "a7_add_nocarry",
+      "steps": [
+        { "t": "say", "ar": "تلاتة وعشرين زائد أربعتاشر. نجمع الآحاد الأول." },
+        { "t": "blocks", "tens": 2, "ones": 3, "caption": "دي التلاتة وعشرين." },
+        { "t": "say", "ar": "آحاد: تلاتة وأربعة يعني سبعة." },
+        { "t": "blocks", "tens": 2, "ones": 7, "caption": "بقت سبع قطع." },
+        { "t": "say", "ar": "عشرات: اتنين وواحد يعني تلاتة. الناتج سبعة وتلاتين!" },
+        { "t": "equation", "parts": [{ "t": "num", "v": 23 }, { "t": "op", "v": "+" }, { "t": "num", "v": 14 }, { "t": "eq" }, { "t": "num", "v": 37 }] },
+        { "t": "ask", "prompt": "٢٣ + ١٤ = ؟", "options": [{ "label": "36", "emoji": "👀" }, { "label": "37", "emoji": "👆" }, { "label": "47", "emoji": "👀" }], "answer": "37", "hint": "آحاد ثم عشرات" }
+      ]
+    }
+  ],
+  "a7_add_carry": [
+    {
+      "id": "a7_add_carry_idea",
+      "age": 7,
+      "unit": "a7_add_carry",
+      "steps": [
+        { "t": "say", "ar": "تمانية وعشرين زائد سبعتاشر. آحاد: تمانية وسبعة!" },
+        { "t": "blocks", "tens": 3, "ones": 15, "caption": "خمستاشر قطعة آحاد. كتير أوي!" },
+        { "t": "say", "ar": "كل عشر قطع يتجمعوا ويتحولوا لقضيب عشرة!" },
+        { "t": "blocks", "tens": 3, "ones": 15, "convert": "toRod", "convertSay": "عشر قطع بقوا قضيب! فاضل خمس قطع.", "caption": "بص كويس!" },
+        { "t": "say", "ar": "القضيب الجديد يتحمل على العشرات. الناتج خمسة وأربعين!" },
+        { "t": "equation", "parts": [{ "t": "num", "v": 28 }, { "t": "op", "v": "+" }, { "t": "num", "v": 17 }, { "t": "eq" }, { "t": "num", "v": 45 }] }
+      ]
+    },
+    {
+      "id": "a7_add_carry_try",
+      "age": 7,
+      "unit": "a7_add_carry",
+      "steps": [
+        { "t": "say", "ar": "جرّب بنفسك: تسعة وتلاتين زائد خمسة." },
+        { "t": "ask", "prompt": "٣٩ + ٥ = ؟", "options": [{ "label": "43", "emoji": "👀" }, { "label": "44", "emoji": "👆" }, { "label": "34", "emoji": "👀" }], "answer": "44", "hint": "التسعة والخمسة أربعتاشر: حمّل واحد" }
+      ]
+    }
+  ],
+  "a7_sub_noborrow": [
+    {
+      "id": "a7_sub_noborrow_main",
+      "age": 7,
+      "unit": "a7_sub_noborrow",
+      "steps": [
+        { "t": "say", "ar": "تمانية وتلاتين ناقص أربعتاشر. الآحاد تكفي!" },
+        { "t": "blocks", "tens": 3, "ones": 8, "caption": "دي التمانية وتلاتين." },
+        { "t": "say", "ar": "تمانية ناقص أربعة يعني أربعة. وتلاتة ناقص واحد يعني اتنين." },
+        { "t": "equation", "parts": [{ "t": "num", "v": 38 }, { "t": "op", "v": "-" }, { "t": "num", "v": 14 }, { "t": "eq" }, { "t": "num", "v": 24 }] },
+        { "t": "ask", "prompt": "٣٨ − ١٤ = ؟", "options": [{ "label": "24", "emoji": "👆" }, { "label": "34", "emoji": "👀" }, { "label": "22", "emoji": "👀" }], "answer": "24", "hint": "آحاد ثم عشرات" }
+      ]
+    }
+  ],
+  "a7_sub_borrow": [
+    {
+      "id": "a7_sub_borrow_main",
+      "age": 7,
+      "unit": "a7_sub_borrow",
+      "steps": [
+        { "t": "say", "ar": "اتنين وتلاتين ناقص سبعتاشر. الآحاد مش مكفية!" },
+        { "t": "blocks", "tens": 3, "ones": 2, "caption": "اتنين بس في الآحاد." },
+        { "t": "say", "ar": "ناخد قضيب عشرة ونفكّه عشر قطع!" },
+        { "t": "blocks", "tens": 3, "ones": 2, "convert": "toUnits", "convertSay": "القضيب اتفك وبقى عشر قطع!", "caption": "بص كويس!" },
+        { "t": "say", "ar": "دلوقتي اتناشر ناقص سبعة يعني خمسة، واتنين ناقص واحد يعني واحد: خمستاشر!" },
+        { "t": "equation", "parts": [{ "t": "num", "v": 32 }, { "t": "op", "v": "-" }, { "t": "num", "v": 17 }, { "t": "eq" }, { "t": "num", "v": 15 }] },
+        { "t": "ask", "prompt": "٣٢ − ١٧ = ؟", "options": [{ "label": "25", "emoji": "👀" }, { "label": "15", "emoji": "👆" }, { "label": "16", "emoji": "👀" }], "answer": "15", "hint": "فكّ قضيب الأول" }
+      ]
+    }
+  ],
+  "a7_mult_rep": [
+    {
+      "id": "a7_mult_rep_main",
+      "age": 7,
+      "unit": "a7_mult_rep",
+      "steps": [
+        { "t": "say", "ar": "تلات صناديق، في كل واحد أربع كرات." },
+        { "t": "groups", "mode": "rows", "rows": 3, "cols": 4, "emoji": "⚽", "caption": "صف يعني صندوق." },
+        { "t": "say", "ar": "أربعة زائد أربعة زائد أربعة يعني اتناشر." },
+        { "t": "say", "ar": "وده اسمه تلاتة في أربعة!" },
+        { "t": "equation", "parts": [{ "t": "num", "v": 3 }, { "t": "op", "v": "×" }, { "t": "num", "v": 4 }, { "t": "eq" }, { "t": "num", "v": 12 }] },
+        { "t": "ask", "prompt": "٣ × ٤ = ؟", "options": [{ "label": "7", "emoji": "👀" }, { "label": "12", "emoji": "👆" }, { "label": "9", "emoji": "👀" }], "answer": "12", "hint": "اجمع الصفوف" }
+      ]
+    }
+  ],
+  "a7_evenodd": [
+    {
+      "id": "a7_evenodd_main",
+      "age": 7,
+      "unit": "a7_evenodd",
+      "steps": [
+        { "t": "say", "ar": "نوزع الكور اتنينات. كل واحدة لازم تلاقي رفيقة!" },
+        { "t": "groups", "mode": "rows", "rows": 3, "cols": 2, "emoji": "⚽", "caption": "ست كور، كلهم لاقوا رفقاء: زوجي!" },
+        { "t": "groups", "mode": "rows", "rows": 3, "cols": 2, "emoji": "🍎", "caption": "طب لو واحدة زيادة؟" },
+        { "t": "showObjects", "emoji": "🍎", "n": 7 },
+        { "t": "say", "ar": "سبعة: واحدة فضلت لوحدها من غير رفيق. يبقى فردي!" },
+        { "t": "ask", "prompt": "التسعة زوجي ولا فردي؟", "options": [{ "label": "زوجي", "emoji": "👀" }, { "label": "فردي", "emoji": "👆" }], "answer": "فردي", "hint": "بيفضل واحد لوحده؟" }
+      ]
+    }
+  ]
+}
