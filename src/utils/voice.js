@@ -171,8 +171,7 @@ export function explainKeys(topic, p) {
         ...steps,
         ...R(p.ans),
       ];
-    }
-    case 'fractions': {
+    }    case 'fractions': {
       return [
         K('teach_intro.wav', 'بص يا بطل، هعلمك تحلها إزاي!'),
         K('t_lookshape.wav', 'بص للشكل يا بطل'),
@@ -181,6 +180,56 @@ export function explainKeys(topic, p) {
         K('t_colored.wav', 'ومتلون منهم'), N(p.num),
         K('t_sofraction.wav', 'يبقى الكسر'),
         N(p.num), K('divide.wav', 'على'), N(p.den),
+      ];
+    }
+    case 'compare': {
+      return [
+        K('teach_intro.wav', 'بص يا بطل، هعلمك تحلها إزاي!'),
+        K('__q__', p.text || `فين الأكبر؟ ${p.a} ولا ${p.b}؟`),
+        ...R(p.ans),
+      ];
+    }
+    case 'nextnum': {
+      return [
+        K('teach_intro.wav', 'بص يا بطل، هعلمك تحلها إزاي!'),
+        N(p.n),
+        K('t_countafter.wav', 'وعد من بعده'),
+        N(p.n + 1),
+        ...R(p.ans),
+      ];
+    }
+    case 'missing': {
+      const target = (p.a ?? 0) + (p.b ?? 0);
+      const steps = [];
+      if (p.b != null && (p.a ?? 0) <= 12) {
+        for (let i = p.b + 1; i <= target; i++) steps.push(N(i));
+      }
+      return [
+        K('teach_intro.wav', 'بص يا بطل، هعلمك تحلها إزاي!'),
+        K('t_put.wav', 'حط'), N(p.b ?? 0),
+        K('t_inmind.wav', 'في مخك'),
+        K('t_countupto.wav', 'وعد لحد'), N(target),
+        ...steps,
+        ...R(p.ans),
+      ];
+    }
+    case 'shapes': {
+      return [
+        K('teach_intro.wav', 'بص يا بطل، هعلمك تحلها إزاي!'),
+        K('__q__', `دور على ${p.shape || 'الشكل'} يا بطل! الإجابة هي ${p.shape || 'الشكل'}`),
+      ];
+    }
+    case 'patterns': {
+      return [
+        K('teach_intro.wav', 'بص يا بطل، هعلمك تحلها إزاي!'),
+        K('__q__', 'بص على النمط كويس وامشي معاه واحدة واحدة، هتعرف إيه اللي ناقص'),
+      ];
+    }
+    case 'evenodd': {
+      const even = p.n % 2 === 0;
+      return [
+        K('teach_intro.wav', 'بص يا بطل، هعلمك تحلها إزاي!'),
+        K('__q__', even ? `الرقم ${p.n} بيتقسم اتنينات من غير ما يفضل حاجة، يبقى زوجي` : `الرقم ${p.n} بيفضل منه واحد لوحده، يبقى فردي`),
       ];
     }
     default: {
@@ -308,6 +357,13 @@ export function questionKeys(topic, p) {
     case 'division': return [K(keys.ask(), 'يلا يا بطل'), N(p.a), K('divide.wav', 'على'), N(p.b), K('eqwhat.wav', 'يساوي كام؟')];
     case 'counting': return [K(keys.ask(), 'يلا يا بطل'), K('howmany.wav', 'كام واحد في الصورة؟')];
     case 'fractions': return [K(keys.ask(), 'يلا يا بطل'), K('fracq.wav', 'إيه الكسر اللي في الشكل؟')];
-    default: return [{ key: '__missing__', fb: { kind: 'ar', text: p.question } }];
+    case 'compare':
+    case 'nextnum':
+    case 'missing':
+    case 'shapes':
+    case 'patterns':
+    case 'evenodd':
+      return [K(keys.ask(), 'يلا يا بطل'), K('__q__', p.text || p.question || '')];
+    default: return [{ key: '__missing__', fb: { kind: 'ar', text: p.text || p.question || '' } }];
   }
 }

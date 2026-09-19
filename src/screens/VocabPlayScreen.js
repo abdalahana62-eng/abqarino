@@ -6,6 +6,7 @@ import { VOCAB, getRandomItem, shuffle } from '../data/vocab';
 import { storage } from '../utils/storage';
 import { tap, stopSpeech, hapticSuccess, hapticError } from '../utils/speech';
 import { playKey, playSeq, stopVoice, keys, vocabKeys } from '../utils/voice';
+import { roundsForAge, ageMinOf } from '../logic/difficulty.js';
 import { isListeningSupported, listenOnce, matchesSpoken } from '../utils/speechRec';
 import BigButton from '../components/BigButton';
 import { Image } from 'expo-image';
@@ -13,10 +14,9 @@ import { IMAGES } from '../utils/images';
 import BackButton from '../components/BackButton';
 import ScreenShell from '../components/ScreenShell';
 
-const ROUND = 8;
-
 export default function VocabPlayScreen({ route, navigation }) {
   const { profile, topic } = route.params;
+  const ROUND = roundsForAge(ageMinOf(profile?.ageGroupId));
   const group = getAgeGroup(profile?.ageGroupId);
   const meta = VOCAB_TOPIC_META[topic];
   const pool = VOCAB[topic] || [];

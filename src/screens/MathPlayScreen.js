@@ -5,15 +5,14 @@ import { getAgeGroup, MATH_TOPIC_META } from '../data/ageGroups';
 import { generateMathQuestion } from '../data/math';
 import { storage } from '../utils/storage';
 import { tap, stopSpeech, hapticSuccess, hapticError } from '../utils/speech';
-import { playKey, playSeq, stopVoice, keys, questionKeys, explainKeys, teachSteps } from '../utils/voice';
+import { playKey, playSeq, stopVoice, keys, questionKeys, explainKeys, teachSteps } from '../utils/voice.js';
+import { roundsForAge, ageMinOf } from '../logic/difficulty.js';
 import BigButton from '../components/BigButton';
 import { Image } from 'expo-image';
 import { IMAGES } from '../utils/images';
 import DragCountGame, { DRAG_THEMES } from '../components/DragCountGame';
 import BackButton from '../components/BackButton';
 import ScreenShell from '../components/ScreenShell';
-
-const ROUND = 8;
 
 // One fixed easy demo per topic: the lesson teaches WITH the kid before quizzing.
 const DEMO = {
@@ -30,6 +29,7 @@ export default function MathPlayScreen({ route, navigation }) {
   const { profile, topic } = route.params;
   const group = getAgeGroup(profile?.ageGroupId);
   const meta = MATH_TOPIC_META[topic];
+  const ROUND = roundsForAge(ageMinOf(profile?.ageGroupId));
   const kidName = profile?.name || 'صديقي';
 
   const [q, setQ] = useState(null);
@@ -60,7 +60,7 @@ export default function MathPlayScreen({ route, navigation }) {
       setIndex((i) => i + 1);
       next();
     }
-  }, [index, next]);
+  }, [index, next, ROUND]);
 
   // Teacher reads every quiz question out loud (lesson has its own audio).
   const greeted = useRef(false);
