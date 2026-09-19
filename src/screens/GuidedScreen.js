@@ -5,6 +5,7 @@ import { VOCAB } from '../data/vocab';
 import AppHeader from '../components/AppHeader';
 import ScreenShell from '../components/ScreenShell';
 import Explainer from '../components/teach/Explainer';
+import { stopAllAudio } from '../logic/teachAudio.js';
 import { IMAGES } from '../utils/images';
 
 // Guided: 2-3 questions with full help right after teaching, no stars.
@@ -13,6 +14,10 @@ export default function GuidedScreen({ route, navigation }) {
   const { subject, topic, profile } = route.params || {};
   const group = getAgeGroup(profile?.ageGroupId);
   const isWords = subject === 'words';
+
+  React.useEffect(() => {
+    return () => stopAllAudio();
+  }, []);
 
   const scene = useMemo(() => {
     const steps = [];

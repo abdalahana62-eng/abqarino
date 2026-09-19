@@ -6,6 +6,7 @@ import { VOCAB, getRandomItem, shuffle } from '../data/vocab';
 import { storage } from '../utils/storage';
 import { tap, stopSpeech, hapticSuccess, hapticError } from '../utils/speech';
 import { playKey, playSeq, stopVoice, keys, vocabKeys } from '../utils/voice';
+import { stopAllAudio } from '../logic/teachAudio.js';
 import { roundsForAge, ageMinOf, choicesForAge } from '../logic/difficulty.js';
 import { buildWordOptions } from '../logic/wordQuestions.js';
 import { wordDisplay } from '../content/words/meta.js';
@@ -54,7 +55,7 @@ export default function VocabPlayScreen({ route, navigation }) {
 
   useEffect(() => {
     if (pool.length) next();
-    return () => { stopSpeech(); stopVoice(); };
+    return () => { stopSpeech(); stopVoice(); stopAllAudio(); };
   }, [next, pool.length, lang]);
 
   // Teacher greets once when the game starts.

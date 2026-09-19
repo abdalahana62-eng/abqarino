@@ -6,6 +6,7 @@ import { generateMathQuestion } from '../data/math';
 import { storage } from '../utils/storage';
 import { tap, stopSpeech, hapticSuccess, hapticError } from '../utils/speech';
 import { playKey, playSeq, stopVoice, keys, questionKeys, explainKeys, teachSteps } from '../utils/voice.js';
+import { stopAllAudio } from '../logic/teachAudio.js';
 import { roundsForAge, ageMinOf } from '../logic/difficulty.js';
 import BigButton from '../components/BigButton';
 import { Image } from 'expo-image';
@@ -50,7 +51,7 @@ export default function MathPlayScreen({ route, navigation }) {
     setPicked(null);
   }, [topic, group]);
 
-  useEffect(() => { next(); return () => { stopSpeech(); stopVoice(); }; }, [next]);
+  useEffect(() => { next(); return () => { stopSpeech(); stopVoice(); stopAllAudio(); }; }, [next]);
 
   const advance = useCallback(() => {
     if (index + 1 >= ROUND) {

@@ -6,6 +6,7 @@ import { storage } from '../utils/storage';
 import AppHeader from '../components/AppHeader';
 import ScreenShell from '../components/ScreenShell';
 import Explainer from '../components/teach/Explainer';
+import { stopAllAudio } from '../logic/teachAudio.js';
 import { mathScenesForTopic, wordScenesForCategory, unitIdsForScenes } from '../content/teach/index';
 import { IMAGES } from '../utils/images';
 
@@ -23,6 +24,9 @@ export default function TeachScreen({ route, navigation }) {
   }, [isWords, topic, profile]);
 
   const [allowSkip, setAllowSkip] = React.useState(true);
+  React.useEffect(() => {
+    return () => stopAllAudio();
+  }, []);
   React.useEffect(() => {
     (async () => {
       try {
