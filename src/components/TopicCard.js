@@ -6,7 +6,8 @@ import Mascot from './Mascot';
 
 // Pastel card like the reference: soft tinted background, illustration
 // bubble, small gray label + bold title, yellow circular arrow (RTL: left).
-// `selected` turns it into a solid picked state with a check badge.
+// `selected` keeps the pastel bg + dark text (readable) with a thick colored
+// border and a solid check badge instead of a full solid fill.
 export default function TopicCard({
   emoji,
   label,
@@ -16,8 +17,8 @@ export default function TopicCard({
   onPress,
   selected,
 }) {
-  const bg = selected ? color : soft || `${color}1A`;
-  const ink = selected ? colors.textLight : colors.text;
+  const bg = soft || `${color}1A`;
+  const ink = colors.text;
   // Text badges (e.g. "123") render smaller so they fit the bubble.
   const isTextIcon = /^[\x00-\x7F]+$/.test(emoji || '');
   return (
@@ -26,21 +27,25 @@ export default function TopicCard({
       android_ripple={{ color: colors.clayEdge }}
       style={({ pressed }) => [
         styles.card,
-        { backgroundColor: bg, borderColor: selected ? color : `${color}55` },
+        {
+          backgroundColor: bg,
+          borderColor: selected ? color : `${color}55`,
+          ...(selected ? { borderWidth: 4, borderBottomWidth: 7 } : null),
+        },
         pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
       ]}
     >
       <Mascot emoji={emoji} size={isTextIcon ? 26 : 44} colors={['#FFFFFF', soft || '#EDE9FE']} />
       <View style={{ flex: 1 }}>
         {!!label && (
-          <Text style={[styles.label, { color: selected ? colors.textLight : colors.muted }]}>
+          <Text style={[styles.label, { color: colors.muted }]}>
             {label}
           </Text>
         )}
         <Text style={[styles.title, { color: ink }]}>{title}</Text>
       </View>
       {selected ? (
-        <View style={styles.check}>
+        <View style={[styles.check, { backgroundColor: color, borderColor: color }]}>
           <Text style={styles.checkTxt}>✓</Text>
         </View>
       ) : (

@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { colors, font, fam, space, radius, clay } from '../theme';
 import { getAgeGroup, MATH_TOPIC_META } from '../data/ageGroups';
 import { generateMathQuestion } from '../data/math';
 import { storage } from '../utils/storage';
-import { speakAr, hapticSuccess, hapticError, stopSpeech, tap } from '../utils/speech';
+import { speakAr, speakSequence, teacher, hapticSuccess, hapticError, stopSpeech, tap } from '../utils/speech';
 import BigButton from '../components/BigButton';
 import { Image } from 'expo-image';
 import { IMAGES } from '../utils/images';
@@ -17,6 +17,7 @@ export default function MathPlayScreen({ route, navigation }) {
   const { profile, topic } = route.params;
   const group = getAgeGroup(profile?.ageGroupId);
   const meta = MATH_TOPIC_META[topic];
+  const kidName = profile?.name || 'صديقي';
 
   const [q, setQ] = useState(null);
   const [picked, setPicked] = useState(null);
@@ -32,6 +33,29 @@ export default function MathPlayScreen({ route, navigation }) {
 
   useEffect(() => { next(); return () => stopSpeech(); }, [next]);
 
+  // Teacher reads every question out loud: greeting first, then intro + question.
+  const greeted = useRef(false);
+  useEffect(() => {
+    if (!q) return;
+    const line = q.speak || q.question;
+    if (!greeted.current) {
+      greeted.current = true;
+      speakSequence([
+        { kind: 'ar', text: teacher.greet(kidName) },
+        { kind: 'ar', text: `${teacher.askIntro()} ${line}` },
+      ]);
+    } else {
+      speakSequence([
+        { kind: 'ar', text: `${teacher.askIntro()} ${line}` },
+      ]);
+    }
+  }, [q, kidName]);
+
+  // Farewell when the round ends.
+  useEffect(() => {
+    if (done) speakSequence([{ kind: 'ar', text: teacher.farewell(kidName, correctCount, ROUND) }]);
+  }, [done, kidName, correctCount]);
+
   const replay = () => {
     setIndex(0); setCorrectCount(0); setStars(0);
     setDone(false); next();
@@ -40,15 +64,17 @@ export default function MathPlayScreen({ route, navigation }) {
   const onPick = async (choice) => {
     if (picked !== null) return;
     setPicked(choice);
+    let wait = 2200;
     if (String(choice) === String(q.answer)) {
       hapticSuccess();
-      speakAr('برافو! إجابة صحيحة');
+      speakAr(teacher.praise(kidName));
       setCorrectCount((c) => c + 1);
       setStars((s) => s + 1);
       await storage.addStars(topic, 1);
     } else {
       hapticError();
-      speakAr(`الإجابة الصحيحة ${q.answer}`);
+      wait = 2800;
+      speakAr(`${teacher.encourage(kidName)} ${teacher.reveal(q.answer)}`);
       await storage.addStars(topic, 0);
     }
     setTimeout(() => {
@@ -59,7 +85,7 @@ export default function MathPlayScreen({ route, navigation }) {
         setIndex((i) => i + 1);
         next();
       }
-    }, 1500);
+    }, wait);
   };
 
   if (done) {
@@ -134,7 +160,7 @@ export default function MathPlayScreen({ route, navigation }) {
         <Text style={styles.question}>{q.question}</Text>
 
         <Pressable
-          onPress={() => { tap(); speakAr(q.speak || q.question); }}
+          onPress={() => { tap(); speakSequence([{ kind: 'ar', text: `${teacher.askIntro()} ${q.speak || q.question}` }]); }}
           android_ripple={{ color: colors.clayEdge }}
           style={({ pressed }) => [styles.speakBtn, pressed && { opacity: 0.8 }]}
         >

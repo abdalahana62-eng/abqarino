@@ -37,8 +37,8 @@ export const font = {
 
 export const fam = {
   round: 'Cairo_900Black',
-  roundBold: 'BalooBhaijaan2_700Bold',
-  roundMedium: 'BalooBhaijaan2_500Medium',
+  roundBold: 'BalooBhaijaan2_800ExtraBold',
+  roundMedium: 'Cairo_700Bold',
 };
 
 export const weight = {

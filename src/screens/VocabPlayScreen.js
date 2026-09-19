@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { colors, font, fam, space, radius, clay } from '../theme';
 import { VOCAB_TOPIC_META, getAgeGroup } from '../data/ageGroups';
 import { VOCAB, getRandomItem, shuffle } from '../data/vocab';
 import { storage } from '../utils/storage';
-import { speakAr, speakEn, hapticSuccess, hapticError, stopSpeech, tap } from '../utils/speech';
+import { speakSequence, teacher, hapticSuccess, hapticError, stopSpeech, tap } from '../utils/speech';
 import BigButton from '../components/BigButton';
 import { Image } from 'expo-image';
 import { IMAGES } from '../utils/images';
@@ -18,6 +18,7 @@ export default function VocabPlayScreen({ route, navigation }) {
   const group = getAgeGroup(profile?.ageGroupId);
   const meta = VOCAB_TOPIC_META[topic];
   const pool = VOCAB[topic] || [];
+  const kidName = profile?.name || 'صديقي';
 
   const [lang, setLang] = useState('ar'); // 'ar' | 'en'
   const [q, setQ] = useState(null);
@@ -44,6 +45,20 @@ export default function VocabPlayScreen({ route, navigation }) {
     return () => stopSpeech();
   }, [next, pool.length, lang]);
 
+  // Teacher greets once when the game starts.
+  const greeted = useRef(false);
+  useEffect(() => {
+    if (!greeted.current) {
+      greeted.current = true;
+      speakSequence([{ kind: 'ar', text: teacher.greet(kidName) }]);
+    }
+  }, [kidName]);
+
+  // Farewell when the round ends.
+  useEffect(() => {
+    if (done) speakSequence([{ kind: 'ar', text: teacher.farewell(kidName, correctCount, ROUND) }]);
+  }, [done, kidName, correctCount]);
+
   const replay = () => {
     setIndex(0); setCorrectCount(0); setStars(0); setDone(false); next();
   };
@@ -52,19 +67,23 @@ export default function VocabPlayScreen({ route, navigation }) {
     if (picked !== null) return;
     setPicked(opt.key);
     const isCorrect = opt.key === q.target.en;
+    let wait = 2200;
     if (isCorrect) {
       hapticSuccess();
-      speakAr('برافو! إجابة صحيحة');
-      setTimeout(() => {
-        if (lang === 'ar') speakAr(q.target.ar);
-        else speakEn(q.target.en);
-      }, 600);
+      // Praise FIRST in arabic alone, THEN the word in arabic alone,
+      // THEN in english alone — never overlapping, like a real teacher.
+      speakSequence([
+        { kind: 'ar', text: teacher.praise(kidName) },
+        { kind: 'ar', text: q.target.ar },
+        { kind: 'en', text: q.target.en },
+      ]);
+      wait = 7000; // let the teacher finish before the next word
       setCorrectCount((c) => c + 1);
       setStars((s) => s + 1);
       await storage.addStars(`vocab-${topic}`, 1);
     } else {
       hapticError();
-      speakAr('حاول مرة أخرى');
+      speakSequence([{ kind: 'ar', text: teacher.encourage(kidName) }]);
       await storage.addStars(`vocab-${topic}`, 0);
     }
     setTimeout(() => {
@@ -75,14 +94,17 @@ export default function VocabPlayScreen({ route, navigation }) {
         setIndex((i) => i + 1);
         next();
       }
-    }, 1700);
+    }, wait);
   };
 
   const learnWord = () => {
     if (!q) return;
     tap();
-    speakAr(q.target.ar);
-    setTimeout(() => speakEn(q.target.en), 1000);
+    // Arabic alone first, english alone after it finishes.
+    speakSequence([
+      { kind: 'ar', text: q.target.ar },
+      { kind: 'en', text: q.target.en },
+    ]);
   };
 
   const switchLang = (l) => {
