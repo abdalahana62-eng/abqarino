@@ -5,7 +5,7 @@ const KEYS = {
   PROGRESS: '@abqarino/progress',
 };
 
-const DEFAULT_PROGRESS = { stars: 0, byTopic: {}, sessions: 0 };
+const DEFAULT_PROGRESS = { stars: 0, byTopic: {}, sessions: 0, units: {}, boxes: {}, daily: null };
 
 // In-memory fallback so the app keeps working even if device storage
 // (e.g. browser localStorage) is unavailable or throws.
@@ -71,6 +71,27 @@ export const storage = {
   async bumpSession() {
     const p = await this.getProgress();
     p.sessions += 1;
+    await this.saveProgress(p);
+    return p;
+  },
+
+  // Learning-logic fields (units/boxes/daily). Stored inside the same
+  // progress object; single profile assumed (see ASSUMPTIONS.md).
+  async saveUnits(units) {
+    const p = await this.getProgress();
+    p.units = units || {};
+    await this.saveProgress(p);
+    return p;
+  },
+  async saveBoxes(boxes) {
+    const p = await this.getProgress();
+    p.boxes = boxes || {};
+    await this.saveProgress(p);
+    return p;
+  },
+  async saveDaily(daily) {
+    const p = await this.getProgress();
+    p.daily = daily || null;
     await this.saveProgress(p);
     return p;
   },
