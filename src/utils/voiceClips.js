@@ -31,10 +31,17 @@ export const CLIPS = {
   't_countafter': require('../../assets/audio/t_countafter.wav'),
   't_countupto': require('../../assets/audio/t_countupto.wav'),
   't_fingers': require('../../assets/audio/t_fingers.wav'),
+  't_lookshape': require('../../assets/audio/t_lookshape.wav'),
+  't_parts': require('../../assets/audio/t_parts.wav'),
   't_put': require('../../assets/audio/t_put.wav'),
+  't_repeated': require('../../assets/audio/t_repeated.wav'),
+  't_saywithme': require('../../assets/audio/t_saywithme.wav'),
   't_startfrom': require('../../assets/audio/t_startfrom.wav'),
   't_takeout': require('../../assets/audio/t_takeout.wav'),
+  't_think': require('../../assets/audio/t_think.wav'),
+  't_timesN': require('../../assets/audio/t_timesN.wav'),
   't_timesmeans': require('../../assets/audio/t_timesmeans.wav'),
+  't_timeswhat': require('../../assets/audio/t_timeswhat.wav'),
   'teach_intro': require('../../assets/audio/teach_intro.wav'),
 };
 export const HAS = (k) => !!CLIPS[k];
