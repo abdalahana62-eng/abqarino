@@ -40,96 +40,101 @@ export default function HomeScreen({ route, navigation }) {
 
   return (
     <ScreenShell bg={colors.bg}>
-      {/* Top greeting like reference */}
-      <View style={styles.topRow}>
-        <View style={styles.avatarWrap}>
-          <Image source={IMAGES.heroBoy} style={styles.avatar} contentFit="cover" />
-        </View>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.hey}>أهلاً، {profile?.name || 'صديقي'} 👋</Text>
-          <Text style={styles.subHey}>{group.label} • ⭐ {stars} نجمة</Text>
-        </View>
-        <Pressable onPress={() => tap()} style={styles.bell}>
-          <Text style={{ fontSize: 22 }}>🔔</Text>
-        </Pressable>
-      </View>
-
-      {/* Mastery banner */}
-      <WaveCard bg={colors.purpleSoft} onPress={goMath}>
-        <Text style={styles.bannerKicker}>تحدي التفوق 🏆</Text>
-        <Text style={styles.bannerTitle}>Olympiad{'\n'}Mastery Hub</Text>
-        <Text style={styles.bannerSub}>مسائل وألعاب على قد سنك</Text>
-        <View style={styles.bannerRow}>
-          <Pressable onPress={goMath} style={styles.startBtn}>
-            <Text style={styles.startTxt}>ابدأ ▶</Text>
-          </Pressable>
-          <Image source={IMAGES.heroGirl} style={styles.bannerImg} contentFit="cover" />
-        </View>
-      </WaveCard>
-
-      {/* Activity header */}
-      <View style={styles.sectionRow}>
-        <Text style={styles.section}>نشاطك 🎮</Text>
-        <Text style={styles.seeAll}>اختار لعبة ويلا نبدأ</Text>
-      </View>
-
-      {/* Two activity cards */}
-      <View style={styles.grid}>
-        <View style={{ flex: 1 }}>
-          <WaveCard bg={colors.yellowSoft} onPress={goMath} style={{ minHeight: 210 }}>
-            <Text style={styles.cardLabel}>📖 وحدات التعلم</Text>
-            <Text style={styles.cardNum}>12</Text>
-            <Text style={styles.cardSub}>درس • {group.mathTopics.length} مواضيع</Text>
-            <Image source={IMAGES.math} style={styles.cardImg} contentFit="cover" />
-            <View style={styles.arrowBtn}>
-              <Text style={styles.arrowTxt}>←</Text>
-            </View>
-          </WaveCard>
-        </View>
-        <View style={{ flex: 1 }}>
-          <WaveCard bg={colors.pinkSoft} onPress={goVocab} style={{ minHeight: 210 }}>
-            <Text style={styles.cardLabel}>⏰ ساعات اللعب</Text>
-            <Text style={styles.cardNum}>{stars}</Text>
-            <Text style={styles.cardSub}>نجمة • {group.vocabTopics.length} مواضيع</Text>
-            <Image source={IMAGES.vocab} style={styles.cardImg} contentFit="cover" />
-            <View style={styles.arrowBtn}>
-              <Text style={styles.arrowTxt}>←</Text>
-            </View>
-          </WaveCard>
-        </View>
-      </View>
-
-      {/* Win banner */}
-      <WaveCard bg={colors.blueSoft} style={{ minHeight: 0 }}>
-        <View style={{ flexDirection: 'row-reverse', alignItems: 'center', gap: 12 }}>
-          <Image source={IMAGES.win} style={{ width: 84, height: 84, borderRadius: 20 }} contentFit="cover" />
+      <View style={styles.page}>
+        {/* Top greeting like reference */}
+        <View style={styles.topRow}>
+          <View style={styles.avatarWrap}>
+            <Image source={IMAGES.heroBoy} style={styles.avatar} contentFit="cover" />
+          </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.winTitle}>شغل عظيم!</Text>
-            <Text style={styles.winSub}>اجمع نجوم أكتر واكسب الكاس 🏆</Text>
+            <Text style={styles.hey}>أهلاً، {profile?.name || 'صديقي'} 👋</Text>
+            <Text style={styles.subHey}>{group.label} • ⭐ {stars} نجمة</Text>
+          </View>
+          <Pressable onPress={() => tap()} style={styles.bell}>
+            <Text style={{ fontSize: 22 }}>🔔</Text>
+          </Pressable>
+        </View>
+
+        {/* Mastery banner */}
+        <WaveCard bg={colors.purpleSoft} onPress={goMath}>
+          <Text style={styles.bannerKicker}>تحدي التفوق 🏆</Text>
+          <Text style={styles.bannerTitle}>Olympiad{'\n'}Mastery Hub</Text>
+          <Text style={styles.bannerSub}>مسائل وألعاب على قد سنك</Text>
+          <View style={styles.bannerRow}>
+            <Pressable onPress={goMath} style={styles.startBtn}>
+              <Text style={styles.startTxt}>ابدأ ▶</Text>
+            </Pressable>
+            <Image source={IMAGES.heroGirl} style={styles.bannerImg} contentFit="cover" />
+          </View>
+        </WaveCard>
+
+        {/* Activity header */}
+        <View style={styles.sectionRow}>
+          <Text style={styles.section}>نشاطك 🎮</Text>
+          <Text style={styles.seeAll}>اختار لعبة ويلا نبدأ</Text>
+        </View>
+
+        {/* Two activity cards */}
+        <View style={styles.grid}>
+          <View style={{ flex: 1 }}>
+            <WaveCard bg={colors.yellowSoft} onPress={goMath} style={{ minHeight: 0 }}>
+              <Text style={styles.cardLabel}>📖 وحدات التعلم</Text>
+              <Text style={styles.cardNum}>12</Text>
+              <Text style={styles.cardSub}>درس • {group.mathTopics.length} مواضيع</Text>
+              <Image source={IMAGES.math} style={styles.cardImg} contentFit="contain" />
+              <View style={styles.arrowBtn}>
+                <Text style={styles.arrowTxt}>←</Text>
+              </View>
+            </WaveCard>
+          </View>
+          <View style={{ flex: 1 }}>
+            <WaveCard bg={colors.pinkSoft} onPress={goVocab} style={{ minHeight: 0 }}>
+              <Text style={styles.cardLabel}>⏰ ساعات اللعب</Text>
+              <Text style={styles.cardNum}>{stars}</Text>
+              <Text style={styles.cardSub}>نجمة • {group.vocabTopics.length} مواضيع</Text>
+              <Image source={IMAGES.vocab} style={styles.cardImg} contentFit="contain" />
+              <View style={styles.arrowBtn}>
+                <Text style={styles.arrowTxt}>←</Text>
+              </View>
+            </WaveCard>
           </View>
         </View>
-      </WaveCard>
 
-      {/* Floating bottom bar like reference */}
-      <View style={styles.tabBar}>
-        <Pressable onPress={() => tap()} style={[styles.tab, styles.tabActive]}>
-          <Text style={styles.tabTxt}>🏠</Text>
-        </Pressable>
-        <Pressable onPress={goMath} style={styles.tab}>
-          <Text style={styles.tabTxt}>🔢</Text>
-        </Pressable>
-        <Pressable onPress={goVocab} style={styles.tab}>
-          <Text style={styles.tabTxt}>📚</Text>
-        </Pressable>
-        <Pressable onPress={reset} style={styles.tab}>
-          <Text style={styles.tabTxt}>⚙️</Text>
-        </Pressable>
+        {/* Win banner */}
+        <WaveCard bg={colors.blueSoft} style={{ minHeight: 0 }}>
+          <View style={{ flexDirection: 'row-reverse', alignItems: 'center', gap: 12 }}>
+            <Image source={IMAGES.win} style={{ width: 96, height: 96 }} contentFit="contain" />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.winTitle}>شغل عظيم!</Text>
+              <Text style={styles.winSub}>اجمع نجوم أكتر واكسب الكاس 🏆</Text>
+            </View>
+          </View>
+        </WaveCard>
+
+        {/* Floating bottom bar like reference */}
+        <View style={styles.tabBar}>
+          <Pressable onPress={() => tap()} style={[styles.tab, styles.tabActive]}>
+            <Text style={styles.tabTxt}>🏠</Text>
+          </Pressable>
+          <Pressable onPress={goMath} style={styles.tab}>
+            <Text style={styles.tabTxt}>🔢</Text>
+          </Pressable>
+          <Pressable onPress={goVocab} style={styles.tab}>
+            <Text style={styles.tabTxt}>📚</Text>
+          </Pressable>
+          <Pressable onPress={reset} style={styles.tab}>
+            <Text style={styles.tabTxt}>⚙️</Text>
+          </Pressable>
+        </View>
       </View>
     </ScreenShell>
   );
 }
 
 const styles = StyleSheet.create({
+  // Mobile-width column so the web/desktop view looks like a phone screen,
+  // just like the reference design.
+  page: { width: '100%', maxWidth: 520, alignSelf: 'center' },
   topRow: { flexDirection: 'row-reverse', alignItems: 'center', gap: 12, marginBottom: space.md },
   avatarWrap: {
     width: 56, height: 56, borderRadius: 28, overflow: 'hidden',
@@ -151,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 999, minHeight: 48, justifyContent: 'center',
   },
   startTxt: { color: '#fff', fontFamily: fam.round, fontSize: font.sm },
-  bannerImg: { width: 150, height: 130, borderRadius: 22, backgroundColor: '#fff' },
+  bannerImg: { width: 150, height: 150, borderRadius: 22, backgroundColor: 'rgba(255,255,255,0.5)' },
   sectionRow: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 4, marginBottom: 10 },
   section: { fontSize: font.md, fontFamily: fam.round, color: colors.text },
   seeAll: { fontSize: font.xs, fontFamily: fam.roundMedium, color: colors.muted },
@@ -159,7 +164,7 @@ const styles = StyleSheet.create({
   cardLabel: { fontSize: font.xs, fontFamily: fam.roundBold, color: colors.text, textAlign: 'right' },
   cardNum: { fontSize: 44, fontFamily: fam.round, color: colors.text, textAlign: 'right', marginTop: 2 },
   cardSub: { fontSize: 13, fontFamily: fam.roundMedium, color: colors.text, opacity: 0.65, textAlign: 'right' },
-  cardImg: { width: '100%', height: 96, borderRadius: 18, marginTop: 10, backgroundColor: '#fff' },
+  cardImg: { width: '100%', height: 150, marginTop: 10 },
   arrowBtn: {
     width: 44, height: 44, borderRadius: 22, backgroundColor: '#221C46',
     alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-start', marginTop: 10,

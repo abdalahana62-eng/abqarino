@@ -66,7 +66,7 @@ export default function MathPlayScreen({ route, navigation }) {
     return (
       <ScreenShell>
         <View style={styles.result}>
-          <Image source={IMAGES.win} style={{ width: 200, height: 200, borderRadius: 32 }} contentFit="cover" />
+          <Image source={IMAGES.win} style={{ width: 220, height: 220 }} contentFit="contain" />
           <Text style={styles.resultH}>شغل عظيم!</Text>
           <Text style={styles.resultSub}>
             جبت {correctCount} إجابة صح من {ROUND}

@@ -30,7 +30,7 @@ export default function MathMenuScreen({ route, navigation }) {
     >
       <WaveCard bg={colors.yellowSoft} style={{ minHeight: 0 }}>
         <View style={{ flexDirection: 'row-reverse', alignItems: 'center', gap: 12 }}>
-          <Image source={IMAGES.math} style={{ width: 90, height: 90, borderRadius: 20 }} contentFit="cover" />
+          <Image source={IMAGES.math} style={{ width: 96, height: 96 }} contentFit="contain" />
           <View style={{ flex: 1 }}>
             <Text style={styles.h}>اختار الموضوع</Text>
             <Text style={styles.sub}>عدّ، اجمع، اطرح والعب 🎮</Text>
