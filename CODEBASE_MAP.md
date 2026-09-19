@@ -50,3 +50,23 @@
 
 - موجود: توليد مسائل برمجي، اختيارات قريبة من الإجابة، طرح بلا سوالب (b<a دائمًا)، قسمة بلا باقي (a=b*ans)، مسائل كلامية قصيرة، نجوم وsessions في `storage`، تشجيع بلا كلمة "غلط"، أصوات عربي-ثم-إنجليزي، وضع نطق.
 - مش موجود: وحدات مرتبة لكل سن منفرد (3..10)، عدد اختيارات حسب السن (ثابت 4)، عدد أسئلة حسب السن (ثابت 8)، تفاعل إدخال رقم، فتح الدروس بالتقدم (80%)، Leitner، حد يومي، شاشة مراجعة، `level_offset` للأهل، مراحل الكلمة (ترتيب حروف/كتابة)، تشكيل عربي، `phrases.json`، اختبارات، `REPORT.md`.
+
+## ملحق وضع المعلم (teacher-mode) — 2026-09-19
+
+### (أ) مسار الدرس الحالي: اختيار → أسئلة
+- `MathMenu` يعرض `group.mathTopics` (بيانات) وينتقل `navigation.navigate('MathPlay', {profile, topic})`.
+- `MathPlay` طوران داخليان: `lesson` (لعبة سحب تجريبية بمثال ثابت `DEMO`) ثم `quiz` (8/6 أسئلة من `generateMathQuestion`)؛ الغلط يفتح `teachSteps` أو شرحًا شفهيًا.
+- `VocabMenu` → `VocabPlay` بنفس النمط (`{profile, topic}`)، وضعا `quiz` و`speak`.
+- أي خطوة شرح جديدة ستُحقن هنا: `Menu → Teach → Play` مع زر "اشرح تاني" داخل `Play` — دون مساس بشكل الشاشات.
+
+### (ب) قيم الثيم لشاشات الشرح (من `src/theme.js` — تُستخدم كما هي)
+- الألوان: `bg #F4EFFF`، `primary #7B61FF`، `purple #8B7CFF`، `purpleSoft #DCCBFF`، `yellowSoft #FFE9A8`، `pinkSoft #FFD3E3`، `blueSoft #CDE7FF`، `text #221C46`، `muted #7A7390`، `success #22C55E`، `error #DC2626`، `cardBg #FFFFFF`، `cardBorder #E7DEFF`.
+- الخطوط: `round Cairo_900Black` (عناوين)، `roundBold BalooBhaijaan2_800ExtraBold`، `roundMedium Cairo_700Bold`.
+- المقاسات: `font {xs:14, sm:18, md:24, lg:32, xl:44, xxl:60}`، `space {xs:4, sm:8, md:16, lg:24, xl:32, xxl:48}`، `radius {sm:8, md:16, lg:24, xl:40, round:999}`.
+- الأسلوب: كروت باستيل بزاوية 28، ظل موف خفيف، أزرار دائرية داكنة `#221C46`، إيموجي كبير — تُبنى شاشات الشرح من نفس المفردات.
+
+### (ج) الصوت واكتماله
+- موبايل: `expo-speech` يدعم `onDone/onStopped/onError` (مُستخدم فعلًا في `speech.js` `speakSequence`) — المحرك سيستخدم `onDone` لانتظار نهاية الجملة.
+- ويب: `speech.web.js` يستخدم `SpeechSynthesisUtterance.onend` — نفس الضمان.
+- `voice.js`: `playKey` يُنتظر فعليًا (Promise يتحقق عند `didJustFinish`) + بديل مؤقّت 12 ثانية؛ الأرقام تُنطق بمقاطع أو TTS احتياطي.
+- القاعدة: أي صوت يفشل → النص يبقى معروضًا والتسلسل يكمل (try/catch + resolve).
