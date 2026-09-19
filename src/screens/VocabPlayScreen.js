@@ -5,7 +5,8 @@ import { VOCAB_TOPIC_META, getAgeGroup } from '../data/ageGroups';
 import { VOCAB, getRandomItem, shuffle } from '../data/vocab';
 import { storage } from '../utils/storage';
 import { tap, stopSpeech, hapticSuccess, hapticError } from '../utils/speech';
-import { playSeq, stopVoice, keys, vocabKeys } from '../utils/voice';
+import { playKey, playSeq, stopVoice, keys, vocabKeys } from '../utils/voice';
+import { isListeningSupported, listenOnce, matchesSpoken } from '../utils/speechRec';
 import BigButton from '../components/BigButton';
 import { Image } from 'expo-image';
 import { IMAGES } from '../utils/images';
@@ -22,6 +23,11 @@ export default function VocabPlayScreen({ route, navigation }) {
   const kidName = profile?.name || 'صديقي';
 
   const [lang, setLang] = useState('ar'); // 'ar' | 'en'
+  const [mode, setMode] = useState('quiz'); // quiz | speak
+  const [sWord, setSWord] = useState(null);
+  const [listening, setListening] = useState(false);
+  const [heard, setHeard] = useState('');
+  const micOK = isListeningSupported();
   const [q, setQ] = useState(null);
   const [picked, setPicked] = useState(null);
   const [index, setIndex] = useState(0);
@@ -109,6 +115,90 @@ export default function VocabPlayScreen({ route, navigation }) {
     playSeq(wordKeys(q.target));
   };
 
+  const switchMode = async (m) => {
+    tap();
+    await stopVoice();
+    setMode(m);
+    setIndex(0); setCorrectCount(0); setStars(0); setDone(false);
+  };
+
+  // ---- Speak-after-me mode: the kid LEARNS to say english words ----
+  const newSpeakWord = useCallback(() => {
+    if (!pool.length) return;
+    setSWord((prev) => {
+      let w = getRandomItem(pool);
+      let guard = 0;
+      while (prev && w.en === prev.en && guard++ < 12) w = getRandomItem(pool);
+      return w;
+    });
+    setHeard('');
+  }, [pool]);
+
+  useEffect(() => {
+    if (mode === 'speak' && !sWord) newSpeakWord();
+  }, [mode, sWord, newSpeakWord]);
+
+  // Teacher models the word when it appears: "say after me" + the word.
+  useEffect(() => {
+    if (mode !== 'speak' || !sWord) return;
+    const idx = Math.max(0, pool.findIndex((p) => p.en === sWord.en));
+    playSeq([
+      { key: 'repeat_after', fb: { kind: 'ar', text: 'قول ورايا يا بطل' } },
+      ...vocabKeys(topic, idx, sWord.ar, sWord.en),
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, sWord]);
+
+  const speakOnlyEn = () => {
+    if (!sWord) return;
+    tap();
+    const idx = Math.max(0, pool.findIndex((p) => p.en === sWord.en));
+    playSeq(vocabKeys(topic, idx, sWord.ar, sWord.en).slice(1));
+  };
+
+  const hearWord = async () => {
+    if (!sWord || listening) return;
+    tap();
+    if (!micOK) return;
+    setListening(true);
+    setHeard('');
+    const r = await listenOnce('en-US', 8000);
+    setListening(false);
+    if (r.transcript) {
+      setHeard(r.transcript);
+      if (matchesSpoken(r.transcript, sWord.en)) {
+        hapticSuccess();
+        setStars((s) => s + 1);
+        await storage.addStars(`speak-${topic}`, 1);
+        await playSeq([
+          { key: 'good_speak', fb: { kind: 'ar', text: 'نطقك جميل يا بطل!' } },
+          keys.praise(),
+        ]);
+        newSpeakWord();
+      } else {
+        hapticError();
+        const idx = Math.max(0, pool.findIndex((p) => p.en === sWord.en));
+        await playSeq([
+          { key: 'say_loud', fb: { kind: 'ar', text: 'قولها تاني بصوت عالي يا بطل' } },
+          ...vocabKeys(topic, idx, sWord.ar, sWord.en).slice(1),
+        ]);
+      }
+    } else {
+      tap();
+    }
+  };
+
+  // Fallback when no microphone: parent listens and confirms.
+  const confirmSaid = async () => {
+    if (!sWord) return;
+    tap();
+    hapticSuccess();
+    setStars((s) => s + 1);
+    await storage.addStars(`speak-${topic}`, 1);
+    await playSeq([keys.praise()]);
+    newSpeakWord();
+  };
+
   const switchLang = (l) => {
     tap();
     setLang(l);
@@ -157,6 +247,67 @@ export default function VocabPlayScreen({ route, navigation }) {
 
       <View style={styles.langRow}>
         <Pressable
+          onPress={() => switchMode('quiz')}
+          style={[styles.langBtn, mode === 'quiz' && { backgroundColor: colors.primary, borderColor: colors.primary }]}
+        >
+          <Text style={[styles.langTxt, mode === 'quiz' && { color: colors.textLight }]}>اختبرني ✏️</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => switchMode('speak')}
+          style={[styles.langBtn, mode === 'speak' && { backgroundColor: colors.secondary, borderColor: colors.secondary }]}
+        >
+          <Text style={[styles.langTxt, mode === 'speak' && { color: colors.text }]}>قول ورايا 🗣️</Text>
+        </Pressable>
+      </View>
+
+      {mode === 'speak' ? (
+        sWord && (
+          <View style={styles.card}>
+            <Text style={styles.bigEmoji}>{sWord.emoji}</Text>
+            <Text style={styles.speakAr}>{sWord.ar}</Text>
+            <Text style={styles.speakEn}>{sWord.en}</Text>
+            <View style={styles.speakRow}>
+              <Pressable
+                onPress={speakOnlyEn}
+                style={({ pressed }) => [styles.learnBtn, pressed && { opacity: 0.8 }]}
+              >
+                <Text style={styles.learnTxt}>🔊 اسمعها</Text>
+              </Pressable>
+              {micOK ? (
+                <Pressable
+                  onPress={hearWord}
+                  style={({ pressed }) => [
+                    styles.micBtn,
+                    listening && { backgroundColor: colors.error },
+                    pressed && { opacity: 0.8 },
+                  ]}
+                >
+                  <Text style={styles.learnTxt}>{listening ? '🎤 بسمعك...' : '🎤 قولها'}</Text>
+                </Pressable>
+              ) : (
+                <Pressable
+                  onPress={confirmSaid}
+                  style={({ pressed }) => [styles.micBtn, pressed && { opacity: 0.8 }]}
+                >
+                  <Text style={styles.learnTxt}>✅ قولتها بصوت عالي</Text>
+                </Pressable>
+              )}
+            </View>
+            {!micOK && (
+              <Text style={styles.micHint}>قول الكلمة بصوت عالي وخلي ماما تدوس ✅</Text>
+            )}
+            {!!heard && (
+              <Text style={styles.heardTxt}>سمعتك بتقول: {heard}</Text>
+            )}
+            <Pressable onPress={() => { tap(); newSpeakWord(); }} style={styles.nextWord}>
+              <Text style={styles.nextWordTxt}>كلمة تانية ⏭</Text>
+            </Pressable>
+          </View>
+        )
+      ) : (
+      <>
+      <View style={styles.langRow}>
+        <Pressable
           onPress={() => switchLang('ar')}
           android_ripple={{ color: colors.cardBorder }}
           style={[styles.langBtn, lang === 'ar' && { backgroundColor: colors.primary, borderColor: colors.primary }]}
@@ -171,7 +322,6 @@ export default function VocabPlayScreen({ route, navigation }) {
           <Text style={[styles.langTxt, lang === 'en' && { color: colors.text }]}>English 🇬🇧</Text>
         </Pressable>
       </View>
-
       <View style={[styles.badge, { backgroundColor: meta.color }]}>
         <Text style={styles.badgeTxt}>{meta.emoji} {meta.label}</Text>
       </View>
@@ -216,6 +366,8 @@ export default function VocabPlayScreen({ route, navigation }) {
           );
         })}
       </View>
+      </>
+      )}
     </ScreenShell>
   );
 }
@@ -284,6 +436,19 @@ const styles = StyleSheet.create({
   },
   choiceEmoji: { fontSize: 44 },
   choiceTxt: { fontSize: font.sm, fontFamily: fam.round, textAlign: 'center' },
+  speakAr: { fontSize: font.lg, fontFamily: fam.round, color: colors.text, textAlign: 'center', marginTop: space.sm },
+  speakEn: { fontSize: font.md, fontFamily: fam.roundBold, color: colors.primary, textAlign: 'center', marginTop: 2 },
+  speakRow: { flexDirection: 'row-reverse', gap: space.sm, marginTop: space.md, justifyContent: 'center' },
+  micBtn: {
+    backgroundColor: colors.secondary,
+    paddingHorizontal: space.md, paddingVertical: 10, borderRadius: radius.round,
+    borderBottomWidth: 4, borderBottomColor: colors.clayEdge,
+    minHeight: 48, justifyContent: 'center',
+  },
+  micHint: { fontSize: font.xs, fontFamily: fam.roundMedium, color: colors.muted, textAlign: 'center', marginTop: space.sm },
+  heardTxt: { fontSize: font.xs, fontFamily: fam.roundBold, color: colors.primary, textAlign: 'center', marginTop: space.sm },
+  nextWord: { marginTop: space.md, padding: space.sm, alignItems: 'center', minHeight: 44, justifyContent: 'center' },
+  nextWordTxt: { fontSize: font.xs, fontFamily: fam.roundBold, color: colors.muted },
 
   result: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   resultH: { fontSize: font.xl, fontFamily: fam.round, color: colors.text, marginTop: space.md },

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { colors, font, fam, space, radius, clay } from '../theme';
 import { getAgeGroup, MATH_TOPIC_META } from '../data/ageGroups';
@@ -15,6 +15,17 @@ import ScreenShell from '../components/ScreenShell';
 
 const ROUND = 8;
 
+// One fixed easy demo per topic: the lesson teaches WITH the kid before quizzing.
+const DEMO = {
+  counting: { n: 4, ans: 4 },
+  addition: { a: 3, b: 2, ans: 5 },
+  subtraction: { a: 5, b: 2, ans: 3 },
+  multiplication: { a: 2, b: 3, ans: 6 },
+  division: { a: 6, b: 2, ans: 3 },
+  fractions: { num: 1, den: 2, ans: '1/2' },
+  wordProblems: { a: 2, b: 2, ans: 4 },
+};
+
 export default function MathPlayScreen({ route, navigation }) {
   const { profile, topic } = route.params;
   const group = getAgeGroup(profile?.ageGroupId);
@@ -27,7 +38,12 @@ export default function MathPlayScreen({ route, navigation }) {
   const [index, setIndex] = useState(0);
   const [done, setDone] = useState(false);
   const [stars, setStars] = useState(0);
-  const [teach, setTeach] = useState(null); // { count, theme } | null
+  const [teach, setTeach] = useState(null); // { steps } | null
+  const [phase, setPhase] = useState('lesson'); // lesson first, quiz after
+  const lesson = useMemo(
+    () => teachSteps(topic, DEMO[topic] || DEMO.addition, (i) => DRAG_THEMES[i % DRAG_THEMES.length]),
+    [topic]
+  );
 
   const next = useCallback(() => {
     setQ(generateMathQuestion(topic, group));
@@ -46,11 +62,11 @@ export default function MathPlayScreen({ route, navigation }) {
     }
   }, [index, next]);
 
-  // Teacher reads every question out loud: greeting first, then the question.
+  // Teacher reads every quiz question out loud (lesson has its own audio).
   const greeted = useRef(false);
   const qKey = useRef(0);
   useEffect(() => {
-    if (!q || teach) return;
+    if (!q || teach || phase !== 'quiz') return;
     const my = ++qKey.current;
     (async () => {
       if (!greeted.current) {
@@ -60,7 +76,7 @@ export default function MathPlayScreen({ route, navigation }) {
       if (my !== qKey.current) return;
       await playSeq(questionKeys(topic, q.parts || {}));
     })();
-  }, [q, teach, topic]);
+  }, [q, teach, phase, topic]);
 
   // Farewell when the round ends.
   useEffect(() => {
@@ -75,7 +91,7 @@ export default function MathPlayScreen({ route, navigation }) {
 
   const replay = () => {
     setIndex(0); setCorrectCount(0); setStars(0);
-    setDone(false); next();
+    setDone(false); setPhase('quiz'); setTeach(null); next();
   };
 
   // Interactive lesson for THE SAME failed problem (null = too big → verbal).
@@ -103,6 +119,32 @@ export default function MathPlayScreen({ route, navigation }) {
       }
     }
   };
+
+  const handleLessonStep = (si, info) => {
+    if (!lesson) return;
+    if (info === 'miss') {
+      playKey('t_tryagain', { kind: 'ar', text: 'حاول تاني يا بطل، حطها جوه السلة!' });
+      return;
+    }
+    playSeq(lesson[si].say);
+  };
+
+  const finishLesson = async (withPraise) => {
+    if (withPraise) await playSeq([keys.praise()]);
+    setPhase('quiz');
+  };
+
+  // Lesson greeting (once).
+  const lessonStarted = useRef(false);
+  useEffect(() => {
+    if (phase === 'lesson' && lesson && !lessonStarted.current) {
+      lessonStarted.current = true;
+      playSeq([
+        keys.greet(),
+        { key: 'lesson_intro', fb: { kind: 'ar', text: 'يلا نتعلم الأول وبعدين نلعب!' } },
+      ]);
+    }
+  }, [phase, lesson]);
 
   const handleStep = (si, info) => {
     const steps = teach?.steps;
@@ -170,7 +212,18 @@ export default function MathPlayScreen({ route, navigation }) {
         <Text style={styles.badgeTxt}>{meta.emoji} {meta.label}</Text>
       </View>
 
-      {teach ? (
+      {phase === 'lesson' && lesson ? (
+        <View style={styles.teachCard}>
+          <Text style={styles.teachTitle}>📖 درس الأول: اتعلم وبعدين العب</Text>
+          <DragCountGame
+            steps={lesson}
+            onStep={handleLessonStep}
+            onCount={(n) => { playKey(keys.num(n) || '__missing__', { kind: 'ar', text: String(n) }); }}
+            onDone={() => finishLesson(true)}
+            onSkip={async () => { await stopVoice(); finishLesson(false); }}
+          />
+        </View>
+      ) : teach ? (
         <View style={styles.teachCard}>
           <Text style={styles.teachTitle}>تعال نحلها باللعب 🎮</Text>
           <DragCountGame
