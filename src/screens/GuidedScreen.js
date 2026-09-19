@@ -6,6 +6,7 @@ import AppHeader from '../components/AppHeader';
 import ScreenShell from '../components/ScreenShell';
 import Explainer from '../components/teach/Explainer';
 import { stopAllAudio } from '../logic/teachAudio.js';
+import { questionKeys, vocabKeys } from '../utils/voice.js';
 import { IMAGES } from '../utils/images';
 
 // Guided: 2-3 questions with full help right after teaching, no stars.
@@ -19,16 +20,27 @@ export default function GuidedScreen({ route, navigation }) {
     return () => stopAllAudio();
   }, []);
 
+  // Stack keeps screens mounted: stop everything the moment we leave.
+  React.useEffect(() => {
+    const unsub = navigation.addListener('blur', () => stopAllAudio());
+    return unsub;
+  }, [navigation]);
+
   const scene = useMemo(() => {
     const steps = [];
     if (isWords) {
       const pool = VOCAB[topic] || [];
       const picks = [...pool].sort(() => 0.5 - Math.random()).slice(0, 3);
       for (const w of picks) {
+        const idx = Math.max(0, pool.findIndex((p) => p.en === w.en));
         const others = pool.filter((p) => p.en !== w.en).slice(0, 2);
         steps.push({
           t: 'ask',
           prompt: `دوس على ${w.ar}`,
+          say: [
+            { key: 'repeat_after', fb: { kind: 'ar', text: `دوس على ${w.ar}` } },
+            ...vocabKeys(topic, idx, w.ar, w.en).slice(0, 1),
+          ],
           options: [
             { label: w.ar, emoji: w.emoji },
             ...others.map((o) => ({ label: o.ar, emoji: o.emoji })),
@@ -43,6 +55,7 @@ export default function GuidedScreen({ route, navigation }) {
         steps.push({
           t: 'ask',
           prompt: q.question,
+          say: questionKeys(topic, q.parts || { text: q.question, ans: q.answer }),
           options: q.choices.map((c) => ({ label: String(c), emoji: '👆' })),
           answer: String(q.answer),
           hint: q.speak || q.question,

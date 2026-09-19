@@ -58,6 +58,14 @@ export default function VocabPlayScreen({ route, navigation }) {
     return () => { stopSpeech(); stopVoice(); stopAllAudio(); };
   }, [next, pool.length, lang]);
 
+  // Stack keeps screens mounted: stop everything the moment we leave.
+  useEffect(() => {
+    const unsub = navigation.addListener('blur', () => {
+      stopSpeech(); stopVoice(); stopAllAudio();
+    });
+    return unsub;
+  }, [navigation]);
+
   // Teacher greets once when the game starts.
   const greeted = useRef(false);
   useEffect(() => {

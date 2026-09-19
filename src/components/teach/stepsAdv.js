@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, font, fam, space, radius } from '../../theme';
 import { speakText } from '../../logic/teachAudio.js';
-import { playKey } from '../../utils/voice.js';
+import { playKey, playSeq } from '../../utils/voice.js';
 import { waitMs } from '../../logic/teachRunner.js';
 import { tap, hapticSuccess } from '../../utils/speech.js';
 import BigButton from '../BigButton';
@@ -146,15 +146,17 @@ export function FractionStep({ step, onComplete }) {
 }
 
 export function AskStep({ step, onComplete }) {
-  // { prompt, options: [{label, emoji}], answer, hint } — press interaction.
-  // Auto hint after 3s; after 2nd wrong the answer glows and we move on.
+  // { prompt, options: [{label, emoji}], answer, hint, say? } — press interaction.
+  // Auto hint after 3s; after 1st wrong the answer glows and we move on.
+  // If `say` (composed clip keys) is present it is spoken instead of the prompt.
   const [wrong, setWrong] = useState(0);
   const [picked, setPicked] = useState(null);
   const [showHint, setShowHint] = useState(false);
   useEffect(() => {
     let dead = false;
     (async () => {
-      await speakText(step.prompt, 'ar-EG');
+      if (step.say) await playSeq(step.say);
+      else await speakText(step.prompt, 'ar-EG');
       if (dead) return;
       await waitMs(3000);
       if (!dead) setShowHint(true);

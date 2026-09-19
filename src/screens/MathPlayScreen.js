@@ -53,6 +53,14 @@ export default function MathPlayScreen({ route, navigation }) {
 
   useEffect(() => { next(); return () => { stopSpeech(); stopVoice(); stopAllAudio(); }; }, [next]);
 
+  // Stack keeps screens mounted: stop everything the moment we leave.
+  useEffect(() => {
+    const unsub = navigation.addListener('blur', () => {
+      stopSpeech(); stopVoice(); stopAllAudio();
+    });
+    return unsub;
+  }, [navigation]);
+
   const advance = useCallback(() => {
     if (index + 1 >= ROUND) {
       setDone(true);

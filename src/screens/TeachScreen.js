@@ -27,6 +27,12 @@ export default function TeachScreen({ route, navigation }) {
   React.useEffect(() => {
     return () => stopAllAudio();
   }, []);
+
+  // Stack keeps screens mounted: stop everything the moment we leave.
+  React.useEffect(() => {
+    const unsub = navigation.addListener('blur', () => stopAllAudio());
+    return unsub;
+  }, [navigation]);
   React.useEffect(() => {
     (async () => {
       try {
