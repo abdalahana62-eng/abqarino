@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { colors, font, fam, space, radius, clay } from '../theme';
 import { AGE_GROUPS } from '../data/ageGroups';
 import { storage } from '../utils/storage';
-import { speakAr } from '../utils/speech';
+import { playKey } from '../utils/voice';
 import BigButton from '../components/BigButton';
 import TopicCard from '../components/TopicCard';
 import AppHeader from '../components/AppHeader';
@@ -18,7 +18,7 @@ export default function ParentGateScreen({ navigation }) {
   const start = async () => {
     if (!selected) {
       setError('لازم تختار الفئة العمرية الأول 🙂');
-      speakAr('لازم تختار الفئة العمرية الأول');
+      playKey('must_age', { kind: 'ar', text: 'لازم تختار الفئة العمرية الأول' });
       return;
     }
     try {

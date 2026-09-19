@@ -40,6 +40,7 @@ export function generateMathQuestion(topic, ageGroup) {
         answer: n,
         choices: numberChoices(n, 1, Math.min(max, 20)),
         visual: { type: 'emojis', emoji, count: n },
+        parts: { n, ans: n },
       };
     }
 
@@ -55,6 +56,7 @@ export function generateMathQuestion(topic, ageGroup) {
         answer: ans,
         choices: numberChoices(ans, 1, limit + 10),
         visual: null,
+        parts: { a, b, ans },
       };
     }
 
@@ -70,6 +72,7 @@ export function generateMathQuestion(topic, ageGroup) {
         answer: ans,
         choices: numberChoices(ans, 0, limit),
         visual: null,
+        parts: { a, b, ans },
       };
     }
 
@@ -84,6 +87,7 @@ export function generateMathQuestion(topic, ageGroup) {
         answer: ans,
         choices: numberChoices(ans, 1, ans + 20),
         visual: null,
+        parts: { a, b, ans },
       };
     }
 
@@ -98,6 +102,7 @@ export function generateMathQuestion(topic, ageGroup) {
         answer: ans,
         choices: numberChoices(ans, 1, 15),
         visual: null,
+        parts: { a, b, ans },
       };
     }
 
@@ -112,6 +117,7 @@ export function generateMathQuestion(topic, ageGroup) {
         answer,
         choices: fractionChoices(answer),
         visual: { type: 'fraction', numerator, denominator },
+        parts: { num: numerator, den: denominator, ans: answer },
       };
     }
 
@@ -128,6 +134,7 @@ export function generateMathQuestion(topic, ageGroup) {
         answer: ans,
         choices: numberChoices(ans, 1, ans + 10),
         visual: { type: 'emojis', emoji: '⚽', count: Math.min(ans, 15) },
+        parts: { a, b, ans },
       };
     }
 

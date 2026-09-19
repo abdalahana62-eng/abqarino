@@ -4,10 +4,12 @@ import { colors, font, fam, space, radius, clay } from '../theme';
 import { getAgeGroup, MATH_TOPIC_META } from '../data/ageGroups';
 import { generateMathQuestion } from '../data/math';
 import { storage } from '../utils/storage';
-import { speakAr, speakSequence, teacher, hapticSuccess, hapticError, stopSpeech, tap } from '../utils/speech';
+import { tap, stopSpeech, hapticSuccess, hapticError } from '../utils/speech';
+import { playKey, playSeq, stopVoice, keys, questionKeys, explainKeys } from '../utils/voice';
 import BigButton from '../components/BigButton';
 import { Image } from 'expo-image';
 import { IMAGES } from '../utils/images';
+import DragCountGame, { DRAG_THEMES } from '../components/DragCountGame';
 import BackButton from '../components/BackButton';
 import ScreenShell from '../components/ScreenShell';
 
@@ -25,67 +27,101 @@ export default function MathPlayScreen({ route, navigation }) {
   const [index, setIndex] = useState(0);
   const [done, setDone] = useState(false);
   const [stars, setStars] = useState(0);
+  const [teach, setTeach] = useState(null); // { count, theme } | null
 
   const next = useCallback(() => {
     setQ(generateMathQuestion(topic, group));
     setPicked(null);
   }, [topic, group]);
 
-  useEffect(() => { next(); return () => stopSpeech(); }, [next]);
+  useEffect(() => { next(); return () => { stopSpeech(); stopVoice(); }; }, [next]);
 
-  // Teacher reads every question out loud: greeting first, then intro + question.
-  const greeted = useRef(false);
-  useEffect(() => {
-    if (!q) return;
-    const line = q.speak || q.question;
-    if (!greeted.current) {
-      greeted.current = true;
-      speakSequence([
-        { kind: 'ar', text: teacher.greet(kidName) },
-        { kind: 'ar', text: `${teacher.askIntro()} ${line}` },
-      ]);
+  const advance = useCallback(() => {
+    if (index + 1 >= ROUND) {
+      setDone(true);
+      storage.bumpSession();
     } else {
-      speakSequence([
-        { kind: 'ar', text: `${teacher.askIntro()} ${line}` },
-      ]);
+      setIndex((i) => i + 1);
+      next();
     }
-  }, [q, kidName]);
+  }, [index, next]);
+
+  // Teacher reads every question out loud: greeting first, then the question.
+  const greeted = useRef(false);
+  const qKey = useRef(0);
+  useEffect(() => {
+    if (!q || teach) return;
+    const my = ++qKey.current;
+    (async () => {
+      if (!greeted.current) {
+        greeted.current = true;
+        await playSeq([keys.greet()]);
+      }
+      if (my !== qKey.current) return;
+      await playSeq(questionKeys(topic, q.parts || {}));
+    })();
+  }, [q, teach, topic]);
 
   // Farewell when the round ends.
   useEffect(() => {
-    if (done) speakSequence([{ kind: 'ar', text: teacher.farewell(kidName, correctCount, ROUND) }]);
-  }, [done, kidName, correctCount]);
+    if (done) {
+      const good = correctCount >= ROUND / 2;
+      playSeq([{
+        key: good ? 'bye_good' : 'bye_try',
+        fb: { kind: 'ar', text: good ? 'لعب جميل يا بطل! عبقرينو فخور بيك!' : 'حاولت كويس يا بطل! العب تاني وهتبقى أحسن!' },
+      }]);
+    }
+  }, [done, correctCount]);
 
   const replay = () => {
     setIndex(0); setCorrectCount(0); setStars(0);
     setDone(false); next();
   };
 
+  // How many objects for the drag game (null = too big → verbal explanation).
+  const teachCountFor = (t, parts) => {
+    if (!parts) return null;
+    let c = null;
+    if (t === 'counting') c = parts.n;
+    else if (t === 'fractions') c = parts.den;
+    else c = parts.ans;
+    return Number.isInteger(c) && c >= 1 && c <= 12 ? c : null;
+  };
+
   const onPick = async (choice) => {
-    if (picked !== null) return;
+    if (picked !== null || teach) return;
     setPicked(choice);
-    let wait = 2200;
     if (String(choice) === String(q.answer)) {
       hapticSuccess();
-      speakAr(teacher.praise(kidName));
+      await storage.addStars(topic, 1);
       setCorrectCount((c) => c + 1);
       setStars((s) => s + 1);
-      await storage.addStars(topic, 1);
+      await playSeq([keys.praise()]);
+      advance();
     } else {
       hapticError();
-      wait = 2800;
-      speakAr(`${teacher.encourage(kidName)} ${teacher.reveal(q.answer)}`);
       await storage.addStars(topic, 0);
-    }
-    setTimeout(() => {
-      if (index + 1 >= ROUND) {
-        setDone(true);
-        storage.bumpSession();
+      const c = teachCountFor(topic, q.parts);
+      if (c) {
+        // Interactive lesson: drag & count game with the teacher.
+        const theme = DRAG_THEMES[index % DRAG_THEMES.length];
+        setTeach({ count: c, theme });
+        await playSeq([
+          keys.encourage(),
+          { key: theme.instr, fb: { kind: 'ar', text: theme.hint + '، وعد معايا يا بطل!' } },
+        ]);
       } else {
-        setIndex((i) => i + 1);
-        next();
+        // Big numbers: verbal step-by-step explanation, then move on.
+        await playSeq(explainKeys(topic, q.parts || { ans: q.answer }));
+        advance();
       }
-    }, wait);
+    }
+  };
+
+  const closeTeach = async (withPraise) => {
+    setTeach(null);
+    if (withPraise) await playSeq([keys.praise()]);
+    advance();
   };
 
   if (done) {
@@ -134,6 +170,19 @@ export default function MathPlayScreen({ route, navigation }) {
         <Text style={styles.badgeTxt}>{meta.emoji} {meta.label}</Text>
       </View>
 
+      {teach ? (
+        <View style={styles.teachCard}>
+          <Text style={styles.teachTitle}>تعال نتعلمها باللعب 🎮</Text>
+          <DragCountGame
+            count={teach.count}
+            theme={teach.theme}
+            onCount={(n) => { playKey(keys.num(n) || '__missing__', { kind: 'ar', text: String(n) }); }}
+            onDone={() => closeTeach(true)}
+            onSkip={async () => { await stopVoice(); closeTeach(false); }}
+          />
+        </View>
+      ) : (
+      <>
       <View style={styles.questionBox}>
         {q.visual?.type === 'emojis' && (
           <View style={styles.emojiGrid}>
@@ -160,7 +209,7 @@ export default function MathPlayScreen({ route, navigation }) {
         <Text style={styles.question}>{q.question}</Text>
 
         <Pressable
-          onPress={() => { tap(); speakSequence([{ kind: 'ar', text: `${teacher.askIntro()} ${q.speak || q.question}` }]); }}
+          onPress={() => { tap(); playSeq(questionKeys(topic, q.parts || {})); }}
           android_ripple={{ color: colors.clayEdge }}
           style={({ pressed }) => [styles.speakBtn, pressed && { opacity: 0.8 }]}
         >
@@ -192,6 +241,8 @@ export default function MathPlayScreen({ route, navigation }) {
           );
         })}
       </View>
+      </>
+      )}
     </ScreenShell>
   );
 }
@@ -261,7 +312,15 @@ const styles = StyleSheet.create({
   choiceTxt: { fontSize: font.lg, fontFamily: fam.round },
 
   result: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  resultH: { fontSize: font.xl, fontFamily: fam.round, color: colors.text, marginTop: space.md },
+  teachCard: {
+    backgroundColor: colors.cardBg, borderWidth: clay.border, borderColor: colors.cardBorder,
+    borderBottomWidth: clay.edge, borderBottomColor: colors.clayEdge,
+    borderRadius: radius.xl, padding: space.md, marginTop: space.md,
+  },
+  teachTitle: {
+    fontSize: font.md, fontFamily: fam.round, color: colors.text,
+    textAlign: 'center', marginBottom: space.sm,
+  },  resultH: { fontSize: font.xl, fontFamily: fam.round, color: colors.text, marginTop: space.md },
   resultSub: { fontSize: font.md, fontFamily: fam.roundMedium, color: colors.text, marginTop: space.sm },
   resultStars: {
     fontSize: font.lg, fontFamily: fam.round, color: colors.orange, marginTop: space.md,
