@@ -36,6 +36,7 @@ export default function VocabPlayScreen({ route, navigation }) {
     const options = shuffle([target, ...wrongs]).map((o) => ({
       key: o.en,
       text: lang === 'ar' ? o.ar : o.en,
+      emoji: o.emoji,
     }));
     setQ({ target, options });
     setPicked(null);
@@ -209,6 +210,7 @@ export default function VocabPlayScreen({ route, navigation }) {
                 pressed && picked === null && { transform: [{ scale: 0.95 }] },
               ]}
             >
+              <Text style={styles.choiceEmoji}>{opt.emoji}</Text>
               <Text style={[styles.choiceTxt, { color: ink }]}>{opt.text}</Text>
             </Pressable>
           );
@@ -274,13 +276,14 @@ const styles = StyleSheet.create({
 
   choices: { flexDirection: 'row-reverse', flexWrap: 'wrap', justifyContent: 'space-between' },
   choice: {
-    width: '48%', paddingVertical: space.lg, marginBottom: space.md,
+    width: '48%', paddingVertical: space.md, paddingHorizontal: space.sm, marginBottom: space.md,
     borderRadius: radius.lg, alignItems: 'center', justifyContent: 'center',
     borderWidth: clay.border, borderColor: colors.cardBorder,
     borderBottomWidth: clay.edge, borderBottomColor: colors.clayEdge,
-    minHeight: 88,
+    minHeight: 110, gap: 4,
   },
-  choiceTxt: { fontSize: font.md, fontFamily: fam.round },
+  choiceEmoji: { fontSize: 44 },
+  choiceTxt: { fontSize: font.sm, fontFamily: fam.round, textAlign: 'center' },
 
   result: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   resultH: { fontSize: font.xl, fontFamily: fam.round, color: colors.text, marginTop: space.md },

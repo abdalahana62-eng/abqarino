@@ -7,7 +7,7 @@ export const AGE_GROUPS = [
     soft: '#FFD9D9',
     description: 'عدّ من 1 لـ 10 + أول كلمات',
     mathTopics: ['counting', 'addition'],
-    vocabTopics: ['colors', 'animals', 'family'],
+    vocabTopics: ['colors', 'animals', 'family', 'feelings'],
     maxNum: 10,
   },
   {
@@ -18,7 +18,7 @@ export const AGE_GROUPS = [
     soft: '#C9F5F1',
     description: 'جمع وطرح بسيط + كلمات جديدة',
     mathTopics: ['counting', 'addition', 'subtraction'],
-    vocabTopics: ['animals', 'food', 'body', 'school'],
+    vocabTopics: ['animals', 'food', 'body', 'school', 'clothes'],
     maxNum: 20,
   },
   {
@@ -29,7 +29,7 @@ export const AGE_GROUPS = [
     soft: '#E2D9FF',
     description: 'ضرب وقسمة + جمل إنجليزية',
     mathTopics: ['addition', 'subtraction', 'multiplication', 'division'],
-    vocabTopics: ['food', 'school', 'nature', 'verbs'],
+    vocabTopics: ['food', 'school', 'nature', 'verbs', 'transport', 'jobs'],
     maxNum: 100,
   },
   {
@@ -40,7 +40,7 @@ export const AGE_GROUPS = [
     soft: '#FFE4C7',
     description: 'كسور + قراءة وكتابة',
     mathTopics: ['multiplication', 'division', 'fractions', 'wordProblems'],
-    vocabTopics: ['nature', 'verbs', 'sentences'],
+    vocabTopics: ['nature', 'verbs', 'sentences', 'jobs', 'transport'],
     maxNum: 200,
   },
 ];
@@ -65,6 +65,10 @@ export const VOCAB_TOPIC_META = {
   nature:    { label: 'الطبيعة',  emoji: '🌳', color: '#4DABF7' },
   verbs:     { label: 'أفعال',    emoji: '🏃', color: '#FF922B' },
   sentences: { label: 'جمل',      emoji: '💬', color: '#51CF66' },
+  clothes:   { label: 'الملابس',  emoji: '👕', color: '#4DABF7' },
+  transport: { label: 'المواصلات', emoji: '🚗', color: '#FF922B' },
+  jobs:      { label: 'الوظائف',  emoji: '👨‍⚕️', color: '#51CF66' },
+  feelings:  { label: 'المشاعر',  emoji: '😊', color: '#F783AC' },
 };
 
 export function getAgeGroup(id) {
