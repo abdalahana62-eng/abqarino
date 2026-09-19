@@ -50,11 +50,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.lg,
     paddingTop: space.md,
     paddingBottom: space.xl,
+    alignItems: 'center',
   },
   row: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: space.sm,
+    width: '100%',
+    maxWidth: 500,
   },
   titleWrap: { flex: 1, alignItems: 'flex-end' },
   title: {
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginTop: 2,
   },
-  right: { marginTop: space.sm, alignItems: 'center' },
+  right: { marginTop: space.sm, alignItems: 'center', width: '100%', maxWidth: 500 },
   mascotImg: {
     width: 72, height: 72, borderRadius: 36,
     borderWidth: 3, borderColor: 'rgba(255,255,255,0.9)',
