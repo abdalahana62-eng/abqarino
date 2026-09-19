@@ -1,0 +1,145 @@
+{
+  "a3_count_3": [
+    {
+      "id": "a3_count_3_num1",
+      "age": 3,
+      "unit": "a3_count_3",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على رقم جديد!" },
+        { "t": "showNumeral", "text": "١", "latin": "1", "arName": "واحد", "enName": "One" },
+        { "t": "say", "ar": "تعال نعد مع بعض." },
+        { "t": "showObjects", "emoji": "🍎", "n": 1 },
+        { "t": "count", "emoji": "🍎", "n": 1 },
+        { "t": "say", "ar": "الرقم واحد معناه حاجة واحدة." },
+        { "t": "showObjects", "emoji": "⭐", "n": 1 },
+        { "t": "say", "ar": "نجمة واحدة. برضه واحد!" },
+        { "t": "ask", "prompt": "دوس على التفاحة الواحدة", "options": [{ "label": "🍎", "emoji": "👆" }, { "label": "🍎🍎", "emoji": "👀" }], "answer": "🍎", "hint": "دور على واحدة بس" }
+      ]
+    },
+    {
+      "id": "a3_count_3_num2",
+      "age": 3,
+      "unit": "a3_count_3",
+      "steps": [
+        { "t": "say", "ar": "رقم جديد!" },
+        { "t": "showNumeral", "text": "٢", "latin": "2", "arName": "اثنان", "enName": "Two" },
+        { "t": "showObjects", "emoji": "🐱", "n": 2 },
+        { "t": "count", "emoji": "🐱", "n": 2 },
+        { "t": "say", "ar": "الرقم اثنان معناه حاجتين." },
+        { "t": "showObjects", "emoji": "🎈", "n": 2 },
+        { "t": "say", "ar": "بالونتين. برضه اتنين!" },
+        { "t": "ask", "prompt": "دوس على القطتين", "options": [{ "label": "🐱", "emoji": "👀" }, { "label": "🐱🐱", "emoji": "👆" }], "answer": "🐱🐱", "hint": "دور على اتنين" }
+      ]
+    },
+    {
+      "id": "a3_count_3_num3",
+      "age": 3,
+      "unit": "a3_count_3",
+      "steps": [
+        { "t": "say", "ar": "رقم جديد!" },
+        { "t": "showNumeral", "text": "٣", "latin": "3", "arName": "ثلاثة", "enName": "Three" },
+        { "t": "showObjects", "emoji": "⭐", "n": 3 },
+        { "t": "count", "emoji": "⭐", "n": 3 },
+        { "t": "say", "ar": "الرقم ثلاثة معناه تلات حاجات." },
+        { "t": "showObjects", "emoji": "⚽", "n": 3 },
+        { "t": "say", "ar": "تلات كور. برضه تلاتة!" },
+        { "t": "ask", "prompt": "دوس على التلات نجوم", "options": [{ "label": "⭐⭐", "emoji": "👀" }, { "label": "⭐⭐⭐", "emoji": "👆" }], "answer": "⭐⭐⭐", "hint": "عدّ النجوم" }
+      ]
+    },
+    {
+      "id": "a3_count_3_seq",
+      "age": 3,
+      "unit": "a3_count_3",
+      "steps": [
+        { "t": "say", "ar": "يلا نعد مع بعض." },
+        { "t": "showObjects", "emoji": "⭐", "n": 1 },
+        { "t": "count", "emoji": "⭐", "n": 1 },
+        { "t": "say", "ar": "كمان واحدة." },
+        { "t": "showObjects", "emoji": "⭐", "n": 2 },
+        { "t": "count", "emoji": "⭐", "n": 2 },
+        { "t": "say", "ar": "كمان واحدة." },
+        { "t": "showObjects", "emoji": "⭐", "n": 3 },
+        { "t": "count", "emoji": "⭐", "n": 3 },
+        { "t": "say", "ar": "واحد، اتنين، تلاتة!" }
+      ]
+    }
+  ],
+  "a3_count_5": [
+    {
+      "id": "a3_count_5_num4",
+      "age": 3,
+      "unit": "a3_count_5",
+      "steps": [
+        { "t": "say", "ar": "رقم جديد!" },
+        { "t": "showNumeral", "text": "٤", "latin": "4", "arName": "أربعة", "enName": "Four" },
+        { "t": "showObjects", "emoji": "🎈", "n": 4 },
+        { "t": "count", "emoji": "🎈", "n": 4 },
+        { "t": "say", "ar": "الرقم أربعة معناه أربع حاجات." },
+        { "t": "ask", "prompt": "دوس على الأربع بلالين", "options": [{ "label": "🎈🎈🎈", "emoji": "👀" }, { "label": "🎈🎈🎈🎈", "emoji": "👆" }], "answer": "🎈🎈🎈🎈", "hint": "عدهم واحد واحد" }
+      ]
+    },
+    {
+      "id": "a3_count_5_num5",
+      "age": 3,
+      "unit": "a3_count_5",
+      "steps": [
+        { "t": "say", "ar": "رقم جديد!" },
+        { "t": "showNumeral", "text": "٥", "latin": "5", "arName": "خمسة", "enName": "Five" },
+        { "t": "showObjects", "emoji": "🐟", "n": 5 },
+        { "t": "count", "emoji": "🐟", "n": 5 },
+        { "t": "say", "ar": "الرقم خمسة معناه خمس حاجات." },
+        { "t": "say", "ar": "فاكر الأرقام اللي فاتت؟ واحد، اتنين، تلاتة، أربعة، خمسة!" },
+        { "t": "ask", "prompt": "دوس على الخمس سمكات", "options": [{ "label": "🐟🐟🐟🐟🐟", "emoji": "👆" }, { "label": "🐟🐟🐟", "emoji": "👀" }], "answer": "🐟🐟🐟🐟🐟", "hint": "عدهم" }
+      ]
+    }
+  ],
+  "a3_one_many": [
+    {
+      "id": "a3_one_many_main",
+      "age": 3,
+      "unit": "a3_one_many",
+      "steps": [
+        { "t": "say", "ar": "بص هنا." },
+        { "t": "showObjects", "emoji": "🍎", "n": 1 },
+        { "t": "say", "ar": "تفاحة واحدة." },
+        { "t": "showObjects", "emoji": "🍎", "n": 5 },
+        { "t": "say", "ar": "وتفاح كتير!" },
+        { "t": "say", "ar": "واحدة يعني واحد بس. وكتير يعني كتير أوي!" },
+        { "t": "ask", "prompt": "دوس على الكتير", "options": [{ "label": "🍎", "emoji": "👀" }, { "label": "🍎🍎🍎🍎🍎", "emoji": "👆" }], "answer": "🍎🍎🍎🍎🍎", "hint": "فين الكتير؟" }
+      ]
+    }
+  ],
+  "a3_shapes": [
+    {
+      "id": "a3_shapes_main",
+      "age": 3,
+      "unit": "a3_shapes",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على الأشكال!" },
+        { "t": "showObjects", "emoji": "⭕", "n": 1 },
+        { "t": "say", "ar": "دي دايرة. زي الكورة والعجلة!" },
+        { "t": "showObjects", "emoji": "🟥", "n": 1 },
+        { "t": "say", "ar": "ده مربع. زي الشباك!" },
+        { "t": "showObjects", "emoji": "🔺", "n": 1 },
+        { "t": "say", "ar": "وده مثلث. زي شريحة البيتزا!" },
+        { "t": "ask", "prompt": "دوس على الدايرة", "options": [{ "label": "🟥", "emoji": "👀" }, { "label": "⭕", "emoji": "👆" }], "answer": "⭕", "hint": "المدورة زي الكورة" }
+      ]
+    }
+  ],
+  "a3_big_small": [
+    {
+      "id": "a3_big_small_main",
+      "age": 3,
+      "unit": "a3_big_small",
+      "steps": [
+        { "t": "say", "ar": "بص على الاتنين دول." },
+        { "t": "showObjects", "emoji": "🐘", "n": 1 },
+        { "t": "say", "ar": "الفيل كبير أوي!" },
+        { "t": "showObjects", "emoji": "🐭", "n": 1 },
+        { "t": "say", "ar": "والفار صغير أوي!" },
+        { "t": "say", "ar": "كبير يعني قد كده. وصغير يعني قد كده!" },
+        { "t": "ask", "prompt": "دوس على الكبير", "options": [{ "label": "🐭", "emoji": "👀" }, { "label": "🐘", "emoji": "👆" }], "answer": "🐘", "hint": "فين الكبير أوي؟" }
+      ]
+    }
+  ]
+}

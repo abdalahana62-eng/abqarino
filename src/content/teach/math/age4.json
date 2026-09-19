@@ -1,0 +1,144 @@
+{
+  "a4_count_10": [
+    {
+      "id": "a4_count_10_num6",
+      "age": 4,
+      "unit": "a4_count_10",
+      "steps": [
+        { "t": "say", "ar": "رقم جديد!" },
+        { "t": "showNumeral", "text": "٦", "latin": "6", "arName": "ستة", "enName": "Six" },
+        { "t": "showObjects", "emoji": "🌻", "n": 6 },
+        { "t": "count", "emoji": "🌻", "n": 6 },
+        { "t": "say", "ar": "الرقم ستة معناه ست حاجات." },
+        { "t": "ask", "prompt": "دوس على الست وردات", "options": [{ "label": "🌻🌻🌻🌻🌻🌻", "emoji": "👆" }, { "label": "🌻🌻🌻🌻", "emoji": "👀" }], "answer": "🌻🌻🌻🌻🌻🌻", "hint": "عدهم" }
+      ]
+    },
+    {
+      "id": "a4_count_10_num7",
+      "age": 4,
+      "unit": "a4_count_10",
+      "steps": [
+        { "t": "say", "ar": "رقم جديد!" },
+        { "t": "showNumeral", "text": "٧", "latin": "7", "arName": "سبعة", "enName": "Seven" },
+        { "t": "showObjects", "emoji": "🍭", "n": 7 },
+        { "t": "count", "emoji": "🍭", "n": 7 },
+        { "t": "say", "ar": "الرقم سبعة معناه سبع حاجات." },
+        { "t": "ask", "prompt": "دوس على السبع حلويات", "options": [{ "label": "🍭🍭🍭🍭🍭", "emoji": "👀" }, { "label": "🍭🍭🍭🍭🍭🍭🍭", "emoji": "👆" }], "answer": "🍭🍭🍭🍭🍭🍭🍭", "hint": "عدهم واحد واحد" }
+      ]
+    },
+    {
+      "id": "a4_count_10_num8",
+      "age": 4,
+      "unit": "a4_count_10",
+      "steps": [
+        { "t": "say", "ar": "رقم جديد!" },
+        { "t": "showNumeral", "text": "٨", "latin": "8", "arName": "ثمانية", "enName": "Eight" },
+        { "t": "showObjects", "emoji": "🐶", "n": 8 },
+        { "t": "count", "emoji": "🐶", "n": 8 },
+        { "t": "say", "ar": "آخر رقم وصلناله هو العدد كله: تمانية!" },
+        { "t": "ask", "prompt": "دوس على التمن كلاب", "options": [{ "label": "🐶🐶🐶🐶🐶🐶🐶🐶", "emoji": "👆" }, { "label": "🐶🐶🐶🐶🐶🐶", "emoji": "👀" }], "answer": "🐶🐶🐶🐶🐶🐶🐶🐶", "hint": "آخر رقم هو العدد" }
+      ]
+    },
+    {
+      "id": "a4_count_10_num9",
+      "age": 4,
+      "unit": "a4_count_10",
+      "steps": [
+        { "t": "say", "ar": "رقم جديد!" },
+        { "t": "showNumeral", "text": "٩", "latin": "9", "arName": "تسعة", "enName": "Nine" },
+        { "t": "showObjects", "emoji": "🐰", "n": 9 },
+        { "t": "count", "emoji": "🐰", "n": 9 },
+        { "t": "say", "ar": "الرقم تسعة معناه تسع حاجات." },
+        { "t": "ask", "prompt": "دوس على التسع أرانب", "options": [{ "label": "🐰🐰🐰🐰🐰🐰🐰", "emoji": "👀" }, { "label": "🐰🐰🐰🐰🐰🐰🐰🐰🐰", "emoji": "👆" }], "answer": "🐰🐰🐰🐰🐰🐰🐰🐰🐰", "hint": "عدهم" }
+      ]
+    },
+    {
+      "id": "a4_count_10_num10",
+      "age": 4,
+      "unit": "a4_count_10",
+      "steps": [
+        { "t": "say", "ar": "أكبر رقم اتعلمناه!" },
+        { "t": "showNumeral", "text": "١٠", "latin": "10", "arName": "عشرة", "enName": "Ten" },
+        { "t": "showObjects", "emoji": "🦋", "n": 10 },
+        { "t": "count", "emoji": "🦋", "n": 10 },
+        { "t": "say", "ar": "عشرة! يعني كل صوابع إيديك الاتنين!" },
+        { "t": "ask", "prompt": "دوس على العشر فراشات", "options": [{ "label": "🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋", "emoji": "👆" }, { "label": "🦋🦋🦋🦋🦋🦋🦋", "emoji": "👀" }], "answer": "🦋🦋🦋🦋🦋🦋🦋🦋🦋🦋", "hint": "عدهم كلهم" }
+      ]
+    }
+  ],
+  "a4_num_qty": [
+    {
+      "id": "a4_num_qty_main",
+      "age": 4,
+      "unit": "a4_num_qty",
+      "steps": [
+        { "t": "say", "ar": "الرقم خمسة." },
+        { "t": "showObjects", "emoji": "🍎", "n": 5 },
+        { "t": "say", "ar": "دي خمس تفاحات." },
+        { "t": "say", "ar": "دلوقتي شيل التفاح من مخك. فاضل الرقم خمسة لوحده!" },
+        { "t": "showNumeral", "text": "٥", "latin": "5", "arName": "خمسة", "enName": "Five" },
+        { "t": "say", "ar": "الرقم لوحده بيفكرنا بالكمية. تخيل خمس تفاحات في مخك!" },
+        { "t": "ask", "prompt": "أنهي رقم معناه خمس حاجات؟", "options": [{ "label": "٥", "emoji": "👆" }, { "label": "٣", "emoji": "👀" }], "answer": "٥", "hint": "تخيل التفاح" }
+      ]
+    }
+  ],
+  "a4_more_less": [
+    {
+      "id": "a4_more_less_main",
+      "age": 4,
+      "unit": "a4_more_less",
+      "steps": [
+        { "t": "say", "ar": "عندنا صفين. هنوصّل كل واحدة برفيقتها." },
+        { "t": "showObjects", "emoji": "🐱", "n": 3 },
+        { "t": "showObjects", "emoji": "🐶", "n": 5 },
+        { "t": "say", "ar": "كل قطة لقت كلب. بس فيه كلبين من غير رفيق!" },
+        { "t": "say", "ar": "اللي بيفضل من غير رفيق يبقى هو الأكثر. الكلاب أكتر!" },
+        { "t": "ask", "prompt": "مين الأكثر؟", "options": [{ "label": "🐶 الكلاب", "emoji": "👆" }, { "label": "🐱 القطط", "emoji": "👀" }], "answer": "🐶 الكلاب", "hint": "مين اللي فاضل؟" }
+      ]
+    }
+  ],
+  "a4_plus_one": [
+    {
+      "id": "a4_plus_one_main",
+      "age": 4,
+      "unit": "a4_plus_one",
+      "steps": [
+        { "t": "say", "ar": "معنا تلات تفاحات." },
+        { "t": "showObjects", "emoji": "🍎", "n": 3 },
+        { "t": "say", "ar": "وجاءت تفاحة واحدة كمان." },
+        { "t": "showObjects", "emoji": "🍎", "n": 1, "group": "b" },
+        { "t": "move", "aEmoji": "🍎", "a": 3, "bEmoji": "🍎", "b": 1, "caption": "نزود واحد على التلاتة." },
+        { "t": "say", "ar": "تلاتة، ونزيد واحدًا: أربعة!" },
+        { "t": "equation", "parts": [{ "t": "num", "v": 3 }, { "t": "op", "v": "+" }, { "t": "num", "v": 1 }, { "t": "eq" }, { "t": "num", "v": 4 }] },
+        { "t": "ask", "prompt": "تلاتة ونزود واحد؟", "options": [{ "label": "4", "emoji": "👆" }, { "label": "3", "emoji": "👀" }], "answer": "4", "hint": "عدّ بعد التلاتة" }
+      ]
+    }
+  ],
+  "a4_order": [
+    {
+      "id": "a4_order_main",
+      "age": 4,
+      "unit": "a4_order",
+      "steps": [
+        { "t": "say", "ar": "الأرقام بتمشي بالترتيب على السلم." },
+        { "t": "numberLine", "from": 1, "to": 5, "jumps": [1, 2, 3, 4, 5], "emoji": "🦊", "caption": "واحد، اتنين، تلاتة، أربعة، خمسة!" },
+        { "t": "say", "ar": "كل رقم بييجي بعد اللي قبله." },
+        { "t": "ask", "prompt": "إيه اللي بعد ٣؟", "options": [{ "label": "2", "emoji": "👀" }, { "label": "4", "emoji": "👆" }], "answer": "4", "hint": "امشي على السلم" }
+      ]
+    }
+  ],
+  "a4_patterns": [
+    {
+      "id": "a4_patterns_main",
+      "age": 4,
+      "unit": "a4_patterns",
+      "steps": [
+        { "t": "say", "ar": "بص على الصف ده." },
+        { "t": "showObjects", "emoji": "🔴", "n": 1 },
+        { "t": "showObjects", "emoji": "🔵", "n": 1 },
+        { "t": "say", "ar": "أحمر، أزرق، أحمر، أزرق... بيتكرروا!" },
+        { "t": "ask", "prompt": "بعد الأحمر ييجي إيه؟", "options": [{ "label": "🔵", "emoji": "👆" }, { "label": "🔴", "emoji": "👀" }], "answer": "🔵", "hint": "أحمر أزرق أحمر..." }
+      ]
+    }
+  ]
+}
