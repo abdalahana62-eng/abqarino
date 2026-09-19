@@ -6,7 +6,9 @@ import { VOCAB, getRandomItem, shuffle } from '../data/vocab';
 import { storage } from '../utils/storage';
 import { tap, stopSpeech, hapticSuccess, hapticError } from '../utils/speech';
 import { playKey, playSeq, stopVoice, keys, vocabKeys } from '../utils/voice';
-import { roundsForAge, ageMinOf } from '../logic/difficulty.js';
+import { roundsForAge, ageMinOf, choicesForAge } from '../logic/difficulty.js';
+import { buildWordOptions } from '../logic/wordQuestions.js';
+import { wordDisplay } from '../content/words/meta.js';
 import { isListeningSupported, listenOnce, matchesSpoken } from '../utils/speechRec';
 import BigButton from '../components/BigButton';
 import { Image } from 'expo-image';
@@ -38,15 +40,17 @@ export default function VocabPlayScreen({ route, navigation }) {
   const next = useCallback(() => {
     if (!pool.length) return;
     const target = getRandomItem(pool);
-    const wrongs = shuffle(pool.filter((p) => p.en !== target.en)).slice(0, 3);
-    const options = shuffle([target, ...wrongs]).map((o) => ({
-      key: o.en,
-      text: lang === 'ar' ? o.ar : o.en,
-      emoji: o.emoji,
+    const age = ageMinOf(profile?.ageGroupId);
+    const options = buildWordOptions(pool, target.en, {
+      count: choicesForAge(age, pool.length - 1),
+      lang,
+    }).map((o) => ({
+      ...o,
+      text: lang === 'ar' ? wordDisplay(pool.find((p) => p.en === o.key) || { ar: o.text, en: o.key }, age, 'ar') : o.text,
     }));
     setQ({ target, options });
     setPicked(null);
-  }, [pool, lang]);
+  }, [pool, lang, profile]);
 
   useEffect(() => {
     if (pool.length) next();

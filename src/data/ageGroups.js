@@ -7,7 +7,7 @@ export const AGE_GROUPS = [
     soft: '#FFD9D9',
     description: 'عدّ من 1 لـ 10 + أول كلمات',
     mathTopics: ['counting', 'shapes', 'compare', 'addition'],
-    vocabTopics: ['colors', 'animals', 'family', 'feelings'],
+    vocabTopics: ['colors', 'animals', 'family', 'feelings', 'home', 'opposites'],
     maxNum: 10,
   },
   {
@@ -18,7 +18,7 @@ export const AGE_GROUPS = [
     soft: '#C9F5F1',
     description: 'جمع وطرح بسيط + كلمات جديدة',
     mathTopics: ['counting', 'addition', 'subtraction', 'nextnum', 'missing', 'compare'],
-    vocabTopics: ['animals', 'food', 'body', 'school', 'clothes'],
+    vocabTopics: ['animals', 'food', 'body', 'school', 'clothes', 'home', 'sports'],
     maxNum: 20,
   },
   {
@@ -29,7 +29,7 @@ export const AGE_GROUPS = [
     soft: '#E2D9FF',
     description: 'ضرب وقسمة + جمل إنجليزية',
     mathTopics: ['addition', 'subtraction', 'multiplication', 'division', 'patterns', 'evenodd'],
-    vocabTopics: ['food', 'school', 'nature', 'verbs', 'transport', 'jobs'],
+    vocabTopics: ['food', 'school', 'nature', 'verbs', 'transport', 'jobs', 'days', 'places'],
     maxNum: 100,
   },
   {
@@ -40,7 +40,7 @@ export const AGE_GROUPS = [
     soft: '#FFE4C7',
     description: 'كسور + قراءة وكتابة',
     mathTopics: ['multiplication', 'division', 'fractions', 'wordProblems', 'evenodd', 'missing'],
-    vocabTopics: ['nature', 'verbs', 'sentences', 'jobs', 'transport'],
+    vocabTopics: ['nature', 'verbs', 'sentences', 'jobs', 'transport', 'months', 'space'],
     maxNum: 200,
   },
 ];
@@ -75,6 +75,13 @@ export const VOCAB_TOPIC_META = {
   transport: { label: 'المواصلات', emoji: '🚗', color: '#FF922B' },
   jobs:      { label: 'الوظائف',  emoji: '👨‍⚕️', color: '#51CF66' },
   feelings:  { label: 'المشاعر',  emoji: '😊', color: '#F783AC' },
+  home:      { label: 'البيت',     emoji: '🏠', color: '#4DABF7' },
+  opposites: { label: 'العكس',     emoji: '↔️', color: '#FF922B' },
+  days:      { label: 'أيام الأسبوع', emoji: '📅', color: '#A78BFA' },
+  months:    { label: 'الشهور',    emoji: '🗓️', color: '#4ECDC4' },
+  places:    { label: 'الأماكن',   emoji: '🏙️', color: '#51CF66' },
+  space:     { label: 'الفضاء',    emoji: '🚀', color: '#5A45D6' },
+  sports:    { label: 'الرياضة',   emoji: '⚽', color: '#22C55E' },
 };
 
 export function getAgeGroup(id) {
