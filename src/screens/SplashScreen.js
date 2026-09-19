@@ -19,7 +19,7 @@ export default function SplashScreen({ navigation }) {
 
   return (
     <LinearGradient
-      colors={[colors.primary, colors.blue, colors.accent]}
+      colors={[colors.purple, colors.primary, colors.blue]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.c}

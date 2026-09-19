@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { colors, font, fam, space } from '../theme';
 import { getAgeGroup, VOCAB_TOPIC_META } from '../data/ageGroups';
-import BigButton from '../components/BigButton';
-import BackButton from '../components/BackButton';
+import AppHeader from '../components/AppHeader';
+import TopicCard from '../components/TopicCard';
 import ScreenShell from '../components/ScreenShell';
 
 export default function VocabMenuScreen({ route, navigation }) {
@@ -11,21 +11,30 @@ export default function VocabMenuScreen({ route, navigation }) {
   const group = getAgeGroup(profile?.ageGroupId);
 
   return (
-    <ScreenShell>
-      <BackButton to="Home" routeParams={{ profile }} navigation={navigation} />
-      <Text style={styles.h}>اختار الموضوع 📚</Text>
-      <Text style={styles.sub}>المناسب لسن {group.label}</Text>
+    <ScreenShell
+      header={
+        <AppHeader
+          title="الكلمات 📚"
+          subtitle={`المناسب لسن ${group.label}`}
+          mascot="🦉"
+          showBack
+          backTo="Home"
+          backParams={{ profile }}
+          navigation={navigation}
+        />
+      }
+    >
+      <Text style={styles.h}>اختار الموضوع</Text>
 
       {group.vocabTopics.map((t) => {
         const meta = VOCAB_TOPIC_META[t];
-        const darkInk = t === 'colors';
         return (
-          <BigButton
+          <TopicCard
             key={t}
             emoji={meta.emoji}
+            label={group.label}
             title={meta.label}
             color={meta.color}
-            ink={darkInk ? colors.text : colors.textLight}
             onPress={() => navigation.navigate('VocabPlay', { profile, topic: t })}
           />
         );
@@ -36,11 +45,7 @@ export default function VocabMenuScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   h: {
-    fontSize: font.lg, fontFamily: fam.round, color: colors.text,
-    textAlign: 'right', marginTop: space.md,
-  },
-  sub: {
-    fontSize: font.xs, fontFamily: fam.roundMedium, color: colors.muted, textAlign: 'right',
-    marginBottom: space.lg, marginTop: 4,
+    fontSize: font.md, fontFamily: fam.round, color: colors.text,
+    textAlign: 'right', marginTop: space.sm, marginBottom: space.md,
   },
 });

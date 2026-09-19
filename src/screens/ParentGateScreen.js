@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import {
-  View, Text, StyleSheet, Pressable, TextInput,
-} from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { colors, font, fam, space, radius, clay } from '../theme';
 import { AGE_GROUPS } from '../data/ageGroups';
 import { storage } from '../utils/storage';
-import { tap, speakAr } from '../utils/speech';
+import { speakAr } from '../utils/speech';
 import BigButton from '../components/BigButton';
-import Mascot from '../components/Mascot';
+import TopicCard from '../components/TopicCard';
+import AppHeader from '../components/AppHeader';
 import ScreenShell from '../components/ScreenShell';
 
 export default function ParentGateScreen({ navigation }) {
@@ -35,15 +34,15 @@ export default function ParentGateScreen({ navigation }) {
   };
 
   return (
-    <ScreenShell>
-      <View style={styles.head}>
-        <Mascot emoji="👨‍👩‍👧" size={60} colors={['#FFFFFF', colors.bgAlt]} style={{ borderColor: colors.primary }} />
-        <Text style={styles.title}>أهلًا بيكم في عبقرينو</Text>
-        <Text style={styles.sub}>
-          الأهل بس اللي يملأوا البيانات دي، وبعدها التطبيق للطفل 💛
-        </Text>
-      </View>
-
+    <ScreenShell
+      header={
+        <AppHeader
+          title="أهلًا بيكم في عبقرينو"
+          subtitle="الأهل بس اللي يملأوا البيانات دي 💛"
+          mascot="👨‍👩‍👧"
+        />
+      }
+    >
       <Text style={styles.label}>اسم الطفل (اختياري)</Text>
       <TextInput
         value={name}
@@ -56,32 +55,18 @@ export default function ParentGateScreen({ navigation }) {
 
       <Text style={[styles.label, { marginTop: space.lg }]}>سن الطفل</Text>
 
-      {AGE_GROUPS.map((g) => {
-        const active = selected === g.id;
-        return (
-          <Pressable
-            key={g.id}
-            onPress={() => { tap(); setSelected(g.id); setError(''); }}
-            android_ripple={{ color: g.soft }}
-            style={({ pressed }) => [
-              styles.ageCard,
-              { backgroundColor: active ? g.color : g.soft, borderColor: g.color },
-              pressed && { opacity: 0.88, transform: [{ scale: 0.98 }] },
-            ]}
-          >
-            <Text style={styles.ageEmoji}>{g.emoji}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={[styles.ageLabel, active && { color: colors.textLight }]}>
-                {g.label}
-              </Text>
-              <Text style={[styles.ageDesc, active && { color: colors.textLight, opacity: 0.92 }]}>
-                {g.description}
-              </Text>
-            </View>
-            {active && <Text style={styles.check}>✓</Text>}
-          </Pressable>
-        );
-      })}
+      {AGE_GROUPS.map((g) => (
+        <TopicCard
+          key={g.id}
+          emoji={g.emoji}
+          label={g.description}
+          title={g.label}
+          color={g.color}
+          soft={g.soft}
+          selected={selected === g.id}
+          onPress={() => { setSelected(g.id); setError(''); }}
+        />
+      ))}
 
       <BigButton
         emoji="🚀"
@@ -103,16 +88,6 @@ export default function ParentGateScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  head: { alignItems: 'center', marginBottom: space.xl },
-  emoji: { fontSize: 64 },
-  title: {
-    fontSize: font.lg, fontFamily: fam.round, color: colors.text,
-    textAlign: 'center', marginTop: space.sm,
-  },
-  sub: {
-    fontSize: font.xs, fontFamily: fam.roundMedium, color: colors.text, opacity: 0.7,
-    textAlign: 'center', marginTop: space.sm, lineHeight: 24,
-  },
   label: {
     fontSize: font.sm, fontFamily: fam.roundBold, color: colors.text,
     marginBottom: space.sm, textAlign: 'right',
@@ -121,25 +96,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.cardBg, borderWidth: clay.border, borderColor: colors.cardBorder,
     borderBottomWidth: clay.edge, borderBottomColor: colors.clayEdge,
     borderRadius: radius.md, padding: space.md, fontSize: font.sm, color: colors.text,
-  },
-  ageCard: {
-    flexDirection: 'row-reverse', alignItems: 'center',
-    backgroundColor: colors.cardBg, borderWidth: clay.border, borderRadius: radius.lg,
-    borderBottomWidth: clay.edge, borderBottomColor: colors.clayEdge,
-    padding: space.md, marginBottom: space.md, gap: space.md, minHeight: 88,
-  },
-  ageEmoji: { fontSize: 40 },
-  ageLabel: {
-    fontSize: font.md, fontFamily: fam.round, color: colors.text, textAlign: 'right',
-  },
-  ageDesc: {
-    fontSize: font.xs, fontFamily: fam.roundMedium, color: colors.muted,
-    textAlign: 'right', marginTop: 4,
-  },
-  check: {
-    fontSize: 28, color: colors.textLight, fontWeight: '900',
-    backgroundColor: 'rgba(255,255,255,0.3)', width: 44, height: 44,
-    textAlign: 'center', textAlignVertical: 'center', borderRadius: 22, overflow: 'hidden',
   },
   errBox: {
     backgroundColor: '#FFE3E3', borderWidth: 2, borderColor: colors.error,

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { colors, font, fam, space, radius, clay } from '../theme';
+import { colors, font, fam, space, radius } from '../theme';
 import { getAgeGroup } from '../data/ageGroups';
 import { storage } from '../utils/storage';
 import { tap } from '../utils/speech';
-import BigButton from '../components/BigButton';
-import Mascot from '../components/Mascot';
+import AppHeader from '../components/AppHeader';
+import TopicCard from '../components/TopicCard';
 import ScreenShell from '../components/ScreenShell';
 
 export default function HomeScreen({ route, navigation }) {
@@ -36,37 +35,35 @@ export default function HomeScreen({ route, navigation }) {
   };
 
   return (
-    <ScreenShell>
-      <LinearGradient
-        colors={[group.color, group.soft]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.hero}
-      >
-        <Mascot emoji={group.emoji} size={84} colors={[group.soft, '#FFFFFF']} style={{ borderColor: group.color }} />
-        <Text style={styles.heroName}>أهلًا {profile?.name}! 👋</Text>
-        <Text style={styles.heroAge}>{group.label}</Text>
-        <View style={styles.starsPill}>
-          <Text style={styles.starsTxt}>⭐ {stars} نجمة</Text>
-        </View>
-      </LinearGradient>
-
+    <ScreenShell
+      header={
+        <AppHeader
+          mascot={group.emoji}
+          subtitle={`${profile?.name} • ${group.label}`}
+          right={
+            <View style={styles.starsPill}>
+              <Text style={styles.starsTxt}>⭐ {stars} نجمة</Text>
+            </View>
+          }
+        />
+      }
+    >
       <Text style={styles.section}>هنعمل إيه النهارده؟</Text>
+      <Text style={styles.sub}>اختار لعبة ويلا نبدأ 🎮</Text>
 
-      <BigButton
-        emoji="🔢"
+      <TopicCard
+        emoji="🔟"
+        label="عدّ، جمع، طرح، ضرب، قسمة"
         title="الحساب"
-        subtitle="عدّ، جمع، طرح، ضرب، قسمة"
         color={colors.primary}
         onPress={() => navigation.navigate('MathMenu', { profile })}
       />
 
-      <BigButton
+      <TopicCard
         emoji="📚"
+        label="عربي وإنجليزي"
         title="الكلمات"
-        subtitle="عربي وإنجليزي"
         color={colors.secondary}
-        ink={colors.text}
         onPress={() => navigation.navigate('VocabMenu', { profile })}
       />
 
@@ -83,42 +80,19 @@ export default function HomeScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  hero: {
-    borderRadius: radius.xl,
-    borderWidth: clay.border,
-    borderColor: 'rgba(255,255,255,0.7)',
-    borderBottomWidth: clay.edge,
-    borderBottomColor: colors.clayEdge,
-    padding: space.lg,
-    alignItems: 'center',
-    marginBottom: space.lg,
-    shadowColor: '#0F172A',
-    shadowOpacity: 0.14,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 6,
-  },
-  heroEmoji: { fontSize: 84 },
-  heroName: {
-    fontSize: font.lg, fontFamily: fam.round, color: colors.textLight,
-    marginTop: space.sm, textAlign: 'center',
-    textShadowColor: 'rgba(15,23,42,0.25)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
-  },
-  heroAge: {
-    fontSize: font.sm, fontFamily: fam.roundBold, color: colors.textLight,
-    opacity: 0.95, marginTop: 4,
-  },
   starsPill: {
-    backgroundColor: 'rgba(255,255,255,0.3)', paddingHorizontal: space.md,
-    paddingVertical: 6, borderRadius: radius.round, marginTop: space.sm,
+    backgroundColor: 'rgba(255,255,255,0.25)', paddingHorizontal: space.md,
+    paddingVertical: 6, borderRadius: radius.round,
     borderWidth: 2, borderColor: 'rgba(255,255,255,0.5)',
   },
   starsTxt: { color: colors.textLight, fontFamily: fam.round, fontSize: font.sm },
   section: {
-    fontSize: font.md, fontFamily: fam.round, color: colors.text,
-    textAlign: 'right', marginBottom: space.md,
+    fontSize: font.lg, fontFamily: fam.round, color: colors.text,
+    textAlign: 'right', marginTop: space.sm,
+  },
+  sub: {
+    fontSize: font.xs, fontFamily: fam.roundMedium, color: colors.muted,
+    textAlign: 'right', marginTop: 2, marginBottom: space.md,
   },
   resetBtn: { marginTop: space.xl, padding: space.md, alignItems: 'center', minHeight: 48, justifyContent: 'center' },
   resetTxt: { color: colors.muted, fontSize: font.xs, fontFamily: fam.roundBold },
