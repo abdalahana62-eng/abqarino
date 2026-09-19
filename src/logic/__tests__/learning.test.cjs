@@ -88,10 +88,13 @@ test('no forbidden words in shipped user-facing strings', () => {
         if (f.name === '__tests__') continue;
         walk(p);
       } else if (/\.js$/.test(f.name) || /\.json$/.test(f.name)) {
-        const text = fs.readFileSync(p, 'utf8');
-        for (const w of banned) {
-          if (text.includes(w)) hits.push(`${p}: ${w}`);
-        }
+        const lines = fs.readFileSync(p, 'utf8').split('\n');
+        lines.forEach((line, i) => {
+          if (line.includes('BANNED')) return; // the checker list itself
+          for (const w of banned) {
+            if (line.includes(w)) hits.push(`${p}:${i + 1}: ${w}`);
+          }
+        });
       }
     }
   };
