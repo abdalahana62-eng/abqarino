@@ -52,7 +52,7 @@ export default function HomeScreen({ route, navigation }) {
       <Text style={styles.sub}>اختار لعبة ويلا نبدأ 🎮</Text>
 
       <TopicCard
-        emoji="🔟"
+        emoji="123"
         label="عدّ، جمع، طرح، ضرب، قسمة"
         title="الحساب"
         color={colors.primary}

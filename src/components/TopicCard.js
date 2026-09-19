@@ -18,6 +18,8 @@ export default function TopicCard({
 }) {
   const bg = selected ? color : soft || `${color}1A`;
   const ink = selected ? colors.textLight : colors.text;
+  // Text badges (e.g. "123") render smaller so they fit the bubble.
+  const isTextIcon = /^[\x00-\x7F]+$/.test(emoji || '');
   return (
     <Pressable
       onPress={() => { tap(); onPress?.(); }}
@@ -28,7 +30,7 @@ export default function TopicCard({
         pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
       ]}
     >
-      <Mascot emoji={emoji} size={44} colors={['#FFFFFF', soft || '#EDE9FE']} />
+      <Mascot emoji={emoji} size={isTextIcon ? 26 : 44} colors={['#FFFFFF', soft || '#EDE9FE']} />
       <View style={{ flex: 1 }}>
         {!!label && (
           <Text style={[styles.label, { color: selected ? colors.textLight : colors.muted }]}>

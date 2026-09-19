@@ -46,7 +46,7 @@ export const AGE_GROUPS = [
 ];
 
 export const MATH_TOPIC_META = {
-  counting:       { label: 'العدّ',        emoji: '🔟', color: '#FF6B6B' },
+  counting:       { label: 'العدّ',        emoji: '123', color: '#FF6B6B' },
   addition:       { label: 'الجمع',        emoji: '➕', color: '#4ECDC4' },
   subtraction:    { label: 'الطرح',        emoji: '➖', color: '#A78BFA' },
   multiplication: { label: 'الضرب',        emoji: '✖️', color: '#FF922B' },
