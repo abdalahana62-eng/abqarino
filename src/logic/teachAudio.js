@@ -2,7 +2,7 @@
 // when the voice FINISHES (expo-speech onDone / web onend), with a length
 // based timeout fallback. Never throws: text stays on screen if audio fails.
 import * as Speech from 'expo-speech';
-import { stopVoice } from './voice.js';
+import { stopVoice } from '../utils/voice.js';
 
 export function stopAllAudio() {
   try {
