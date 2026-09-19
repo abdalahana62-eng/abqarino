@@ -345,6 +345,21 @@ export function teachSteps(topic, p, themeAt) {
       return null;
   }
 }
+// Play one vocabulary word, Arabic then English, never overlapping.
+// Resolution order per language (first hit wins):
+//   1. assets/audio/ar|en/{id}.mp3 recorded files (future; see REPORT.md),
+//   2. bundled Gemini wavs (ar_{en} / en_{slug}),
+//   3. device TTS. Never throws: shows text only if audio fails.
+export async function playWord(word) {
+  if (!word) return;
+  const slug = String(word.en || '').toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 28);
+  const arKey = `ar_${word.en}`;
+  const enKey = `en_${slug}`;
+  await playSeq([
+    HAS(arKey) ? arKey : { key: '__missing__', fb: { kind: 'ar', text: word.ar } },
+    HAS(enKey) ? enKey : { key: '__missing__', fb: { kind: 'en', text: word.en } },
+  ]);
+}
 // Question reading as composed clips (with device fallback per piece).
 export function questionKeys(topic, p) {
   const K = (key, text, kind = 'ar') =>

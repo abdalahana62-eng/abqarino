@@ -1,5 +1,6 @@
 import * as Speech from 'expo-speech';
 import * as Haptics from 'expo-haptics';
+import PHRASES from '../content/phrases.json';
 
 // Warm interactive teacher voice for Abqarino.
 // - Egyptian Arabic voice (ar-EG) when available, slower clear rate, warm pitch.
@@ -108,33 +109,25 @@ export function stopSpeech() {
 }
 
 // ---- Teacher persona lines (Egyptian dialect, warm) ----
+// Texts live in src/content/phrases.json (data); this only fills {name} etc.
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const fill = (t, vars) =>
+  String(t).replace('{name}', vars?.name ?? 'صديقي').replace('{score}', vars?.score ?? '').replace('{total}', vars?.total ?? '');
 
 export const teacher = {
-  greet: (name) => `أهلا يا ${name} يا بطل! أنا عبقرينو، هنتعلم ونلعب مع بعض!`,
-  praise: (name) => pick([
-    `برافو عليك يا ${name}!`,
-    `ممتاز يا ${name}! إجابة صحيحة!`,
-    `الله عليك يا بطل! شاطر أوي!`,
-    `عظيم يا ${name}! مخك شغال!`,
-    `يا سلام عليك! كده تمام!`,
-  ]),
-  encourage: (name) => pick([
-    `معلش يا ${name}، حاول تاني، انت تقدر!`,
-    `قربت أوي يا بطل! ركز وحاول مرة كمان!`,
-    `ولا يهمك يا حبيبي! الشطار بيغلطوا ويتعلموا!`,
-  ]),
+  greet: (name) => fill(pick(PHRASES.teacher.greet), { name }),
+  praise: (name) => fill(pick(PHRASES.teacher.praise), { name }),
+  encourage: (name) => fill(pick(PHRASES.teacher.encourage), { name }),
   reveal: (answer) => `الإجابة الصح ${answer}. افتكرها يا بطل!`,
-  askIntro: () => pick([
-    'يلا يا بطل، اسمع السؤال:',
-    'ركز معايا يا شاطر:',
-    'سؤال جديد يا بطل:',
-  ]),
+  askIntro: () => pick(PHRASES.teacher.askIntro),
   farewell: (name, score, total) =>
     score >= total / 2
-      ? `لعب جميل يا ${name}! جبت ${score} من ${total}! عبقرينو فخور بيك!`
-      : `حاولت كويس يا ${name}! جبت ${score} من ${total}. العب تاني وهتبقى أحسن!`,
+      ? fill(pick(PHRASES.teacher.farewellGood), { name, score, total })
+      : fill(pick(PHRASES.teacher.farewellTry), { name, score, total }),
 };
+
+export const retryLine = () => pick(PHRASES.retry);
+export const praiseWord = () => pick(PHRASES.praise);
 
 export function tap() {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});

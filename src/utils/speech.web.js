@@ -1,6 +1,8 @@
 // Web-safe speech + haptics (used automatically on web).
 // Same API as speech.js: clear Egyptian Arabic voice, warm pitch,
 // every language spoken ALONE via chained sequences, stop-before-speak.
+import PHRASES from '../content/phrases.json';
+
 let cachedVoices = [];
 let seqToken = 0;
 
@@ -113,32 +115,25 @@ export function stopSpeech() {
 }
 
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+// Same texts as native (src/content/phrases.json), referenced here so both
+// platforms speak identical lines.
+const PHRASES_WEB = PHRASES.teacher;
+const fillW = (t, vars) =>
+  String(t).replace('{name}', vars?.name ?? 'صديقي').replace('{score}', vars?.score ?? '').replace('{total}', vars?.total ?? '');
 
 export const teacher = {
-  greet: (name) => `أهلا يا ${name} يا بطل! أنا عبقرينو، هنتعلم ونلعب مع بعض!`,
-  praise: (name) => pick([
-    `برافو عليك يا ${name}!`,
-    `ممتاز يا ${name}! إجابة صحيحة!`,
-    `الله عليك يا بطل! شاطر أوي!`,
-    `عظيم يا ${name}! مخك شغال!`,
-    `يا سلام عليك! كده تمام!`,
-  ]),
-  encourage: (name) => pick([
-    `معلش يا ${name}، حاول تاني، انت تقدر!`,
-    `قربت أوي يا بطل! ركز وحاول مرة كمان!`,
-    `ولا يهمك يا حبيبي! الشطار بيغلطوا ويتعلموا!`,
-  ]),
+  greet: (name) => fillW(pick(PHRASES_WEB.greet), { name }),
+  praise: (name) => fillW(pick(PHRASES_WEB.praise), { name }),
+  encourage: (name) => fillW(pick(PHRASES_WEB.encourage), { name }),
   reveal: (answer) => `الإجابة الصح ${answer}. افتكرها يا بطل!`,
-  askIntro: () => pick([
-    'يلا يا بطل، اسمع السؤال:',
-    'ركز معايا يا شاطر:',
-    'سؤال جديد يا بطل:',
-  ]),
+  askIntro: () => pick(PHRASES_WEB.askIntro),
   farewell: (name, score, total) =>
     score >= total / 2
-      ? `لعب جميل يا ${name}! جبت ${score} من ${total}! عبقرينو فخور بيك!`
-      : `حاولت كويس يا ${name}! جبت ${score} من ${total}. العب تاني وهتبقى أحسن!`,
+      ? fillW(pick(PHRASES_WEB.farewellGood), { name, score, total })
+      : fillW(pick(PHRASES_WEB.farewellTry), { name, score, total }),
 };
+
+export const retryLine = () => pick(PHRASES.retry);
 
 function vibrate(pattern) {
   try {
