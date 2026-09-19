@@ -5,7 +5,7 @@ import { getAgeGroup, MATH_TOPIC_META } from '../data/ageGroups';
 import { generateMathQuestion } from '../data/math';
 import { storage } from '../utils/storage';
 import { tap, stopSpeech, hapticSuccess, hapticError } from '../utils/speech';
-import { playKey, playSeq, stopVoice, keys, questionKeys, explainKeys } from '../utils/voice';
+import { playKey, playSeq, stopVoice, keys, questionKeys, explainKeys, teachSteps } from '../utils/voice';
 import BigButton from '../components/BigButton';
 import { Image } from 'expo-image';
 import { IMAGES } from '../utils/images';
@@ -78,16 +78,7 @@ export default function MathPlayScreen({ route, navigation }) {
     setDone(false); next();
   };
 
-  // How many objects for the drag game (null = too big → verbal explanation).
-  const teachCountFor = (t, parts) => {
-    if (!parts) return null;
-    let c = null;
-    if (t === 'counting') c = parts.n;
-    else if (t === 'fractions') c = parts.den;
-    else c = parts.ans;
-    return Number.isInteger(c) && c >= 1 && c <= 12 ? c : null;
-  };
-
+  // Interactive lesson for THE SAME failed problem (null = too big → verbal).
   const onPick = async (choice) => {
     if (picked !== null || teach) return;
     setPicked(choice);
@@ -101,15 +92,10 @@ export default function MathPlayScreen({ route, navigation }) {
     } else {
       hapticError();
       await storage.addStars(topic, 0);
-      const c = teachCountFor(topic, q.parts);
-      if (c) {
-        // Interactive lesson: drag & count game with the teacher.
-        const theme = DRAG_THEMES[index % DRAG_THEMES.length];
-        setTeach({ count: c, theme });
-        await playSeq([
-          keys.encourage(),
-          { key: theme.instr, fb: { kind: 'ar', text: theme.hint + '، وعد معايا يا بطل!' } },
-        ]);
+      const steps = teachSteps(topic, q.parts, (i) => DRAG_THEMES[(index + i) % DRAG_THEMES.length]);
+      if (steps) {
+        setTeach({ steps });
+        await playSeq([keys.encourage()]);
       } else {
         // Big numbers: verbal step-by-step explanation, then move on.
         await playSeq(explainKeys(topic, q.parts || { ans: q.answer }));
@@ -118,9 +104,23 @@ export default function MathPlayScreen({ route, navigation }) {
     }
   };
 
+  const handleStep = (si, info) => {
+    const steps = teach?.steps;
+    if (!steps) return;
+    if (info === 'miss') {
+      playKey('t_tryagain', { kind: 'ar', text: 'حاول تاني يا بطل، حطها جوه السلة!' });
+      return;
+    }
+    playSeq(steps[si].say);
+  };
+
   const closeTeach = async (withPraise) => {
+    const tail = teach?.steps?.tail;
     setTeach(null);
-    if (withPraise) await playSeq([keys.praise()]);
+    if (withPraise) {
+      if (tail) await playSeq(tail);
+      await playSeq([keys.praise()]);
+    }
     advance();
   };
 
@@ -149,7 +149,7 @@ export default function MathPlayScreen({ route, navigation }) {
   if (!q) return null;
 
   return (
-    <ScreenShell>
+    <ScreenShell scrollEnabled={!teach}>
       <View style={styles.topBar}>
         <BackButton to="MathMenu" navigation={navigation} routeParams={{ profile }} />
         <Text style={styles.progress}>{index + 1} / {ROUND}</Text>
@@ -172,10 +172,10 @@ export default function MathPlayScreen({ route, navigation }) {
 
       {teach ? (
         <View style={styles.teachCard}>
-          <Text style={styles.teachTitle}>تعال نتعلمها باللعب 🎮</Text>
+          <Text style={styles.teachTitle}>تعال نحلها باللعب 🎮</Text>
           <DragCountGame
-            count={teach.count}
-            theme={teach.theme}
+            steps={teach.steps}
+            onStep={handleStep}
             onCount={(n) => { playKey(keys.num(n) || '__missing__', { kind: 'ar', text: String(n) }); }}
             onDone={() => closeTeach(true)}
             onSkip={async () => { await stopVoice(); closeTeach(false); }}

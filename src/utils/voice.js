@@ -201,6 +201,101 @@ export function vocabKeys(topic, idx, arText, enKey) {
     HAS(`en_${slug}`) ? `en_${slug}` : { key: '__missing__', fb: { kind: 'en', text: enKey } },
   ];
 }
+// Small helpers for composed utterances (clip if generated, device fallback).
+export const C = (key, text) => (HAS(key) ? key : { key: '__missing__', fb: { kind: 'ar', text } });
+export const CN = (n) =>
+  Number.isInteger(n) && n >= 0 && n <= 120 && HAS(`n${n}`)
+    ? `n${n}`
+    : { key: '__missing__', fb: { kind: 'ar', text: String(n) } };
+
+// Phased teaching plan for THE SAME failed problem.
+// Returns null when numbers are too big (falls back to verbal explanation).
+// themeAt(i) supplies the rotating drag theme per step.
+export function teachSteps(topic, p, themeAt) {
+  if (!p) return null;
+  const putIn = (n, more) => [
+    C('t_put.wav', 'حط'), CN(n),
+    ...(more ? [C('t_more.wav', 'كمان')] : []),
+    C('t_inbasket.wav', 'في السلة'),
+  ];
+  switch (topic) {
+    case 'counting': {
+      if (p.n < 1 || p.n > 12) return null;
+      const t = themeAt(0);
+      return [{ mode: 'collect', n: p.n, base: 0, theme: t, hint: t.hint, say: [{ key: t.instr, fb: { kind: 'ar', text: `${t.hint}، وعد معايا يا بطل!` } }] }];
+    }
+    case 'addition':
+    case 'wordProblems': {
+      const { a, b, ans } = p;
+      if (a == null || b == null || a > 10 || b > 10 || ans > 16) return null;
+      const t0 = themeAt(0);
+      const t1 = themeAt(1);
+      return [
+        { mode: 'collect', n: a, base: 0, theme: t0, hint: `الأول حط ${a}`, badge: 'الجزء الأول', say: putIn(a, false) },
+        { mode: 'collect', n: b, base: a, theme: t1, hint: `كمل وزود ${b}`, badge: 'الجزء التاني', say: putIn(b, true) },
+      ];
+    }
+    case 'subtraction': {
+      const { a, b } = p;
+      if (a == null || b == null || a > 14 || b < 1) return null;
+      const t0 = themeAt(0);
+      return [
+        {
+          mode: 'remove', show: a, take: b, theme: t0,
+          hint: `شيل ${b} منهم`, badge: `كانوا ${a}`,
+          say: [C('t_take.wav', 'شيل'), CN(b), C('t_fromthem.wav', 'منهم'), C('t_tobox.wav', 'وحطهم في الصندوق')],
+        },
+        {
+          mode: 'count', from: 'field', limit: a - b, theme: t0,
+          hint: 'عد اللي فاضل', badge: 'الباقي = الإجابة',
+          say: [C('t_countrest.wav', 'عد اللي فاضل معايا')],
+        },
+      ];
+    }
+    case 'multiplication': {
+      const { a, b, ans } = p;
+      if (a == null || b == null || a > 6 || b > 4 || ans > 16) return null;
+      const steps = [];
+      for (let r = 0; r < b; r++) {
+        const t = themeAt(r);
+        steps.push({
+          mode: 'collect', n: a, base: a * r, theme: t,
+          hint: r === 0 ? `حط ${a}` : `كمان ${a} (مرة ${r + 1})`,
+          badge: `المرة ${r + 1} من ${b}`,
+          say: putIn(a, r > 0),
+        });
+      }
+      return steps;
+    }
+    case 'division': {
+      const { a, b, ans } = p;
+      if (a == null || a > 14) return null;
+      const t = themeAt(0);
+      const chant = [];
+      for (let i = 1; i <= ans; i++) chant.push(CN(b * i));
+      const steps = [
+        { mode: 'collect', n: a, base: 0, theme: t, hint: `حط ${a} كلهم`, badge: 'اجمعهم الأول', say: putIn(a, false) },
+      ];
+      steps.tail = [C('t_think.wav', 'فكر معايا يا بطل'), CN(b), C('t_timeswhat.wav', 'في كام يدينا'), CN(a), ...chant, C('reveal.wav', 'الإجابة الصح'), CN(ans)];
+      return steps;
+    }
+    case 'fractions': {
+      const { num, den } = p;
+      if (num == null || den == null) return null;
+      const t = themeAt(0);
+      return [
+        { mode: 'collect', n: den, base: 0, theme: t, hint: `حط ${den} حتت`, badge: 'أجزاء الشكل', say: putIn(den, false) },
+        {
+          mode: 'count', from: 'bin', limit: num, theme: t,
+          hint: `عد المتلون: ${num}`, badge: 'المتلون = الإجابة',
+          say: [C('t_colored.wav', 'ومتلون منهم'), CN(num)],
+        },
+      ];
+    }
+    default:
+      return null;
+  }
+}
 // Question reading as composed clips (with device fallback per piece).
 export function questionKeys(topic, p) {
   const K = (key, text, kind = 'ar') =>

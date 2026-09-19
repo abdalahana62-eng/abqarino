@@ -6,7 +6,7 @@ import { colors, space } from '../theme';
 // (status area blends with it) and only the body scrolls.
 // Body content is constrained to mobile width (520) and centered,
 // so the web/desktop view looks like a phone screen like the reference.
-export default function ScreenShell({ children, bg = colors.cardBg, header }) {
+export default function ScreenShell({ children, bg = colors.cardBg, header, scrollEnabled = true }) {
   const topBg = header ? colors.purple : bg;
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: topBg }}>
@@ -14,6 +14,7 @@ export default function ScreenShell({ children, bg = colors.cardBg, header }) {
       <View style={[{ flex: 1, backgroundColor: bg }, !!header && bodyCard]}>
         <ScrollView
           style={{ flex: 1 }}
+          scrollEnabled={scrollEnabled}
           contentContainerStyle={{ padding: space.lg, flexGrow: 1, alignItems: 'center' }}
         >
           <View style={styles.page}>{children}</View>

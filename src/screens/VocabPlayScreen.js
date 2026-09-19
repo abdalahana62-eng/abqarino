@@ -176,7 +176,7 @@ export default function VocabPlayScreen({ route, navigation }) {
       </View>
 
         <View style={styles.card}>
-          <Mascot emoji={q.target.emoji} size={110} colors={['#FFFFFF', colors.bgAlt]} style={{ borderColor: meta.color }} />
+          <Text style={styles.bigEmoji}>{q.target.emoji}</Text>
         <Pressable
           onPress={learnWord}
           android_ripple={{ color: colors.clayEdge }}
@@ -258,6 +258,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 }, elevation: 4,
   },
   emoji: { fontSize: 140 },
+  bigEmoji: { fontSize: 110, textAlign: 'center' },
   learnBtn: {
     marginTop: space.md, backgroundColor: colors.accent,
     paddingHorizontal: space.md, paddingVertical: 10, borderRadius: radius.round,
