@@ -174,12 +174,9 @@ export function AskStep({ step, onComplete }) {
       setWrong(w);
       setPicked(label);
       setShowHint(true);
-      if (w >= 2) {
-        await waitMs(900);
-        onComplete();
-      } else {
-        setTimeout(() => setPicked(null), 800);
-      }
+      // Guided: the correct answer glows right after the first wrong try.
+      await waitMs(900);
+      onComplete();
     }
   };
   return (
@@ -187,7 +184,7 @@ export function AskStep({ step, onComplete }) {
       <Text style={styles.cap}>{step.prompt}</Text>
       {step.options.map((o) => {
         const isAns = o.label === step.answer;
-        const glow = (wrong >= 2 && isAns) || picked === o.label;
+        const glow = (wrong >= 1 && isAns) || picked === o.label;
         return (
           <BigButton
             key={o.label}

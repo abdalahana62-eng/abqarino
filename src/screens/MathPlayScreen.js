@@ -268,6 +268,13 @@ export default function MathPlayScreen({ route, navigation }) {
         >
           <Text style={styles.speakTxt}>🔊 اسمع السؤال</Text>
         </Pressable>
+        <Pressable
+          onPress={() => { tap(); navigation.navigate('Teach', { subject: 'math', topic, profile, from: 'play' }); }}
+          android_ripple={{ color: colors.clayEdge }}
+          style={({ pressed }) => [styles.speakBtn, pressed && { opacity: 0.8 }]}
+        >
+          <Text style={styles.speakTxt}>💡 اشرح تاني</Text>
+        </Pressable>
       </View>
 
       <View style={styles.choices}>

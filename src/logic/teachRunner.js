@@ -5,6 +5,7 @@
 export const STEP_TYPES = [
   'say', 'showObjects', 'count', 'showNumeral', 'move', 'takeAway',
   'equation', 'numberLine', 'blocks', 'groups', 'fraction', 'ask', 'pause',
+  'wordCard',
 ];
 
 const BANNED = ['غلط', 'خطأ', 'فشلت', 'للأسف'];
@@ -87,6 +88,9 @@ export function validateScene(scene) {
     if (s.t === 'ask') {
       if (!Array.isArray(s.options) || s.options.length < 2) errors.push(`${at} ask needs 2+ options`);
       if (!s.answer) errors.push(`${at} ask needs answer`);
+    }
+    if (s.t === 'wordCard' && !(s.emoji && s.ar && s.en)) {
+      errors.push(`${at} wordCard needs emoji+ar+en`);
     }
     if (s.t === 'fraction' && !(s.den >= 2 && s.num >= 0 && s.num <= s.den)) {
       errors.push(`${at} fraction needs 0<=num<=den, den>=2`);

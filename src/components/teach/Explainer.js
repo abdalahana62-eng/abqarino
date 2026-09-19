@@ -4,9 +4,9 @@
 // First visit: auto-starts on mount. Uses theme values only.
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { colors, font, fam, space, radius } from '../theme';
-import { stopAllAudio } from '../logic/teachAudio.js';
-import { SayStep, ShowObjectsStep, CountStep, ShowNumeralStep, PauseStep } from './stepsBasic';
+import { colors, font, fam, space, radius } from '../../theme';
+import { stopAllAudio } from '../../logic/teachAudio.js';
+import { SayStep, ShowObjectsStep, CountStep, ShowNumeralStep, PauseStep, WordCardStep } from './stepsBasic';
 import { MoveStep, TakeAwayStep, EquationStep, NumberLineStep } from './stepsOps';
 import { BlocksStep, GroupsStep, FractionStep, AskStep } from './stepsAdv';
 
@@ -24,6 +24,7 @@ const RENDER = {
   fraction: FractionStep,
   ask: AskStep,
   pause: () => null,
+  wordCard: WordCardStep,
 };
 
 export function PauseRender({ step, onComplete }) {
@@ -35,7 +36,7 @@ export function PauseRender({ step, onComplete }) {
 }
 RENDER.pause = PauseRender;
 
-export default function Explainer({ scene, onDone, title }) {
+export default function Explainer({ scene, onDone, title, allowSkip = true }) {
   const [idx, setIdx] = useState(0);
   const [replayKey, setReplayKey] = useState(0);
   const lock = useRef(false);
@@ -91,9 +92,11 @@ export default function Explainer({ scene, onDone, title }) {
           <Text style={styles.btnNextTxt}>التالي ⏭</Text>
         </Pressable>
       </View>
-      <Pressable onPress={() => { stopAllAudio(); onDone?.('skipped'); }} style={styles.skip}>
-        <Text style={styles.skipTxt}>تخطي الشرح</Text>
-      </Pressable>
+      {allowSkip && (
+        <Pressable onPress={() => { stopAllAudio(); onDone?.('skipped'); }} style={styles.skip}>
+          <Text style={styles.skipTxt}>تخطي الشرح</Text>
+        </Pressable>
+      )}
     </View>
   );
 }

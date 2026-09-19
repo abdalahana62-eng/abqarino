@@ -339,6 +339,13 @@ export default function VocabPlayScreen({ route, navigation }) {
         >
           <Text style={styles.learnTxt}>🔊 اسمع الكلمة</Text>
         </Pressable>
+        <Pressable
+          onPress={() => { tap(); navigation.navigate('Teach', { subject: 'words', topic, profile, from: 'play' }); }}
+          android_ripple={{ color: colors.clayEdge }}
+          style={({ pressed }) => [styles.learnBtn, pressed && { opacity: 0.8 }]}
+        >
+          <Text style={styles.learnTxt}>💡 اشرح تاني</Text>
+        </Pressable>
       </View>
 
       <Text style={styles.prompt}>

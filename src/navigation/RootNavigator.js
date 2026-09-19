@@ -9,6 +9,8 @@ import MathMenuScreen from '../screens/MathMenuScreen';
 import MathPlayScreen from '../screens/MathPlayScreen';
 import VocabMenuScreen from '../screens/VocabMenuScreen';
 import VocabPlayScreen from '../screens/VocabPlayScreen';
+import TeachScreen from '../screens/TeachScreen';
+import GuidedScreen from '../screens/GuidedScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +32,8 @@ export default function RootNavigator() {
         <Stack.Screen name="MathPlay" component={MathPlayScreen} />
         <Stack.Screen name="VocabMenu" component={VocabMenuScreen} />
         <Stack.Screen name="VocabPlay" component={VocabPlayScreen} />
+        <Stack.Screen name="Teach" component={TeachScreen} />
+        <Stack.Screen name="Guided" component={GuidedScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

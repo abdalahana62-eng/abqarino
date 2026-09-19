@@ -44,7 +44,7 @@ export default function VocabMenuScreen({ route, navigation }) {
           <WaveCard
             key={t}
             bg={CARD_COLORS[i % CARD_COLORS.length]}
-            onPress={() => navigation.navigate('VocabPlay', { profile, topic: t })}
+            onPress={() => navigation.navigate('Teach', { subject: 'words', topic: t, profile })}
             style={{ minHeight: 0 }}
           >
             <View style={{ flexDirection: 'row-reverse', alignItems: 'center' }}>

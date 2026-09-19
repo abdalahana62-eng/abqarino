@@ -1,0 +1,299 @@
+{
+  "colors": [
+    {
+      "id": "words_colors_intro",
+      "age": 4,
+      "unit": "colors",
+      "steps": [
+        { "t": "say", "ar": "اليوم نتعلم الألوان!" },
+        { "t": "wordCard", "emoji": "🔴", "ar": "أحمر", "en": "Red", "sentence": "التفاحة حمرا." },
+        { "t": "wordCard", "emoji": "🔵", "ar": "أزرق", "en": "Blue", "sentence": "السماء زرقا." },
+        { "t": "wordCard", "emoji": "🟢", "ar": "أخضر", "en": "Green", "sentence": "الشجرة خضرا." },
+        { "t": "wordCard", "emoji": "🟡", "ar": "أصفر", "en": "Yellow", "sentence": "الشمس صفرا." },
+        { "t": "ask", "prompt": "دوس على الأحمر", "options": [{ "label": "أزرق", "emoji": "🔵" }, { "label": "أحمر", "emoji": "🔴" }], "answer": "أحمر", "hint": "زي التفاحة" }
+      ]
+    }
+  ],
+  "animals": [
+    {
+      "id": "words_animals_farm",
+      "age": 3,
+      "unit": "animals",
+      "steps": [
+        { "t": "say", "ar": "اليوم نتعلم حيوانات المزرعة." },
+        { "t": "wordCard", "emoji": "🐱", "ar": "قطة", "en": "Cat", "sentence": "هذه قطة. القطة تحب اللبن." },
+        { "t": "wordCard", "emoji": "🐶", "ar": "كلب", "en": "Dog", "sentence": "هذا كلب. الكلب يحرس البيت." },
+        { "t": "wordCard", "emoji": "🐮", "ar": "بقرة", "en": "Cow", "sentence": "هذه بقرة. البقرة تعطينا الحليب." },
+        { "t": "wordCard", "emoji": "🦆", "ar": "بطة", "en": "Duck", "sentence": "هذه بطة. البطة تعوم في الماء." },
+        { "t": "ask", "prompt": "دوس على البقرة", "options": [{ "label": "قطة", "emoji": "🐱" }, { "label": "بقرة", "emoji": "🐮" }], "answer": "بقرة", "hint": "اللي بتدينا الحليب" }
+      ]
+    }
+  ],
+  "family": [
+    {
+      "id": "words_family_intro",
+      "age": 4,
+      "unit": "family",
+      "steps": [
+        { "t": "say", "ar": "اليوم نتعلم العيلة!" },
+        { "t": "wordCard", "emoji": "👨", "ar": "بابا", "en": "Father", "sentence": "بابا بيحبنا أوي." },
+        { "t": "wordCard", "emoji": "👩", "ar": "ماما", "en": "Mother", "sentence": "ماما بتطبخ الأكل." },
+        { "t": "wordCard", "emoji": "👦", "ar": "أخ", "en": "Brother", "sentence": "ده أخويا." },
+        { "t": "wordCard", "emoji": "👧", "ar": "أخت", "en": "Sister", "sentence": "دي أختي." },
+        { "t": "ask", "prompt": "دوس على ماما", "options": [{ "label": "بابا", "emoji": "👨" }, { "label": "ماما", "emoji": "👩" }], "answer": "ماما", "hint": "اللي بتطبخ" }
+      ]
+    }
+  ],
+  "food": [
+    {
+      "id": "words_food_intro",
+      "age": 5,
+      "unit": "food",
+      "steps": [
+        { "t": "say", "ar": "اليوم نتعلم الأكل!" },
+        { "t": "wordCard", "emoji": "🍎", "ar": "تفاحة", "en": "Apple", "sentence": "التفاحة حمرا وجميلة." },
+        { "t": "wordCard", "emoji": "🍌", "ar": "موزة", "en": "Banana", "sentence": "الموزة صفرا وطويلة." },
+        { "t": "wordCard", "emoji": "🥛", "ar": "لبن", "en": "Milk", "sentence": "اللبن مفيد للعظم." },
+        { "t": "wordCard", "emoji": "🍞", "ar": "خبز", "en": "Bread", "sentence": "الخبز من الفرن." },
+        { "t": "ask", "prompt": "دوس على اللبن", "options": [{ "label": "خبز", "emoji": "🍞" }, { "label": "لبن", "emoji": "🥛" }], "answer": "لبن", "hint": "اللي بنشربه" }
+      ]
+    }
+  ],
+  "body": [
+    {
+      "id": "words_body_intro",
+      "age": 4,
+      "unit": "body",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على جسمنا!" },
+        { "t": "wordCard", "emoji": "👁️", "ar": "عين", "en": "Eye", "sentence": "بالعين بنشوف." },
+        { "t": "wordCard", "emoji": "👃", "ar": "أنف", "en": "Nose", "sentence": "بالأنف بنشم." },
+        { "t": "wordCard", "emoji": "👄", "ar": "فم", "en": "Mouth", "sentence": "بالفم بناكل ونتكلم." },
+        { "t": "wordCard", "emoji": "✋", "ar": "إيد", "en": "Hand", "sentence": "بالإيد بنمسك." },
+        { "t": "ask", "prompt": "دوس على العين", "options": [{ "label": "أنف", "emoji": "👃" }, { "label": "عين", "emoji": "👁️" }], "answer": "عين", "hint": "اللي بنشوف بيها" }
+      ]
+    }
+  ],
+  "school": [
+    {
+      "id": "words_school_intro",
+      "age": 6,
+      "unit": "school",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على أدوات المدرسة!" },
+        { "t": "wordCard", "emoji": "📖", "ar": "كتاب", "en": "Book", "sentence": "نقرأ في الكتاب.", "spell": true },
+        { "t": "wordCard", "emoji": "🖊️", "ar": "قلم", "en": "Pen", "sentence": "نكتب بالقلم.", "spell": true },
+        { "t": "wordCard", "emoji": "🎒", "ar": "شنطة", "en": "Bag", "sentence": "نحط الأدوات في الشنطة.", "spell": true },
+        { "t": "wordCard", "emoji": "📏", "ar": "مسطرة", "en": "Ruler", "sentence": "نرسم خطًا بالمسطرة.", "spell": true },
+        { "t": "ask", "prompt": "دوس على الكتاب", "options": [{ "label": "قلم", "emoji": "🖊️" }, { "label": "كتاب", "emoji": "📖" }], "answer": "كتاب", "hint": "اللي بنقرا فيه" }
+      ]
+    }
+  ],
+  "nature": [
+    {
+      "id": "words_nature_intro",
+      "age": 6,
+      "unit": "nature",
+      "steps": [
+        { "t": "say", "ar": "يلا نخرج للطبيعة!" },
+        { "t": "wordCard", "emoji": "☀️", "ar": "شمس", "en": "Sun", "sentence": "الشمس بتنور الدنيا." },
+        { "t": "wordCard", "emoji": "🌳", "ar": "شجرة", "en": "Tree", "sentence": "الشجرة خضرا وكبيرة." },
+        { "t": "wordCard", "emoji": "🌸", "ar": "زهرة", "en": "Flower", "sentence": "الزهرة ريحتها حلوة." },
+        { "t": "wordCard", "emoji": "🌊", "ar": "بحر", "en": "Sea", "sentence": "البحر كبير وأزرق." },
+        { "t": "ask", "prompt": "دوس على الشمس", "options": [{ "label": "قمر", "emoji": "🌙" }, { "label": "شمس", "emoji": "☀️" }], "answer": "شمس", "hint": "اللي بتنور الصبح" }
+      ]
+    }
+  ],
+  "verbs": [
+    {
+      "id": "words_verbs_intro",
+      "age": 7,
+      "unit": "verbs",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعلم أفعال!" },
+        { "t": "wordCard", "emoji": "🍽️", "ar": "يأكل", "en": "Eat", "sentence": "الولد يأكل التفاحة." },
+        { "t": "wordCard", "emoji": "🥤", "ar": "يشرب", "en": "Drink", "sentence": "البنت تشرب العصير." },
+        { "t": "wordCard", "emoji": "🏃", "ar": "يجري", "en": "Run", "sentence": "الحصان يجري بسرعة." },
+        { "t": "wordCard", "emoji": "📖", "ar": "يقرأ", "en": "Read", "sentence": "الولد يقرأ كتابًا." },
+        { "t": "ask", "prompt": "دوس على يجري", "options": [{ "label": "ينام", "emoji": "😴" }, { "label": "يجري", "emoji": "🏃" }], "answer": "يجري", "hint": "اللي بيتحرك بسرعة" }
+      ]
+    }
+  ],
+  "sentences": [
+    {
+      "id": "words_sentences_intro",
+      "age": 9,
+      "unit": "sentences",
+      "steps": [
+        { "t": "say", "ar": "يلا نقرأ جمل كاملة!" },
+        { "t": "wordCard", "emoji": "🍎", "ar": "أنا أأكل التفاحة", "en": "I eat the apple", "spell": true },
+        { "t": "wordCard", "emoji": "☀️", "ar": "الشمس ساطعة", "en": "The sun is bright", "spell": true },
+        { "t": "wordCard", "emoji": "🐶", "ar": "الكلب يجري بسرعة", "en": "The dog runs fast", "spell": true },
+        { "t": "ask", "prompt": "دوس على جملة الشمس", "options": [{ "label": "الكلب يجري بسرعة", "emoji": "🐶" }, { "label": "الشمس ساطعة", "emoji": "☀️" }], "answer": "الشمس ساطعة", "hint": "اللي بتنور" }
+      ]
+    }
+  ],
+  "clothes": [
+    {
+      "id": "words_clothes_intro",
+      "age": 5,
+      "unit": "clothes",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على اللبس!" },
+        { "t": "wordCard", "emoji": "👕", "ar": "قميص", "en": "Shirt", "sentence": "نلبس القميص." },
+        { "t": "wordCard", "emoji": "👖", "ar": "بنطلون", "en": "Pants", "sentence": "نلبس البنطلون." },
+        { "t": "wordCard", "emoji": "👟", "ar": "حذاء", "en": "Shoe", "sentence": "نلبس الحذاء في رجلينا." },
+        { "t": "wordCard", "emoji": "🧢", "ar": "قبعة", "en": "Hat", "sentence": "نلبس القبعة على راسنا." },
+        { "t": "ask", "prompt": "دوس على الحذاء", "options": [{ "label": "قميص", "emoji": "👕" }, { "label": "حذاء", "emoji": "👟" }], "answer": "حذاء", "hint": "اللي في الرجلين" }
+      ]
+    }
+  ],
+  "transport": [
+    {
+      "id": "words_transport_intro",
+      "age": 7,
+      "unit": "transport",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على المواصلات!" },
+        { "t": "wordCard", "emoji": "🚗", "ar": "عربية", "en": "Car", "sentence": "نركب العربية.", "spell": true },
+        { "t": "wordCard", "emoji": "🚌", "ar": "أتوبيس", "en": "Bus", "sentence": "نروح المدرسة بالأوتوبيس.", "spell": true },
+        { "t": "wordCard", "emoji": "✈️", "ar": "طيارة", "en": "Plane", "sentence": "الطيارة بتطير في السماء.", "spell": true },
+        { "t": "wordCard", "emoji": "🚂", "ar": "قطر", "en": "Train", "sentence": "القطر بيمشي على القضبان.", "spell": true },
+        { "t": "ask", "prompt": "دوس على الطيارة", "options": [{ "label": "عربية", "emoji": "🚗" }, { "label": "طيارة", "emoji": "✈️" }], "answer": "طيارة", "hint": "اللي بتطير" }
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "id": "words_jobs_intro",
+      "age": 7,
+      "unit": "jobs",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على الوظائف!" },
+        { "t": "wordCard", "emoji": "👨‍⚕️", "ar": "دكتور", "en": "Doctor", "sentence": "الدكتور بيعالج العيانين.", "spell": true },
+        { "t": "wordCard", "emoji": "👨‍🏫", "ar": "معلم", "en": "Teacher", "sentence": "المعلم بيعلمنا.", "spell": true },
+        { "t": "wordCard", "emoji": "👨‍🌾", "ar": "فلاح", "en": "Farmer", "sentence": "الفلاح بيزرع الأرض.", "spell": true },
+        { "t": "wordCard", "emoji": "👨‍🍳", "ar": "طباخ", "en": "Cook", "sentence": "الطباخ بيعمل الأكل.", "spell": true },
+        { "t": "ask", "prompt": "دوس على الدكتور", "options": [{ "label": "معلم", "emoji": "👨‍🏫" }, { "label": "دكتور", "emoji": "👨‍⚕️" }], "answer": "دكتور", "hint": "اللي بيعالج" }
+      ]
+    }
+  ],
+  "feelings": [
+    {
+      "id": "words_feelings_intro",
+      "age": 3,
+      "unit": "feelings",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على المشاعر!" },
+        { "t": "wordCard", "emoji": "😊", "ar": "سعيد", "en": "Happy", "sentence": "أنا سعيد لما بلعب." },
+        { "t": "wordCard", "emoji": "😢", "ar": "زعلان", "en": "Sad", "sentence": "أنا زعلان لما بعيط." },
+        { "t": "wordCard", "emoji": "😠", "ar": "غضبان", "en": "Angry", "sentence": "أنا غضبان لما بزعل أوي." },
+        { "t": "ask", "prompt": "دوس على السعيد", "options": [{ "label": "زعلان", "emoji": "😢" }, { "label": "سعيد", "emoji": "😊" }], "answer": "سعيد", "hint": "اللي بيضحك" }
+      ]
+    }
+  ],
+  "home": [
+    {
+      "id": "words_home_intro",
+      "age": 4,
+      "unit": "home",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على البيت!" },
+        { "t": "wordCard", "emoji": "🏠", "ar": "بيت", "en": "House", "sentence": "نسكن في البيت." },
+        { "t": "wordCard", "emoji": "🚪", "ar": "باب", "en": "Door", "sentence": "ندخل من الباب." },
+        { "t": "wordCard", "emoji": "🛏️", "ar": "سرير", "en": "Bed", "sentence": "ننام على السرير." },
+        { "t": "wordCard", "emoji": "💡", "ar": "مصباح", "en": "Lamp", "sentence": "المصباح بينور الأوضة." },
+        { "t": "ask", "prompt": "دوس على السرير", "options": [{ "label": "باب", "emoji": "🚪" }, { "label": "سرير", "emoji": "🛏️" }], "answer": "سرير", "hint": "اللي بننام عليه" }
+      ]
+    }
+  ],
+  "opposites": [
+    {
+      "id": "words_opposites_intro",
+      "age": 4,
+      "unit": "opposites",
+      "steps": [
+        { "t": "say", "ar": "كل حاجة وليها عكسها!" },
+        { "t": "wordCard", "emoji": "🐘", "ar": "كبير", "en": "Big", "sentence": "الفيل كبير." },
+        { "t": "wordCard", "emoji": "🐭", "ar": "صغير", "en": "Small", "sentence": "الفار صغير." },
+        { "t": "wordCard", "emoji": "🔥", "ar": "سخن", "en": "Hot", "sentence": "الشاي سخن." },
+        { "t": "wordCard", "emoji": "🧊", "ar": "ساقع", "en": "Cold", "sentence": "التلج ساقع." },
+        { "t": "ask", "prompt": "دوس على عكس كبير", "options": [{ "label": "كبير", "emoji": "🐘" }, { "label": "صغير", "emoji": "🐭" }], "answer": "صغير", "hint": "عكس الكبير" }
+      ]
+    }
+  ],
+  "days": [
+    {
+      "id": "words_days_intro",
+      "age": 8,
+      "unit": "days",
+      "steps": [
+        { "t": "say", "ar": "الأسبوع سبعة أيام. يلا نعرفهم!" },
+        { "t": "wordCard", "emoji": "📅", "ar": "السبت", "en": "Saturday", "spell": true },
+        { "t": "wordCard", "emoji": "☀️", "ar": "الأحد", "en": "Sunday", "spell": true },
+        { "t": "wordCard", "emoji": "🌙", "ar": "الاثنين", "en": "Monday", "spell": true },
+        { "t": "wordCard", "emoji": "🕌", "ar": "الجمعة", "en": "Friday", "spell": true },
+        { "t": "ask", "prompt": "دوس على الجمعة", "options": [{ "label": "السبت", "emoji": "📅" }, { "label": "الجمعة", "emoji": "🕌" }], "answer": "الجمعة", "hint": "يوم الصلاة" }
+      ]
+    }
+  ],
+  "months": [
+    {
+      "id": "words_months_intro",
+      "age": 9,
+      "unit": "months",
+      "steps": [
+        { "t": "say", "ar": "السنة اتناشر شهر. نتعرف على أولهم!" },
+        { "t": "wordCard", "emoji": "❄️", "ar": "يناير", "en": "January", "spell": true },
+        { "t": "wordCard", "emoji": "🌧️", "ar": "فبراير", "en": "February", "spell": true },
+        { "t": "wordCard", "emoji": "🌸", "ar": "مارس", "en": "March", "spell": true },
+        { "t": "wordCard", "emoji": "🍉", "ar": "يوليو", "en": "July", "spell": true },
+        { "t": "ask", "prompt": "دوس على يناير", "options": [{ "label": "مارس", "emoji": "🌸" }, { "label": "يناير", "emoji": "❄️" }], "answer": "يناير", "hint": "أول شهر" }
+      ]
+    }
+  ],
+  "places": [
+    {
+      "id": "words_places_intro",
+      "age": 8,
+      "unit": "places",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على الأماكن!" },
+        { "t": "wordCard", "emoji": "🚜", "ar": "مزرعة", "en": "Farm", "sentence": "نزرع في المزرعة.", "spell": true },
+        { "t": "wordCard", "emoji": "🏙️", "ar": "مدينة", "en": "City", "sentence": "نسكن في المدينة.", "spell": true },
+        { "t": "wordCard", "emoji": "📚", "ar": "مكتبة", "en": "Library", "sentence": "نستعير الكتب من المكتبة.", "spell": true },
+        { "t": "wordCard", "emoji": "🏥", "ar": "مستشفى", "en": "Hospital", "sentence": "نتعالج في المستشفى.", "spell": true },
+        { "t": "ask", "prompt": "دوس على المزرعة", "options": [{ "label": "مدينة", "emoji": "🏙️" }, { "label": "مزرعة", "emoji": "🚜" }], "answer": "مزرعة", "hint": "اللي بنزرع فيها" }
+      ]
+    }
+  ],
+  "space": [
+    {
+      "id": "words_space_intro",
+      "age": 10,
+      "unit": "space",
+      "steps": [
+        { "t": "say", "ar": "يلا نطير للفضاء!" },
+        { "t": "wordCard", "emoji": "🌍", "ar": "الأرض", "en": "Earth", "sentence": "نعيش على الأرض.", "spell": true },
+        { "t": "wordCard", "emoji": "🔴", "ar": "المريخ", "en": "Mars", "sentence": "المريخ كوكب أحمر.", "spell": true },
+        { "t": "wordCard", "emoji": "☀️", "ar": "الشمس", "en": "Sun", "sentence": "الشمس نجمة كبيرة.", "spell": true },
+        { "t": "wordCard", "emoji": "🪐", "ar": "كوكب", "en": "Planet", "sentence": "ندور حول الشمس.", "spell": true },
+        { "t": "ask", "prompt": "دوس على الأرض", "options": [{ "label": "المريخ", "emoji": "🔴" }, { "label": "الأرض", "emoji": "🌍" }], "answer": "الأرض", "hint": "اللي عايشين عليها" }
+      ]
+    }
+  ],
+  "sports": [
+    {
+      "id": "words_sports_intro",
+      "age": 5,
+      "unit": "sports",
+      "steps": [
+        { "t": "say", "ar": "يلا نتعرف على الرياضة!" },
+        { "t": "wordCard", "emoji": "⚽", "ar": "كورة", "en": "Ball", "sentence": "نلعب بالكورة." },
+        { "t": "wordCard", "emoji": "🏊", "ar": "سباحة", "en": "Swimming", "sentence": "نعوم في البحر." },
+        { "t": "wordCard", "emoji": "🏃", "ar": "جري", "en": "Running", "sentence": "نجري بسرعة." },
+        { "t": "ask", "prompt": "دوس على الكورة", "options": [{ "label": "سباحة", "emoji": "🏊" }, { "label": "كورة", "emoji": "⚽" }], "answer": "كورة", "hint": "اللي بنلعب بيها" }
+      ]
+    }
+  ]
+}

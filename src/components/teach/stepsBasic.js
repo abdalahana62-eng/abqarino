@@ -113,8 +113,7 @@ export function ShowNumeralStep({ step, onComplete }) {
   );
 }
 
-export function PauseStep({ step, onComplete }) {
-  useEffect(() => {
+export function PauseStep({ step, onComplete }) {  useEffect(() => {
     let dead = false;
     (async () => {
       await waitMs(step.ms || 700);
@@ -124,6 +123,45 @@ export function PauseStep({ step, onComplete }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return null;
+}
+
+export function WordCardStep({ step, onComplete }) {
+  // { emoji, ar, en, sentence?, sentenceEn?, spell? } — big image, ar spoken
+  // then en, then "{ar} تساوي {en}", optional sentence + letter spelling (7+).
+  useEffect(() => {
+    let dead = false;
+    (async () => {
+      await speakText(step.ar, 'ar-EG');
+      if (dead) return;
+      await speakText(step.en, 'en-US');
+      if (dead) return;
+      await speakText(`${step.ar} تساوي ${step.en}`, 'ar-EG');
+      if (dead) return;
+      if (step.sentence) await speakText(step.sentence, 'ar-EG');
+      if (dead) return;
+      if (step.sentenceEn) await speakText(step.sentenceEn, 'en-US');
+      if (dead) return;
+      if (step.spell) {
+        for (const ch of String(step.en).toUpperCase().replace(/[^A-Z]/g, '').split('')) {
+          if (dead) return;
+          await speakText(ch, 'en-US');
+          await waitMs(350);
+        }
+        await waitMs(300);
+      }
+      if (!dead) onComplete();
+    })();
+    return () => { dead = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return (
+    <WaveCard bg={colors.pinkSoft}>
+      <Text style={styles.wordEmoji}>{step.emoji}</Text>
+      <Text style={styles.wordAr}>{step.ar}</Text>
+      <Text style={styles.wordEn}>{step.en}</Text>
+      {!!step.sentence && <Text style={styles.wordSent}>{step.sentence}</Text>}
+    </WaveCard>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -141,4 +179,8 @@ const styles = StyleSheet.create({
   giantLatin: { fontSize: font.xxl, fontFamily: fam.round, color: colors.muted },
   numName: { fontSize: font.lg, fontFamily: fam.round, color: colors.text, textAlign: 'center', marginTop: space.sm },
   numNameEn: { fontSize: font.md, fontFamily: fam.roundBold, color: colors.muted, textAlign: 'center' },
+  wordEmoji: { fontSize: 110, textAlign: 'center' },
+  wordAr: { fontSize: font.xl, fontFamily: fam.round, color: colors.text, textAlign: 'center', marginTop: space.sm },
+  wordEn: { fontSize: font.lg, fontFamily: fam.roundBold, color: colors.primary, textAlign: 'center' },
+  wordSent: { fontSize: font.sm, fontFamily: fam.roundMedium, color: colors.text, textAlign: 'center', marginTop: space.sm },
 });
