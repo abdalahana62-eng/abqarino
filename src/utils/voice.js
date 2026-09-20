@@ -1,13 +1,17 @@
 import { Audio } from 'expo-av';
 import { CLIPS, HAS } from './voiceClips';
+import { CLIP_TEXTS } from './clipTexts.js';
 import { speakAr as devAr, speakEn as devEn, stopSpeech as devStop } from './speech';
 
-// Unified teacher voice: bundled Gemini clips first, device TTS fallback
-// for anything not generated yet. Everything is awaitable so the game
-// can wait until the teacher FINISHES talking before moving on.
+// Unified teacher voice: bundled clips first, AUDIBLE device fallback.
+// If bundled playback fails repeatedly (broken audio in this browser),
+// we switch to device TTS for the rest of the session so the kid ALWAYS
+// hears something instead of silence.
 
 let sound = null;
 let seqId = 0;
+let audioBroken = false;
+let consecFail = 0;
 
 async function unload() {
   const s = sound;
@@ -27,17 +31,13 @@ export function hasClip(key) {
 
 // Play one clip (or device fallback). Resolves when finished.
 export async function playKey(key, fallback = null) {
-  // fallback: { kind: 'ar'|'en', text, ms } — spoken by device TTS.
   const id = ++seqId;
   await unload();
   devStop();
-  const src = CLIPS[key];
+  const fb = fallback || CLIP_TEXTS[key] || null;
+  const src = !audioBroken ? CLIPS[key] : null;
   if (!src) {
-    if (fallback?.text) {
-      if (fallback.kind === 'en') devEn(fallback.text);
-      else devAr(fallback.text);
-      await sleep(fallback.ms || Math.min(8000, 1200 + String(fallback.text).length * 110));
-    }
+    await speakFb(fb);
     return;
   }
   try {
@@ -47,28 +47,68 @@ export async function playKey(key, fallback = null) {
       return;
     }
     sound = s;
-    await new Promise((resolve) => {
-      let done = false;
-      const finish = () => {
-        if (done) return;
-        done = true;
-        try { s.setOnPlaybackStatusUpdate(null); } catch { /* noop */ }
-        if (sound === s) sound = null;
-        s.unloadAsync().catch(() => {});
-        resolve();
-      };
-      s.setOnPlaybackStatusUpdate((st) => {
-        if (st.didJustFinish) finish();
-      });
-      setTimeout(finish, 12000); // safety
-    });
-  } catch {
-    if (fallback?.text) {
-      if (fallback.kind === 'en') devEn(fallback.text);
-      else devAr(fallback.text);
-      await sleep(fallback.ms || 2500);
+    // Fail fast if playback never actually starts here.
+    let started = false;
+    for (let i = 0; i < 5; i++) {
+      await sleep(300);
+      if (id !== seqId) {
+        try { await s.unloadAsync(); } catch { /* noop */ }
+        return;
+      }
+      try {
+        const st = await s.getStatusAsync();
+        if (st.isPlaying || st.didJustFinish || (st.positionMillis || 0) > 0) {
+          started = true;
+          break;
+        }
+      } catch { break; }
     }
+    if (!started) {
+      consecFail += 1;
+      if (consecFail >= 2) audioBroken = true;
+      await unload();
+      await speakFb(fb);
+      return;
+    }
+    const finished = await waitForFinish(s, 12000);
+    if (finished) {
+      consecFail = 0;
+      return;
+    }
+    consecFail += 1;
+    if (consecFail >= 2) audioBroken = true;
+    await unload();
+    await speakFb(fb);
+  } catch {
+    consecFail += 1;
+    if (consecFail >= 2) audioBroken = true;
+    await speakFb(fb);
   }
+}
+
+async function speakFb(fb) {
+  if (!fb?.text) return;
+  if (fb.kind === 'en') devEn(fb.text);
+  else devAr(fb.text);
+  await sleep(Math.min(8000, 1200 + String(fb.text).length * 110));
+}
+
+function waitForFinish(s, ms) {
+  return new Promise((resolve) => {
+    let done = false;
+    const fin = (v) => {
+      if (done) return;
+      done = true;
+      try { s.setOnPlaybackStatusUpdate(null); } catch { /* noop */ }
+      if (sound === s) sound = null;
+      s.unloadAsync().catch(() => {});
+      resolve(v);
+    };
+    s.setOnPlaybackStatusUpdate((st) => {
+      if (st.didJustFinish) fin(true);
+    });
+    setTimeout(() => fin(false), ms);
+  });
 }
 
 export function sleep(ms) {
