@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { colors, font, fam, space, radius, clay } from '../theme';
 import { VOCAB_TOPIC_META, getAgeGroup } from '../data/ageGroups';
 import { VOCAB, getRandomItem, shuffle } from '../data/vocab';
@@ -31,6 +32,9 @@ export default function VocabPlayScreen({ route, navigation }) {
   const [listening, setListening] = useState(false);
   const [heard, setHeard] = useState('');
   const micOK = isListeningSupported();
+  const focused = useIsFocused();
+  const focusedRef = useRef(true);
+  focusedRef.current = focused;
   const [q, setQ] = useState(null);
   const [picked, setPicked] = useState(null);
   const [index, setIndex] = useState(0);
@@ -69,15 +73,15 @@ export default function VocabPlayScreen({ route, navigation }) {
   // Teacher greets once when the game starts.
   const greeted = useRef(false);
   useEffect(() => {
-    if (!greeted.current) {
+    if (!greeted.current && focused) {
       greeted.current = true;
       playSeq([keys.greet()]);
     }
-  }, []);
+  }, [focused]);
 
   // Farewell when the round ends.
   useEffect(() => {
-    if (done) {
+    if (done && focusedRef.current) {
       const good = correctCount >= ROUND / 2;
       playSeq([{
         key: good ? 'bye_good' : 'bye_try',
@@ -103,13 +107,13 @@ export default function VocabPlayScreen({ route, navigation }) {
       hapticSuccess();
       // Praise FIRST in arabic alone, THEN the word in arabic alone,
       // THEN in english alone — never overlapping, like a real teacher.
-      await playSeq([keys.praise(), ...wordKeys(q.target)]);
+      if (focusedRef.current) await playSeq([keys.praise(), ...wordKeys(q.target)]);
       setCorrectCount((c) => c + 1);
       setStars((s) => s + 1);
       await storage.addStars(`vocab-${topic}`, 1);
     } else {
       hapticError();
-      await playSeq([keys.encourage()]);
+      if (focusedRef.current) await playSeq([keys.encourage()]);
       await storage.addStars(`vocab-${topic}`, 0);
     }
     if (index + 1 >= ROUND) {
@@ -122,7 +126,7 @@ export default function VocabPlayScreen({ route, navigation }) {
   };
 
   const learnWord = () => {
-    if (!q) return;
+    if (!q || !focusedRef.current) return;
     tap();
     // Arabic alone first, english alone after it finishes.
     playSeq(wordKeys(q.target));
@@ -153,14 +157,14 @@ export default function VocabPlayScreen({ route, navigation }) {
 
   // Teacher models the word when it appears: "say after me" + the word.
   useEffect(() => {
-    if (mode !== 'speak' || !sWord) return;
+    if (mode !== 'speak' || !sWord || !focused) return;
     const idx = Math.max(0, pool.findIndex((p) => p.en === sWord.en));
     playSeq([
       { key: 'repeat_after', fb: { kind: 'ar', text: 'قول ورايا يا بطل' } },
       ...vocabKeys(topic, idx, sWord.ar, sWord.en),
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, sWord]);
+  }, [mode, sWord, focused]);
 
   const speakOnlyEn = () => {
     if (!sWord) return;

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { colors, font, fam, space, radius, clay } from '../theme';
 import { getAgeGroup, MATH_TOPIC_META } from '../data/ageGroups';
 import { generateMathQuestion } from '../data/math';
@@ -41,6 +42,9 @@ export default function MathPlayScreen({ route, navigation }) {
   const [stars, setStars] = useState(0);
   const [teach, setTeach] = useState(null); // { steps } | null
   const [phase, setPhase] = useState('lesson'); // lesson first, quiz after
+  const focused = useIsFocused();
+  const focusedRef = useRef(true);
+  focusedRef.current = focused;
   const lesson = useMemo(
     () => teachSteps(topic, DEMO[topic] || DEMO.addition, (i) => DRAG_THEMES[i % DRAG_THEMES.length]),
     [topic]
@@ -75,17 +79,17 @@ export default function MathPlayScreen({ route, navigation }) {
   const greeted = useRef(false);
   const qKey = useRef(0);
   useEffect(() => {
-    if (!q || teach || phase !== 'quiz') return;
+    if (!q || teach || phase !== 'quiz' || !focused) return;
     const my = ++qKey.current;
     (async () => {
       if (!greeted.current) {
         greeted.current = true;
         await playSeq([keys.greet()]);
       }
-      if (my !== qKey.current) return;
+      if (my !== qKey.current || !focusedRef.current) return;
       await playSeq(questionKeys(topic, q.parts || {}));
     })();
-  }, [q, teach, phase, topic]);
+  }, [q, teach, phase, topic, focused]);
 
   // Farewell when the round ends.
   useEffect(() => {
@@ -130,7 +134,7 @@ export default function MathPlayScreen({ route, navigation }) {
   };
 
   const handleLessonStep = (si, info) => {
-    if (!lesson) return;
+    if (!lesson || !focusedRef.current) return;
     if (info === 'miss') {
       playKey('t_tryagain', { kind: 'ar', text: 'حاول تاني يا بطل، حطها جوه السلة!' });
       return;
@@ -139,7 +143,7 @@ export default function MathPlayScreen({ route, navigation }) {
   };
 
   const finishLesson = async (withPraise) => {
-    if (withPraise) await playSeq([keys.praise()]);
+    if (withPraise && focusedRef.current) await playSeq([keys.praise()]);
     setPhase('quiz');
   };
 
@@ -156,6 +160,7 @@ export default function MathPlayScreen({ route, navigation }) {
   }, [phase, lesson]);
 
   const handleStep = (si, info) => {
+    if (!focusedRef.current) return;
     const steps = teach?.steps;
     if (!steps) return;
     if (info === 'miss') {
@@ -168,8 +173,12 @@ export default function MathPlayScreen({ route, navigation }) {
   const closeTeach = async (withPraise) => {
     const tail = teach?.steps?.tail;
     setTeach(null);
-    if (withPraise) {
+    if (withPraise && focusedRef.current) {
       if (tail) await playSeq(tail);
+      if (!focusedRef.current) {
+        advance();
+        return;
+      }
       await playSeq([keys.praise()]);
     }
     advance();
@@ -227,7 +236,7 @@ export default function MathPlayScreen({ route, navigation }) {
           <DragCountGame
             steps={lesson}
             onStep={handleLessonStep}
-            onCount={(n) => { playKey(keys.num(n) || '__missing__', { kind: 'ar', text: String(n) }); }}
+            onCount={(n) => { if (focusedRef.current) playKey(keys.num(n) || '__missing__', { kind: 'ar', text: String(n) }); }}
             onDone={() => finishLesson(true)}
             onSkip={async () => { await stopVoice(); finishLesson(false); }}
           />
@@ -238,7 +247,7 @@ export default function MathPlayScreen({ route, navigation }) {
           <DragCountGame
             steps={teach.steps}
             onStep={handleStep}
-            onCount={(n) => { playKey(keys.num(n) || '__missing__', { kind: 'ar', text: String(n) }); }}
+            onCount={(n) => { if (focusedRef.current) playKey(keys.num(n) || '__missing__', { kind: 'ar', text: String(n) }); }}
             onDone={() => closeTeach(true)}
             onSkip={async () => { await stopVoice(); closeTeach(false); }}
           />

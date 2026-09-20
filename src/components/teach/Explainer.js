@@ -4,6 +4,7 @@
 // First visit: auto-starts on mount. Uses theme values only.
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { colors, font, fam, space, radius } from '../../theme';
 import { stopAllAudio } from '../../logic/teachAudio.js';
 import { SayStep, ShowObjectsStep, CountStep, ShowNumeralStep, PauseStep, WordCardStep } from './stepsBasic';
@@ -40,6 +41,10 @@ export default function Explainer({ scene, onDone, title, allowSkip = true }) {
   const [idx, setIdx] = useState(0);
   const [replayKey, setReplayKey] = useState(0);
   const lock = useRef(false);
+  const focused = useIsFocused();
+  const focusedRef = useRef(true);
+  focusedRef.current = focused;
+  const firstFocus = useRef(true);
   const total = scene?.steps?.length ?? 0;
   const step = scene?.steps?.[idx];
   const StepView = (step && RENDER[step.t]) || null;
@@ -58,8 +63,26 @@ export default function Explainer({ scene, onDone, title, allowSkip = true }) {
   const complete = () => {
     if (lock.current) return;
     lock.current = true;
-    setTimeout(() => go(idx + 1), 450);
+    // Frozen while blurred: never advance (or speak) behind another screen.
+    setTimeout(() => {
+      if (focusedRef.current) go(idx + 1);
+      else lock.current = false;
+    }, 450);
   };
+
+  // Coming back: replay the current step so the kid misses nothing.
+  React.useEffect(() => {
+    if (firstFocus.current) {
+      firstFocus.current = false;
+      return;
+    }
+    if (focused) {
+      stopAllAudio();
+      lock.current = false;
+      setReplayKey((k) => k + 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focused]);
 
   const replay = () => {
     stopAllAudio();
